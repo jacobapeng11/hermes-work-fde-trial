@@ -8,15 +8,15 @@ Hermes Work 是多用户 AI Agent 平台。本仓库提供用户 Web、管理控
 
 | 云端任务与文件 | 云端看板 |
 | --- | --- |
-| ![云端任务界面](docs/screenshots/cloud-chat.png) | ![云端看板界面](docs/screenshots/cloud-kanban.png) |
+| ![云端任务界面](https://github.com/jacobapeng11/hermes-work-fde-trial/blob/main/docs/screenshots/cloud-chat.png?raw=true) | ![云端看板界面](https://github.com/jacobapeng11/hermes-work-fde-trial/blob/main/docs/screenshots/cloud-kanban.png?raw=true) |
 
 | 专家与技能 | 桌面端 |
 | --- | --- |
-| ![专家与技能界面](docs/screenshots/cloud-experts.png) | ![桌面端任务界面](docs/screenshots/desktop-chat.png) |
+| ![专家与技能界面](https://github.com/jacobapeng11/hermes-work-fde-trial/blob/main/docs/screenshots/cloud-experts.png?raw=true) | ![桌面端任务界面](https://github.com/jacobapeng11/hermes-work-fde-trial/blob/main/docs/screenshots/desktop-chat.png?raw=true) |
 
 管理端资源视图：
 
-![管理端资源视图](docs/screenshots/admin-resources.png)
+![管理端资源视图](https://github.com/jacobapeng11/hermes-work-fde-trial/blob/main/docs/screenshots/admin-resources.png?raw=true)
 
 ## 核心能力
 
