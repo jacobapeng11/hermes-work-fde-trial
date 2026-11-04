@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "runtime_id": "runtime-application-3",
+  "binding_id": "binding-01234567",
+  "items": [
+    {
+      "projection_id": "projection-01234567",
+      "runtime_id": "runtime-application-3",
+      "projection_type": "run.terminal",
+      "occurred_at": "2026-08-07T00:00:02Z",
+      "payload_digest": "1785741375b7879d91d4a48931a81874037addb5d662f81a8ca51db7a211483e",
+      "run_id": "run-01234567",
+      "seq": 7,
+      "config_revision": "revision-18",
+      "payload": {
+        "status": "completed",
+        "final_text": "本周已完成执行面协议设计。"
+      }
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "token_type": "runtime_access",
+  "schema_version": 1,
+  "sub": "legacy_sso:user-42",
+  "user_id": 42,
+  "org_id": 7,
+  "runtime_id": "runtime-personal-42",
+  "admission_generation": 11,
+  "allowed_origin": "https://app.example.com",
+  "connection_nonce": "nonce-0123456789abcdef",
+  "issued_at": 1786070400,
+  "expires_at": 1786070700
+}

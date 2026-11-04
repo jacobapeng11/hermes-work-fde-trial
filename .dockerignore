@@ -1,0 +1,11 @@
+.git
+.runtime
+**/__pycache__
+**/*.py[cod]
+**/.pytest_cache
+**/.mypy_cache
+**/.ruff_cache
+backend/.venv
+frontend/**/node_modules
+**/.vite
+docs

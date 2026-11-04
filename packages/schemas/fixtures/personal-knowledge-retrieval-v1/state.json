@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "knowledge_bases": [
+    {
+      "id": 2,
+      "name": "制度库",
+      "description": "公司制度",
+      "ready_file_count": 1,
+      "capabilities": {
+        "rag": true,
+        "wiki": true
+      }
+    }
+  ],
+  "revision": "pkb:v2:7:11:0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"
+}

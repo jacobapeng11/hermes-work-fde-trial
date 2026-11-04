@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "channel_fast_lane_schema_version": 2,
+  "type": "channel.turn.disposition.ack",
+  "request_id": "fastlane-v2-disposition-ack-0001",
+  "gateway_instance_id": "backend-1:8011:im-gateway",
+  "channel_lease_epoch": 7,
+  "delivery_id": "delivery-wecom-message-00000001",
+  "disposition_seq": 3
+}

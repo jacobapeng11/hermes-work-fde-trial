@@ -1,0 +1,4 @@
+# macOS 构建资产必须保持 LF：entitlements 会被 electron-builder 读取，
+# shell 脚本带 CRLF 在 bash 下直接报错；Windows 检出（core.autocrlf=true）必须绕开。
+*.plist text eol=lf
+*.sh text eol=lf

@@ -1,0 +1,67 @@
+/* ===== 专家-技能组合页（2026-11-03-016 大卡片重构） =====
+   视觉框架与知识库模块（knowledge.css）完全同构：灰底滚动页 + 白色大卡片 +
+   卡片内页头（图标/标题/副标题 + 主操作）+ 页面级下划线 Tab + 内容区；
+   专家与技能面板以 embedded / chromeless 模式嵌入，内部不再重复灰底白卡。
+   尺寸与配色逐条对齐 knowledge.css 实际值（#f9fafb 灰底、卡片 8px 圆角细边微阴影）。 */
+
+.expertSkillsPage {
+  height: 100%;
+  overflow: auto;
+  padding: 16px;
+  color: var(--text-primary);
+  background: #f9fafb;
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+}
+[data-theme="dark"] .expertSkillsPage { color: #ececec; background: #212121; }
+
+.expertSkillsWorkspace {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+}
+[data-theme="dark"] .expertSkillsWorkspace { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+
+/* 模块页头：对齐知识库 knowledgePageHeader（图标容器浅蓝底 + 标题/副标题 + 右侧主操作） */
+.expertSkillsHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid #f3f4f6; }
+.expertSkillsHeaderMain { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.expertSkillsHeaderIcon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; background: #dbeafe; color: #2563eb; font-size: 20px; }
+.expertSkillsHeaderText { min-width: 0; }
+.expertSkillsHeaderTitle { margin: 0; color: #111827; font-size: 18px; font-weight: 600; line-height: 26px; }
+.expertSkillsHeaderSubtitle { margin: 2px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .expertSkillsHeader { border-color: rgb(255 255 255 / 6%); }
+[data-theme="dark"] .expertSkillsHeaderIcon { background: rgb(37 99 235 / 20%); color: #60a5fa; }
+[data-theme="dark"] .expertSkillsHeaderTitle { color: #ececec; }
+[data-theme="dark"] .expertSkillsHeaderSubtitle { color: #a6a6a6; }
+
+/* 页面级下划线 Tab：与知识库 knowledgeTabs 完全一致
+   （未选灰字、选中深色字、2px 蓝色 ink-bar 贯穿底部浅灰边线）。 */
+.expertSkillsTabs { margin-top: 4px; }
+.expertSkillsTabs .ant-tabs-nav { margin-bottom: 0; }
+.expertSkillsTabs .ant-tabs-tab { margin: 0 16px 0 0 !important; padding: 8px 0 !important; }
+.expertSkillsTabs .ant-tabs-tab-btn { font-size: 16px !important; font-weight: 600 !important; color: #6b7280 !important; padding: 0 0 6px 0 !important; }
+.expertSkillsTabs .ant-tabs-tab-btn:hover { color: #1f2937 !important; }
+.expertSkillsTabs .ant-tabs-tab-active .ant-tabs-tab-btn { color: #111827 !important; }
+.expertSkillsTabs .ant-tabs-ink-bar { background: #2563eb !important; height: 2px !important; }
+[data-theme="dark"] .expertSkillsTabs .ant-tabs-tab-btn { color: #a6a6a6 !important; }
+[data-theme="dark"] .expertSkillsTabs .ant-tabs-tab-btn:hover { color: #d1d5db !important; }
+[data-theme="dark"] .expertSkillsTabs .ant-tabs-tab-active .ant-tabs-tab-btn { color: #ececec !important; }
+[data-theme="dark"] .expertSkillsTabs .ant-tabs-ink-bar { background: #60a5fa !important; }
+
+/* Tab 内容区：对齐知识库 knowledgePanel（仅上 padding，左右由卡片 padding 承担） */
+.expertSkillsTabs .ant-tabs-content-holder { padding-top: 20px; }
+
+.expertSkillsLoading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 160px;
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+@media (max-width: 1280px) { .expertSkillsHeaderSubtitle { display: none; } }

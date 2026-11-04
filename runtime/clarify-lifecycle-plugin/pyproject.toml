@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hermes-hermes-clarify-lifecycle"
+version = "0.1.0"
+requires-python = ">=3.10"
+
+[project.entry-points."hermes_agent.plugins"]
+clarify-lifecycle = "hermes_clarify_lifecycle.plugin"
+
+[tool.setuptools.packages.find]
+where = ["src"]

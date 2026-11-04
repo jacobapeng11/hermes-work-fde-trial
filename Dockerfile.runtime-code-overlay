@@ -1,0 +1,63 @@
+#check=skip=InvalidDefaultArgInFrom
+# Fast code-only Runtime rebuild. Hermes source and user data are inherited
+# unchanged from the currently published Runtime image.
+ARG HERMES_BASE_IMAGE
+ARG HERMES_CAPABILITIES_IMAGE
+FROM ${HERMES_CAPABILITIES_IMAGE}
+
+ARG HERMES_BASE_IMAGE
+ARG HERMES_CAPABILITIES_IMAGE
+ARG HERMES_PLATFORM_REVISION
+ARG HERMES_SUPERVISOR_TREE_SHA256
+ARG HERMES_IMMUTABLE_RUNTIME_SHA256
+ARG HERMES_ACTIVE_MCP_RELOAD_TEST=0
+
+USER root
+COPY runtime/supervisor /tmp/hermes-platform-overlay/supervisor
+RUN /usr/local/bin/uv --no-config pip install \
+        --python /opt/hermes/.venv/bin/python \
+        --no-cache \
+        --no-deps \
+        --no-build-isolation \
+        --reinstall \
+        /tmp/hermes-platform-overlay/supervisor \
+    && /opt/hermes/.venv/bin/python -c \
+        "import platform_supervisor.main, platform_supervisor.settings" \
+    && install -D -o root -g root -m 0555 \
+        /tmp/hermes-platform-overlay/supervisor/platform_supervisor/hermes_sessiondb_helper.py \
+        /opt/hermes-platform/bin/hermes-sessiondb-helper.py \
+    && install -D -o root -g root -m 0555 \
+        /tmp/hermes-platform-overlay/supervisor/platform_supervisor/hermes_session_metadata_helper.py \
+        /opt/hermes-platform/bin/hermes-session-metadata-helper.py \
+    && install -D -o root -g root -m 0555 \
+        /tmp/hermes-platform-overlay/supervisor/platform_supervisor/hermes_posix_access_probe.py \
+        /opt/hermes-platform/bin/hermes-posix-access-probe.py \
+    && install -d -o root -g root -m 0555 /opt/hermes-platform \
+    && printf '%s\n' \
+        '{' \
+        '  "contract_version": "runtime-code-contract-v1",' \
+        '  "build_strategy": "supervisor-code-only",' \
+        "  \"base_image\": \"${HERMES_BASE_IMAGE}\"," \
+        "  \"capabilities_image\": \"${HERMES_CAPABILITIES_IMAGE}\"," \
+        "  \"platform_revision\": \"${HERMES_PLATFORM_REVISION}\"," \
+        "  \"supervisor_tree_sha256\": \"${HERMES_SUPERVISOR_TREE_SHA256}\"," \
+        "  \"immutable_runtime_sha256\": \"${HERMES_IMMUTABLE_RUNTIME_SHA256}\"" \
+        '}' \
+        > /opt/hermes-platform/runtime-code-contract.json \
+    && chmod 0444 /opt/hermes-platform/runtime-code-contract.json \
+    && if [ "${HERMES_ACTIVE_MCP_RELOAD_TEST}" = "1" ]; then \
+        install -m 0444 /dev/null \
+            /opt/hermes-platform/allow-active-mcp-reload-test; \
+       fi \
+    && rm -rf /tmp/hermes-platform-overlay
+
+LABEL hermes.platform.code-contract-version="runtime-code-contract-v1" \
+      hermes.platform.build-strategy="supervisor-code-only" \
+      hermes.platform.base-image="${HERMES_BASE_IMAGE}" \
+      hermes.platform.capabilities-image="${HERMES_CAPABILITIES_IMAGE}" \
+      hermes.platform.revision="${HERMES_PLATFORM_REVISION}" \
+      hermes.platform.supervisor-tree-sha256="${HERMES_SUPERVISOR_TREE_SHA256}" \
+      hermes.platform.immutable-runtime-sha256="${HERMES_IMMUTABLE_RUNTIME_SHA256}" \
+      hermes.platform.active-mcp-reload-test="${HERMES_ACTIVE_MCP_RELOAD_TEST}"
+
+USER root

@@ -1,0 +1,18 @@
+{
+  "user_api": [
+    "manual_expert_update",
+    "manual_skill_update",
+    "market_expert_configure",
+    "market_expert_copy",
+    "skillhub_user_catalog"
+  ],
+  "admin_api": [
+    "reviewer_share_scope_override"
+  ],
+  "user_web": [
+    "expert_installed_tab",
+    "skill_installed_tab",
+    "skillhub_tab",
+    "manual_update_button"
+  ]
+}

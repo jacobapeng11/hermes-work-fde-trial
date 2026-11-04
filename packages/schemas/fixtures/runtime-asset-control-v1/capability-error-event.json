@@ -1,0 +1,11 @@
+{
+  "type": "capability.error",
+  "data": {
+    "run_id": "run-01234567",
+    "capability_type": "knowledge_base",
+    "error_code": "KNOWLEDGE_BASE_NO_PERMISSION",
+    "display_message": "资产访问权限不足",
+    "recoverable": true,
+    "error_id": "capability-error-0001"
+  }
+}

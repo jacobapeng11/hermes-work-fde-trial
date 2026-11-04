@@ -1,0 +1,10 @@
+{
+  "name": "hermes-office-runtime",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Pinned Node dependencies for Hermes Office Skills",
+  "dependencies": {
+    "playwright": "1.62.0",
+    "pptxgenjs": "4.0.1"
+  }
+}

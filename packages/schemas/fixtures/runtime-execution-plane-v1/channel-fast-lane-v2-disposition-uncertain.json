@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "channel_fast_lane_schema_version": 2,
+  "type": "channel.turn.disposition",
+  "delivery_id": "delivery-wecom-message-00000004",
+  "client_message_id": "im-wecom-message-00000004",
+  "disposition_seq": 2,
+  "state": "uncertain",
+  "canonical_run_id": "run-parent-00000001",
+  "parent_run_id": "run-parent-00000001",
+  "start_after_seq": 35,
+  "promoted_run_id": null
+}

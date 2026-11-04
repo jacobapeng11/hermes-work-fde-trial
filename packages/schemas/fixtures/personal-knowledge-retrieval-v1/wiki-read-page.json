@@ -1,0 +1,21 @@
+{
+  "source_type": "wiki_page",
+  "knowledge_base_id": 2,
+  "knowledge_base_name": "制度库",
+  "slug": "concept/deploy",
+  "title": "部署",
+  "content": "完整 Wiki 正文",
+  "source_url": "/?view=knowledge&tab=personal&kb=2",
+  "source_files": [
+    {
+      "file_id": 11,
+      "filename": "制度 A.pdf",
+      "source_url": "/?view=knowledge&tab=personal&kb=2&file=11"
+    },
+    {
+      "file_id": 22,
+      "filename": "制度 B.pdf",
+      "source_url": "/?view=knowledge&tab=personal&kb=2&file=22"
+    }
+  ]
+}

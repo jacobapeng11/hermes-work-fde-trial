@@ -1,0 +1,316 @@
+.modelVisibilityEditor {
+  min-width: 0;
+}
+
+.modelVisibilityEntryButton {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  min-height: 44px;
+  padding: 8px 14px;
+  border: 1px solid #cbd6d4;
+  border-radius: 8px;
+  color: #233033;
+  background: #ffffff;
+  font: inherit;
+  text-align: left;
+}
+
+.modelVisibilityEntryButton:hover:not(:disabled) {
+  border-color: #8fbfa9;
+  background: #f6faf8;
+}
+
+.modelVisibilitySummary {
+  display: grid;
+  align-content: start;
+  gap: 8px;
+  max-height: 136px;
+  margin-top: 8px;
+  padding: 8px 10px;
+  overflow: auto;
+  border: 1px solid #e1e6e4;
+  border-radius: 8px;
+  background: #fbfcfc;
+}
+
+.modelVisibilitySummaryGroup {
+  display: grid;
+  grid-template-columns: 76px minmax(0, 1fr);
+  align-items: start;
+  gap: 8px;
+}
+
+.modelVisibilitySummaryGroup > p {
+  margin: 3px 0 0;
+  color: #657173;
+  font-size: 12px;
+  font-weight: 650;
+}
+
+.modelVisibilitySummaryGroup ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modelVisibilitySummaryGroup li {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+  max-width: 100%;
+  min-height: 26px;
+  gap: 5px;
+  padding: 3px 8px;
+  border: 1px solid #d8e0de;
+  border-radius: 13px;
+  color: #314044;
+  background: #ffffff;
+  font-size: 12px;
+  line-height: 1.4;
+}
+
+.modelVisibilitySummaryGroup li > svg {
+  flex: 0 0 auto;
+  color: #536164;
+}
+
+.modelVisibilitySummaryGroup li > span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.modelVisibilitySummaryGroup li[data-fallback="true"] {
+  border-style: dashed;
+  color: #657173;
+  background: #f4f7f6;
+}
+
+.modelVisibilityEntryButton > span {
+  color: #536164;
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.modelVisibilityBackdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(24, 36, 38, 0.38);
+}
+
+.modelVisibilityDialog {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+  width: min(720px, 100%);
+  max-height: min(680px, calc(100vh - 48px));
+  border: 1px solid #d8e0de;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 18px 50px rgba(24, 36, 38, 0.22);
+  overflow: hidden;
+}
+
+.modelVisibilityDialog header,
+.modelVisibilityDialog footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+}
+
+.modelVisibilityDialog header {
+  border-bottom: 1px solid #e1e6e4;
+}
+
+.modelVisibilityDialog header h3,
+.modelVisibilityDialog header p {
+  margin: 0;
+}
+
+.modelVisibilityDialog header p {
+  color: #657173;
+  font-size: 12px;
+}
+
+.modelVisibilityDialog header > button,
+.modelVisibilityState > button,
+.modelVisibilityTree button {
+  display: inline-grid;
+  place-items: center;
+  border: 0;
+  color: #536164;
+  background: transparent;
+}
+
+.modelVisibilityDialog header > button {
+  width: 32px;
+  height: 32px;
+}
+
+.modelVisibilityDialogBody {
+  display: grid;
+  align-content: start;
+  gap: 10px;
+  min-height: 260px;
+  padding: 14px 16px;
+  overflow: hidden;
+}
+
+.modelVisibilityTreeSearch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 9px;
+  border: 1px solid #cbd6d4;
+  border-radius: 8px;
+  color: #657173;
+}
+
+.modelVisibilityTreeSearch input {
+  width: 100%;
+  border: 0;
+  color: #1f2a2d;
+  background: transparent;
+  font: inherit;
+  outline: none;
+}
+
+.modelVisibilitySelectionSummary {
+  color: #536164;
+  font-size: 12px;
+}
+
+.modelVisibilityTree,
+.modelVisibilityTree ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.modelVisibilityTree {
+  max-height: 390px;
+  overflow: auto;
+  border: 1px solid #e1e6e4;
+  border-radius: 8px;
+  padding: 7px;
+}
+
+.modelVisibilityTree li > div {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 32px;
+  color: #314044;
+  border-radius: 6px;
+}
+
+.modelVisibilityTree li > div:hover {
+  background: #f7faf9;
+}
+
+.modelVisibilityTree button {
+  width: 24px;
+  height: 24px;
+}
+
+.modelVisibilityTree label {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.modelVisibilityTreeSpacer {
+  width: 24px;
+}
+
+.modelVisibilityOrganization {
+  font-weight: 650;
+}
+
+.modelVisibilityVirtualNode {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #657173;
+  font-size: 13px;
+}
+
+.modelVisibilityVirtualNode small {
+  color: #879499;
+  font-size: 11px;
+}
+
+.modelVisibilityState {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 120px;
+  margin: 0;
+  color: #657173;
+}
+
+.modelVisibilityState > button {
+  min-height: 30px;
+  padding: 0 10px;
+  border: 1px solid #cbd6d4;
+  border-radius: 7px;
+  background: #edf4f1;
+}
+
+.modelVisibilityDialog footer {
+  border-top: 1px solid #e1e6e4;
+}
+
+.modelVisibilityDialog footer button {
+  min-height: 34px;
+  padding: 0 16px;
+  border-radius: 8px;
+  font: inherit;
+}
+
+.modelVisibilityDialog footer .secondary {
+  border: 1px solid #cbd6d4;
+  color: #314044;
+  background: #ffffff;
+}
+
+.modelVisibilityDialog footer .primary {
+  border: 1px solid #337055;
+  color: #ffffff;
+  background: #3d8666;
+}
+
+.modelVisibilityDialog footer button:disabled {
+  opacity: 0.55;
+}
+
+@media (max-width: 720px) {
+  .modelVisibilityEntryButton {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  .modelVisibilitySummaryGroup {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 4px;
+  }
+
+  .modelVisibilityBackdrop {
+    padding: 10px;
+  }
+}

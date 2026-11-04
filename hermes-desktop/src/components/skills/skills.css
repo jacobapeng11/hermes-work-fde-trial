@@ -1,0 +1,209 @@
+/* 技能模块视觉层（2026-10-26 对齐协作平台参考设计）*/
+/* ═══ 模块级字体统一（与参考项目 base.css:73 完全一致） ═══ */
+.skillCatalogPage{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+/* 表单元素不继承 font-family，显式设为 inherit */
+.skillCatalogPage button,.skillCatalogPage input,.skillCatalogPage select,.skillCatalogPage textarea{font-family:inherit}
+/* antd 组件通过 CSS-in-JS 可能覆盖，确保优先 */
+.skillCatalogPage .ant-btn,.skillCatalogPage .ant-tag,.skillCatalogPage .ant-tabs-tab-btn,.skillCatalogPage .ant-select,.skillCatalogPage .ant-input,.skillCatalogPage .ant-select-item,.skillCatalogPage .ant-modal-title,.skillCatalogPage .ant-alert{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+
+.skillCatalogPage{width:100%;height:100%;min-height:0;overflow:auto;padding:16px;color:#111827;background:#f9fafb}
+.skillWorkspace{padding:16px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;box-shadow:0 1px 2px rgb(0 0 0/5%)}
+.skillPageHeader{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid #f3f4f6}
+.skillPageHeaderMain{display:flex;align-items:center;gap:12px;min-width:0}
+.skillPageHeaderIcon{display:grid;place-items:center;width:40px;height:40px;flex:none;border-radius:8px;background:#dbeafe;color:#2563eb;font-size:20px}
+.skillPageHeaderText{min-width:0}
+.skillPageHeaderTitle{margin:0;color:#111827;font-size:18px;font-weight:600;line-height:26px}
+.skillPageHeaderSubtitle{margin:2px 0 0;color:#6b7280;font-size:13px;line-height:20px}
+.skillCatalogToolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:8px}
+.skillCatalogTabsWrap{flex:none}
+.skillCatalogToolbarActions{display:flex;align-items:center;gap:8px;min-width:0}
+.skillCatalogSearch{width:260px}
+.skillCatalogCategories{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;padding-bottom:12px;border-bottom:1px solid #f3f4f6}
+.skillCatalogGrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));align-items:start;gap:12px;margin-top:12px}
+.skillCatalogCard{position:relative;height:214px;border:1px solid #e5e7eb;border-radius:6px;background:#fff;box-shadow:0 1px 2px rgb(0 0 0/5%);transition:transform .25s ease-out,border-color .25s ease-out,box-shadow .25s ease-out}
+.skillCatalogCard:hover{transform:translateY(-3px);border-color:#93c5fd;box-shadow:0 12px 24px rgb(191 219 254/60%)}
+.skillCatalogCard:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
+.skillCatalogCardBody{min-height:0;padding:12px;display:flex;flex-direction:column}
+.skillCatalogCard h3{flex-shrink:0;margin:0;padding-right:28px;overflow:hidden;color:#2563eb;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:16px;font-weight:500;line-height:24px;text-overflow:ellipsis;white-space:nowrap;cursor:pointer}
+.skillCatalogCard h3:hover{text-decoration:underline}
+.skillCatalogCardBody>p{flex:1;margin:8px 0 0;padding-top:8px;border-top:1px solid #f3f4f6;min-height:78px;max-height:100px;overflow:hidden;white-space:pre-wrap;overflow-wrap:break-word;color:#4b5563;font-size:13px;line-height:22px}
+.skillCardTags{flex-shrink:0;display:flex;flex-wrap:wrap;gap:4px;margin-top:auto;padding-top:8px;margin-bottom:8px}
+.skillCardTags .ant-tag{margin:0;padding:0 8px;border:1px solid #dbeafe;border-radius:4px;color:#2563eb;background:#eff6ff;font-size:12px;line-height:22px;display:inline-flex;align-items:center}
+.skillCatalogCardBody>footer{flex-shrink:0;display:flex;align-items:center;justify-content:flex-end;padding-top:8px;border-top:1px solid #f3f4f6}
+.skillCatalogTrash{position:absolute;top:8px;right:8px;z-index:1;display:grid;place-items:center;width:26px;height:26px;padding:0;border:0;border-radius:4px;color:#9ca3af;background:transparent;opacity:0;transition:opacity .2s,color .2s,background .2s;cursor:pointer}
+.skillCatalogCard:hover .skillCatalogTrash,.skillCatalogTrash:focus-visible{opacity:1}
+.skillCatalogTrash:focus-visible{outline:2px solid #2563eb;outline-offset:2px}
+.skillCatalogTrash:hover{color:#ff5722;background:rgb(255 87 34/8%)}
+.skillCatalogTrash:disabled{cursor:not-allowed;opacity:.5}
+.skillCatalogNoticeAlert{margin-top:12px}
+.skillCatalogErrorAlert{margin-top:8px}
+.skillCatalogEmptyWrap{display:flex;flex-direction:column;align-items:center;gap:16px;margin-top:24px;padding:32px 0}
+.skillUploadHint{margin:0 0 12px;color:#6b7280;font-size:13px;line-height:20px}
+.skillUploadDropInner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 0}
+.skillUploadDropInner span{color:#6b7280;font-size:12px}
+.skillUploadFileState{margin:8px 0 0;color:#6b7280;font-size:12px}
+.skillUploadField{display:flex;flex-direction:column;gap:4px;margin-top:12px}
+.skillUploadFieldLabel{color:#4b5563;font-size:13px}
+.skillUploadNewCategory{display:flex;gap:8px;margin-top:12px}
+.skillUploadError{margin-top:12px}
+.skillRemovalCopy{margin:0;color:#4b5563;font-size:14px;line-height:22px}
+.skillDetailBody{display:flex;flex-direction:column;gap:8px}
+.skillDetailBody h3{margin:0;color:#111827;font-size:16px;line-height:24px}
+.skillDetailBody>p{margin:0;color:#4b5563}
+.skillDetailEdit{display:flex;flex-direction:column;gap:8px}
+.skillDetailEdit small{color:#6b7280;font-size:12px;line-height:18px}
+.skillDetailField{display:flex;flex-direction:column;gap:4px}
+.skillDetailField>span{color:#4b5563;font-size:13px}
+@media(max-width:1280px){.skillPageHeaderSubtitle{display:none}}
+@media(max-width:900px){.skillCatalogToolbar{align-items:stretch;flex-direction:column}.skillCatalogToolbarActions{width:100%}.skillCatalogSearch{flex:1;width:auto}}
+
+/* 卸载按钮：antd danger outlined → #ff5722 */
+.skillCatalogCardBody .ant-btn-color-dangerous{
+  color:#ff5722!important;
+  border-color:#ff5722!important;
+}
+.skillCatalogCardBody .ant-btn-color-dangerous:hover{
+  color:#ff5722!important;
+  border-color:#ff5722!important;
+  background:rgb(255 87 34/6%)!important;
+}
+
+/* ═══ 详情弹窗（参考「我要提想法」居中弹框风格） ═══ */
+.skillDetailBody{display:flex;flex-direction:column;gap:16px;padding:0 4px}
+.skillDetailHeader h3{margin:0;color:#111827;font-size:24px;font-weight:700;line-height:33px}
+.skillDetailHeaderTags{display:flex;flex-wrap:wrap;gap:4px;margin-top:8px}
+.skillDetailHeaderTags .ant-tag{margin:0;padding:0 8px;border:1px solid #dbeafe;border-radius:4px;color:#2563eb;background:#eff6ff;font-size:12px;line-height:22px}
+.skillDetailBody>p{margin:0;min-height:60px;color:#4b5563;font-size:14px;line-height:22px;white-space:pre-wrap;overflow-wrap:break-word}
+.skillDetailMeta{display:flex;flex-direction:column;gap:8px;padding:12px;border-radius:6px;background:#f9fafb}
+.skillDetailMetaRow{display:flex;align-items:baseline;gap:12px;font-size:13px;color:#4b5563}
+.skillDetailMetaLabel{flex:none;width:36px;color:#6b7280;font-size:12px}
+
+/* ═══ 弹框标题（对齐 Element Plus el-dialog__title：16px/700/#303133） ═══ */
+.skillDetailDialog .ant-modal-title{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:16px;font-weight:700;line-height:24px}
+/* 弹框技能名称：从 24px/700 缩小到 20px/600（适中） */
+.skillDetailHeader h3{margin:0;color:#111827;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:20px;font-weight:600;line-height:28px}
+
+/* ═══ Tabs 对齐参考（text-base font-semibold，灰→深灰，蓝色下划线） ═══ */
+/* 二级 Tab（2026-11-03-017）：antd 覆盖样式统一迁至 styles.css 的
+   .secondaryLaneTabs（精致细下划线 + 轻量角标，与专家页签共用）；
+   本类仅保留布局职责（Tabs 内容宽，不撑满工具栏）。 */
+
+/* ═══ 分类 pills 对齐参考 Element Plus button 风格 ═══ */
+.skillCatalogCategories button{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+}
+
+/* ═══ 上传弹窗（参考「我要提想法」居中弹框：label 上方表单式，控件对齐 EP） ═══ */
+.skillUploadDialog .ant-modal-title{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:16px;font-weight:700;line-height:24px}
+.skillUploadForm{display:flex;flex-direction:column;gap:16px}
+.skillUploadFormItem{display:flex;flex-direction:column;gap:8px}
+/* EP label：14px / #606266 / weight 400 */
+.skillUploadFormLabel{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;color:#606266;font-size:14px;line-height:20px;font-weight:400}
+/* EP 控件统一：border-radius 4px / border #DCDFE6 / font 14px #303133 / placeholder #A8ABB2 */
+.skillUploadDialog .ant-select .ant-select-selector{border-radius:4px!important;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+.skillUploadDialog .ant-select-focused .ant-select-selector{border-color:#2563eb!important}
+.skillUploadDialog .ant-input, .skillUploadDialog textarea.ant-input{border-radius:4px!important;font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif}
+.skillUploadDialog .ant-input:focus{border-color:#2563eb!important}
+
+.skillUploadDialog textarea.ant-input{border-radius:4px!important}
+/* Dragger 内文字：EP placeholder 风格 */
+.skillUploadDropInner{display:flex;flex-direction:column;align-items:center;gap:4px;padding:12px 0}
+.skillUploadDropInner strong{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;font-size:14px;font-weight:500}
+.skillUploadDropInner span{font-size:13px}
+.skillUploadFileState{margin:4px 0 0;color:#606266;font-size:13px}
+
+/* ═══ Select 下拉选项卡（对齐参考 demo 的样式） ═══ */
+.skillUploadDialog .ant-select-dropdown{
+  border-radius:6px!important;
+  border:1px solid #e8e8e8;
+  box-shadow:0 6px 16px rgb(0 0 0/8%)!important;
+  padding:4px 0!important;
+}
+.skillSelectDropdown .ant-select-item{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif!important;}
+.skillUploadDialog .ant-select-item{
+  padding:8px 14px!important;
+  font-size:14px!important;
+  color:#333!important;
+  border-radius:0!important;
+  min-height:auto!important;
+}
+.skillUploadDialog .ant-select-item-option-active{
+  background:#f5f5f5!important;
+}
+.skillUploadDialog .ant-select-item-option-selected{
+  background:transparent!important;
+  color:#2563eb!important;
+  font-weight:500!important;
+}
+.skillUploadDialog .ant-select-item-option-selected .ant-select-item-option-content{
+  color:#2563eb!important;
+  font-weight:500!important;
+}
+.skillUploadDialog .ant-select-item-option-content{
+  font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",sans-serif;
+}
+
+/* ═══ 暗色主题（全量覆盖 2026-10-26） ═══ */
+[data-theme="dark"] .skillCatalogPage{color:#ececec;background:#212121}
+[data-theme="dark"] .skillWorkspace{border-color:rgb(255 255 255/10%);background:#1b1b1b;box-shadow:none}
+[data-theme="dark"] .skillPageHeader{border-color:rgb(255 255 255/6%)}
+[data-theme="dark"] .skillPageHeaderTitle{color:#ececec}
+[data-theme="dark"] .skillPageHeaderSubtitle{color:#a6a6a6}
+[data-theme="dark"] .skillPageHeaderIcon{background:rgb(37 99 235/20%);color:#60a5fa}
+/* 分类 pill 暗色 */
+[data-theme="dark"] .skillCatalogPage{--skill-pill-border:rgb(255 255 255/12%);--skill-pill-bg:#212121}
+[data-theme="dark"] .skillCatalogCategories{border-color:rgb(255 255 255/6%)}
+/* Tabs 暗色 */
+[data-theme="dark"] .skillCatalogSearch .ant-input-prefix{color:#8c8c8c}
+/* 卡片暗色 */
+[data-theme="dark"] .skillCatalogCard{border-color:rgb(255 255 255/8%);background:#212121;box-shadow:none}
+[data-theme="dark"] .skillCatalogCard:hover{border-color:rgb(96 165 250/50%);box-shadow:0 8px 20px rgb(0 0 0/30%)}
+[data-theme="dark"] .skillCatalogCard h3{color:#60a5fa}
+[data-theme="dark"] .skillCatalogCardBody>p{color:#b4b4b4;border-color:rgb(255 255 255/6%)}
+[data-theme="dark"] .skillCatalogCardBody>footer{border-color:rgb(255 255 255/6%)}
+[data-theme="dark"] .skillCardTags .ant-tag{border-color:rgb(96 165 250/30%);color:#93c5fd;background:rgb(37 99 235/12%)}
+[data-theme="dark"] .skillCatalogTrash{color:#666}
+[data-theme="dark"] .skillCatalogTrash:hover{color:#ff5722;background:rgb(255 87 34/10%)}
+/* 卸载按钮暗色 */
+[data-theme="dark"] .skillCatalogCardBody .ant-btn-color-dangerous{color:#ff7043!important;border-color:#ff7043!important}
+[data-theme="dark"] .skillCatalogCardBody .ant-btn-color-dangerous:hover{color:#ff5722!important;border-color:#ff5722!important;background:rgb(255 87 34/8%)!important}
+/* 弹窗暗色 */
+[data-theme="dark"] .skillDetailHeader h3{color:#ececec}
+[data-theme="dark"] .skillDetailBody h3{color:#ececec}
+[data-theme="dark"] .skillDetailBody>p{color:#b4b4b4}
+[data-theme="dark"] .skillDetailHeaderTags .ant-tag{border-color:rgb(96 165 250/30%);color:#93c5fd;background:rgb(37 99 235/12%)}
+[data-theme="dark"] .skillDetailMeta{background:#1a1a1a}
+[data-theme="dark"] .skillDetailMetaRow{color:#b4b4b4}
+[data-theme="dark"] .skillDetailMetaLabel{color:#888}
+/* 上传弹窗暗色 */
+[data-theme="dark"] .skillUploadFormLabel{color:#a6a6a6}
+[data-theme="dark"] .skillUploadDropInner strong{color:#ececec}
+[data-theme="dark"] .skillUploadDropInner span{color:#888}
+[data-theme="dark"] .skillUploadFileState{color:#888}
+[data-theme="dark"] .skillUploadHint,[data-theme="dark"] .skillRemovalCopy{color:#b4b4b4}
+[data-theme="dark"] .skillDetailField>span{color:#b4b4b4}
+[data-theme="dark"] .skillDetailEdit small{color:#888}
+/* Select 下拉暗色 */
+/* 删除确认暗色 */
+[data-theme="dark"] .skillDetailBody>p{color:#b4b4b4}
+
+/* ═══ 弹窗 Portal 暗色（rootClassName 命中，不依赖 [data-theme]） ═══ */
+.skillDialogDark .skillUploadFormLabel{color:#a6a6a6}
+.skillDialogDark .skillDetailHeader h3{color:#ececec}
+.skillDialogDark .skillDetailBody h3{color:#ececec}
+.skillDialogDark .skillDetailBody>p{color:#b4b4b4}
+.skillDialogDark .skillDetailBody .skillDetailMeta{background:#1a1a1a}
+.skillDialogDark .skillDetailBody .skillDetailMetaRow{color:#b4b4b4}
+.skillDialogDark .skillDetailBody .skillDetailMetaLabel{color:#888}
+.skillDialogDark .skillDetailHeaderTags .ant-tag{border-color:rgb(96 165 250/30%);color:#93c5fd;background:rgb(37 99 235/12%)}
+.skillDialogDark .skillUploadDropInner span{color:#888}
+.skillDialogDark .skillUploadFileState{color:#888}
+.skillDialogDark .skillUploadHint{color:#b4b4b4}
+.skillDialogDark .skillRemovalCopy{color:#b4b4b4}
+.skillDialogDark .skillDetailField>span{color:#b4b4b4}
+.skillDialogDark .skillDetailEdit small{color:#888}
+/* Select 下拉 Portal 暗色 */
+.skillDialogDark .skillSelectDropdown{background:#1b1b1b!important;border-color:rgb(255 255 255/10%)!important}
+.skillDialogDark .skillSelectDropdown .ant-select-item{color:#b4b4b4!important}
+.skillDialogDark .skillSelectDropdown .ant-select-item-option-active{background:rgb(255 255 255/6%)!important}
+.skillDialogDark .skillSelectDropdown .ant-select-item-option-selected{color:#60a5fa!important}

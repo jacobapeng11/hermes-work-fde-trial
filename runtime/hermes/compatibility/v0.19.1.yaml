@@ -1,0 +1,79 @@
+schema_version: 1
+upstream_version: v0.19.1
+upstream_commit: cc4cab2f592e60a197e796506de9168f74baf3ea
+state_schema: 23
+config_schema: 33
+supported_pod_configs:
+  personal_agent: true
+  application_agent: true
+required_checks:
+  - source_integrity
+  - environment_integrity
+  - clean_start
+  - personal_runtime_smoke
+  - application_runtime_smoke
+  - storage_clone_upgrade
+  - restart_after_upgrade
+  - forward_failure_freeze
+adaptation:
+  base_image_digest: sha256:cd742f9bb0ac2ced374717d4f5158b9fcec617d7cc8ba70bec190671e43f8707
+  python_extras:
+    - all
+    - messaging
+    - otlp
+    - anthropic
+    - bedrock
+    - azure-identity
+    - hindsight
+    - matrix
+  python_distributions:
+    click:
+      base: 8.3.1
+      target: 8.4.2
+    cryptography:
+      base: 46.0.7
+      target: 48.0.1
+    importlib-metadata:
+      base: null
+      target: 8.7.1
+    nemo-relay:
+      base: null
+      target: 0.6.0
+    opentelemetry-api:
+      base: null
+      target: 1.39.1
+    opentelemetry-exporter-otlp-proto-common:
+      base: null
+      target: 1.39.1
+    opentelemetry-exporter-otlp-proto-http:
+      base: null
+      target: 1.39.1
+    opentelemetry-proto:
+      base: null
+      target: 1.39.1
+    opentelemetry-sdk:
+      base: null
+      target: 1.39.1
+    opentelemetry-semantic-conventions:
+      base: null
+      target: 0.60b1
+    python-multipart:
+      base: 0.0.27
+      target: 0.0.32
+    starlette:
+      base: 1.0.1
+      target: 1.3.1
+    zipp:
+      base: null
+      target: 3.23.0
+  node:
+    excluded_prefix: plugins/platforms/photon/sidecar/node_modules
+    package_json: plugins/platforms/photon/sidecar/node_modules/protobufjs/package.json
+    package_name: protobufjs
+    base_version: null
+    target_version: 8.7.1
+  sqlite:
+    version: 3.53.4
+    autoconf_version: 3530400
+    source_sha256: 0e9483900e92cd5de8fd48d16bf9200145a61f7fd5be542a5ac81d8a9516eb9c
+    install_prefix: /opt/hermes-platform-adaptations/v0.19.1/sqlite

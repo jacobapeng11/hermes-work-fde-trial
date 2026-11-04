@@ -1,0 +1,343 @@
+/* 看板区模块样式（T7 收口版）
+   按企业级前端基线（frontend-engineering Skill）重写：灰底 + 白色工作面板骨架、
+   antd 组件基线、三层暗色、三层字体、portal 双类（appCenterAntDialog ± Dark）。
+   expert 系共享类（expertCatalog 与 expertPrimaryButton 等）的定义在 styles.css 归专家模块；
+   本文件只承载看板区专属规则。历史：T1 自 styles.css 原样迁入，T2-T6 逐区基线化，
+   T7 删除旧区死规则并按分区收口（视觉零变化）。 */
+
+/* ===== 字体统一（三层，协作平台字体栈） ===== */
+/* 1. 根级继承——页面内文本自然继承 */
+.appCenterPage { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+/* 2. 表单元素——浏览器不给 button/input/select/textarea 继承字体，显式 inherit */
+.appCenterPage button, .appCenterPage input, .appCenterPage select, .appCenterPage textarea { font-family: inherit; }
+/* 3. antd 组件——CSS-in-JS 可能覆盖根级继承，对关键组件显式指定 */
+.appCenterPage .ant-btn, .appCenterPage .ant-tabs-tab-btn, .appCenterPage .ant-input,
+.appCenterPage .ant-alert, .appCenterPage .ant-empty-description { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+/* Modal portal 渲染在 document.body 下，脱离 .appCenterPage 继承链——用 rootClassName 标记 */
+.appCenterAntDialog { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+.appCenterAntDialog button, .appCenterAntDialog input, .appCenterAntDialog select, .appCenterAntDialog textarea { font-family: inherit; }
+.appCenterAntDialog .ant-btn, .appCenterAntDialog .ant-modal-title, .appCenterAntDialog .ant-alert { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+
+/* ===== 页面骨架：灰底页面 + 白色工作面板 ===== */
+.appCenterPage {
+  height: 100%;
+  overflow: auto;
+  padding: 16px 16px 44px;
+  color: var(--text-primary);
+  background: #f9fafb;
+}
+[data-theme="dark"] .appCenterPage { color: #ececec; background: #212121; }
+.appCenterWorkspace { width: 100%; box-sizing: border-box; padding: 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .appCenterWorkspace { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+
+/* ===== 模块页头（图标容器 + 标题 + 副标题 + 右侧搜索/主操作） ===== */
+.appCenterPageHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid #f3f4f6; }
+.appCenterPageHeaderMain { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.appCenterHeaderIcon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; background: #dbeafe; color: #2563eb; font-size: 20px; }
+.appCenterPageHeaderText { min-width: 0; }
+.appCenterPageHeaderTitle { margin: 0; color: #111827; font-size: 18px; font-weight: 600; line-height: 26px; }
+.appCenterPageHeaderSubtitle { margin: 2px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+.appCenterPageHeaderActions { display: flex; align-items: center; gap: 10px; flex: none; }
+.appCenterSearchInput { width: 220px; }
+.appCenterPage .appCenterAntTabs { margin-top: 4px; }
+[data-theme="dark"] .appCenterPageHeader { border-color: rgb(255 255 255 / 6%); }
+[data-theme="dark"] .appCenterPageHeaderTitle { color: #ececec; }
+[data-theme="dark"] .appCenterPageHeaderSubtitle { color: #a6a6a6; }
+[data-theme="dark"] .appCenterHeaderIcon { background: rgb(37 99 235 / 20%); color: #60a5fa; }
+
+/* ===== 页面级 antd Tabs（16px/600 大 tab，对齐知识库/技能） ===== */
+.appCenterAntTabs .ant-tabs-nav { margin-bottom: 0; }
+.appCenterAntTabs .ant-tabs-tab { margin: 0 16px 0 0 !important; padding: 8px 0 !important; }
+.appCenterAntTabs .ant-tabs-tab-btn { font-size: 16px !important; font-weight: 600 !important; color: #6b7280 !important; padding: 0 0 6px 0 !important; }
+.appCenterAntTabs .ant-tabs-tab-btn:hover { color: #1f2937 !important; }
+.appCenterAntTabs .ant-tabs-tab-active .ant-tabs-tab-btn { color: #111827 !important; }
+.appCenterAntTabs .ant-tabs-ink-bar { background: #2563eb !important; height: 2px !important; }
+[data-theme="dark"] .appCenterAntTabs .ant-tabs-tab-btn { color: #a6a6a6 !important; }
+[data-theme="dark"] .appCenterAntTabs .ant-tabs-tab-btn:hover { color: #d1d5db !important; }
+[data-theme="dark"] .appCenterAntTabs .ant-tabs-tab-active .ant-tabs-tab-btn { color: #ececec !important; }
+[data-theme="dark"] .appCenterAntTabs .ant-tabs-ink-bar { background: #60a5fa !important; }
+.appCenterTabCount { color: #9ca3af; font-size: 13px; font-weight: 400; }
+[data-theme="dark"] .appCenterTabCount { color: #8c8c8c; }
+
+/* ===== 状态区：加载 / 错误 Alert / 空态 Empty / 复制提示 ===== */
+.appCenterState {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0;
+  color: var(--text-secondary);
+}
+.appCenterErrorAlert { margin: 20px 0; }
+.appCenterEmpty { grid-column: 1 / -1; padding: 32px 0; }
+.appCenterEmpty .ant-empty { margin: 0; }
+.appCenterEmptyHint { margin: 4px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .appCenterEmptyHint { color: #a6a6a6; }
+.appCenterPage .appCenterCopyNotice {
+  overflow: hidden;
+  margin: 12px 0 0;
+  color: var(--success);
+  font-size: 13px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== 卡片网格与卡片（antd Card 壳 + iframe 实况缩略图，参照用户 demo 调优） ===== */
+.appCenterPage .appCenterGrid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; margin-top: 20px; }
+.appCenterCard.ant-card {
+  height: 300px;
+  overflow: hidden;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+  transition: box-shadow .3s ease, border-color .3s ease;
+  cursor: pointer;
+}
+.appCenterCard.ant-card:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 10%), 0 4px 6px -2px rgb(0 0 0 / 5%);
+  border-color: #e5e7eb;
+}
+.appCenterCard.ant-card > .ant-card-body { min-height: 0; }
+[data-theme="dark"] .appCenterCard.ant-card { border-color: rgb(255 255 255 / 12%); background: #1b1b1b; box-shadow: 0 1px 2px rgb(0 0 0 / 40%); }
+
+/* 封面：iframe 按原始 3 倍尺寸渲染后缩放（契约：sandbox=""、embed=thumbnail）；
+   hover 内层微缩放（容器独立于 iframe 的 scale(.3333)）+ 归属角标 + 遮罩主操作 */
+.appCenterCover { position: relative; height: 140px; overflow: hidden; background: var(--surface-tertiary); }
+.appCenterCoverZoom { width: 100%; height: 100%; transition: transform .4s ease; }
+.appCenterCover iframe {
+  width: 300%;
+  height: 300%;
+  border: 0;
+  background: #fff;
+  pointer-events: none;
+  transform: scale(.3333);
+  transform-origin: top left;
+}
+.appCenterCard:hover .appCenterCoverZoom { transform: scale(1.05); }
+/* 封面归属角标 appCenterCoverBadge 已按用户需求移除（014 §14） */
+.appCenterCoverOverlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 30%);
+  opacity: 0;
+  transition: opacity .3s ease;
+}
+.appCenterCard:hover .appCenterCoverOverlay { opacity: 1; }
+
+/* body：名称行（含 hover 显现的删除）/ 两行描述 / 元信息 / 底部操作区 */
+.appCenterCardBodyInner { display: flex; flex-direction: column; flex: 1; min-height: 0; padding: 12px; }
+.appCenterCardTitleRow { display: flex; align-items: flex-start; gap: 6px; margin-bottom: 4px; }
+.appCenterCardTitle.ant-typography { flex: 1; min-width: 0; color: #2563eb; font-size: 15px; }
+.appCenterCardDesc.ant-typography { margin-bottom: 8px; color: #6b7280; font-size: 12px; }
+.appCenterCardMeta { display: flex; align-items: center; gap: 8px; margin-bottom: 0; color: #9ca3af; font-size: 12px; }
+.appCenterCardMeta span { overflow: hidden; max-width: 45%;  text-overflow: ellipsis; white-space: nowrap; }
+.appCenterCardMetaDot { flex: none; width: 3px; height: 3px; border-radius: 50%; background: #d1d5db; }
+
+/* 底部操作区：左侧主操作链接（icon 在右），右侧副操作图标组（Tooltip） */
+.appCenterCardFooter { display: flex; align-items: center; justify-content: space-between; gap: 6px; margin-top: auto; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+.appCenterCard .appCenterCardPrimary.ant-btn {
+  height: 26px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 6px;
+  color: #2563eb;
+  background: #eff6ff;
+  font-size: 12px;
+  font-weight: 500;
+  transition: background-color .2s ease, color .2s ease;
+}
+.appCenterCard .appCenterCardPrimary.ant-btn:hover,
+.appCenterCard .appCenterCardPrimary.ant-btn:focus-visible {
+  color: #2563eb;
+  background: #dbeafe;
+}
+.appCenterCardActions { display: flex; align-items: center; flex: none; }
+.appCenterCard .appCenterCardActions .ant-btn-text { color: #6b7280; transition: color .2s ease, background-color .2s ease; }
+.appCenterCard .appCenterCardActions .anticon { font-size: 14px; }
+.appCenterCard .appCenterCardActions .ant-btn-text { padding: 0 3px; }
+.appCenterCard .appCenterCardActions .ant-btn-text:hover,
+.appCenterCard .appCenterCardActions .ant-btn-text:focus-visible { color: #2563eb !important; background-color: #eff6ff !important; }
+
+/* 名称行右侧删除按钮（hover 显现 + 危险色，对齐知识库 pkbDangerAction） */
+.appCenterCard .appCardDelete.ant-btn { flex: none; padding: 0 3px; border-color: transparent; background: transparent; transition: color .2s ease, background-color .2s ease; }
+.appCenterCard .appCardDelete.ant-btn, .appCenterCard .appCardDelete.ant-btn .anticon { color: #6b7280; }
+.appCenterCard .appCardDelete.ant-btn:hover, .appCenterCard .appCardDelete.ant-btn:hover .anticon { color: #ef4444 !important; background-color: #fef2f2 !important; }
+
+[data-theme="dark"] .appCenterCardTitle.ant-typography { color: #60a5fa; }
+[data-theme="dark"] .appCenterCardDesc.ant-typography { color: #a6a6a6; }
+[data-theme="dark"] .appCenterCardMeta { color: #8c8c8c; }
+[data-theme="dark"] .appCenterCardMetaDot { background: rgb(255 255 255 / 25%); }
+[data-theme="dark"] .appCenterCardFooter { border-color: rgb(255 255 255 / 8%); }
+[data-theme="dark"] .appCenterCardPrimaryLink.ant-btn-link { color: #60a5fa; }
+[data-theme="dark"] .appCenterCardActions .ant-btn-text:hover { color: #60a5fa !important; background-color: rgb(37 99 235 / 15%) !important; }
+[data-theme="dark"] .appCenterCardPrimary.ant-btn { color: #60a5fa; background: rgb(37 99 235 / 15%); }
+[data-theme="dark"] .appCenterCardPrimary.ant-btn:hover { color: #60a5fa; background: rgb(37 99 235 / 25%); }
+
+/* ===== HTML 预览面板（chat 视图右侧，grid 双栏布局由 chatViewWithPreview 承载） ===== */
+.chatViewWithPreview {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(360px, 1fr);
+  min-width: 0;
+  min-height: 0;
+}
+.chatViewWithPreview > .chatLayout { min-width: 0; }
+.htmlPreviewPanel {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  border-left: 1px solid var(--border);
+  background: var(--surface-secondary);
+}
+.htmlPreviewPanel header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+.htmlPreviewPanel header strong { color: var(--text-primary); font-size: 14px; }
+.htmlPreviewPanel header small { display: block; margin-top: 2px; color: var(--success); font-size: 12px; }
+.htmlPreviewPanel header .htmlPreviewSourceName {
+  max-width: 260px;
+  overflow: hidden;
+  color: var(--text-muted);
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.htmlPreviewActions { display: flex; align-items: center; gap: 7px; }
+/* 操作按钮为 antd Button（T6）：icon-only text 型 + small 常规/主按钮 */
+.htmlPreviewActions .ant-btn-icon-only.ant-btn { min-height: 28px; padding: 0 4px; border-color: transparent; background: transparent; color: #6b7280; }
+.htmlPreviewActions .ant-btn-icon-only.ant-btn:hover { color: #2563eb; background: rgb(37 99 235 / 8%); }
+.htmlPreviewActions .ant-btn:not(.ant-btn-icon-only) { min-height: 28px; font-size: 12px; }
+[data-theme="dark"] .htmlPreviewActions .ant-btn-icon-only.ant-btn { color: #a6a6a6; }
+[data-theme="dark"] .htmlPreviewActions .ant-btn-icon-only.ant-btn:hover { color: #60a5fa; background: rgb(37 99 235 / 16%); }
+.htmlPreviewPanel iframe {
+  flex: 1;
+  width: 100%;
+  min-height: 0;
+  border: 0;
+  background: white;
+}
+.htmlPreviewPanel > footer {
+  padding: 9px 16px;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  background: var(--surface-tertiary);
+  font-size: 12px;
+}
+
+/* ===== 更新提示卡（聊天消息流内，clarifyCard 家族布局在 styles.css） ===== */
+.appUpdateClarifyCard small {
+  overflow: hidden;
+  color: var(--text-muted);
+  font-size: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.appUpdateClarifyCard .clarifyActions .ant-btn { border-radius: 6px; font-size: 13px; }
+
+/* ===== 危险删除弹窗（centered 420px + 即将删除目标卡 + danger 主按钮） ===== */
+.appCenterDeleteConfirm { display: grid; gap: 16px; }
+.appCenterDeleteWarning { margin: 0; color: #4b5563; font-size: 14px; line-height: 1.6; }
+.appCenterDeleteTarget { display: flex; align-items: center; gap: 12px; padding: 12px; border: 1px solid #fde68a; border-radius: 8px; background: #fffbeb; }
+.appCenterDeleteTarget small { display: block; color: #b45309; font-size: 12px; line-height: 18px; }
+.appCenterDeleteTarget strong { color: #111827; font-size: 14px; line-height: 20px; word-break: break-all; }
+.appCenterDeleteTargetIcon { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 6px; color: #d97706; background: rgb(217 119 6 / 12%); font-size: 16px; }
+.appCenterFormError.ant-alert { margin: 0; }
+.appCenterAntDialogDark .appCenterDeleteWarning { color: #a6a6a6; }
+.appCenterAntDialogDark .appCenterDeleteTarget { border-color: rgb(217 119 6 / 35%); background: rgb(217 119 6 / 12%); }
+.appCenterAntDialogDark .appCenterDeleteTarget small { color: #fbbf24; }
+.appCenterAntDialogDark .appCenterDeleteTarget strong { color: #ececec; }
+
+/* 新建看板弹窗内容样式已于 2026-11-02-001 迁移至独立的 create-app-dialog.css。 */
+.appCenterShareModeTabs.ant-tabs .ant-tabs-nav { margin: 0 0 4px; }
+.appCenterShareModeTabs.ant-tabs .ant-tabs-tab-btn { font-size: 13px !important; }
+
+/* ===== 分享弹窗（三合一：分享 / 更新 / 权限） ===== */
+.appCenterShareModal .ant-modal-body { display: flex; flex-direction: column; gap: 16px; }
+.appCenterModeHint { margin: 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+.appCenterField { display: flex; flex-direction: column; gap: 8px; }
+.appCenterField > span { color: #4b5563; font-size: 14px; font-weight: 400; }
+.appCenterField em { font-style: normal; color: #9ca3af; font-size: 12px; }
+.appCenterDialogTarget { display: flex; flex-direction: column; gap: 2px; padding: 10px 12px; border: 1px solid #f3f4f6; border-radius: 8px; background: #f9fafb; }
+.appCenterDialogTarget small { color: #6b7280; font-size: 12px; line-height: 18px; }
+.appCenterDialogTarget strong { color: #111827; font-size: 14px; line-height: 20px; word-break: break-all; }
+.appCenterScopeEditor { display: flex; flex-direction: column; }
+.appCenterWarning { margin: 0; padding: 8px 11px; border-radius: 8px; color: #92400e; background: #fef3c7; font-size: 13px; line-height: 20px; }
+.appCenterShareResult { display: grid; gap: 9px; }
+.appCenterSuccessBadge { display: inline-flex; align-items: center; gap: 4px; width: fit-content; padding: 2px 10px; border-radius: 999px; color: #16a34a; background: #f0fdf4; font-size: 12px; font-weight: 500; }
+.appCenterLinkRow { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 8px; }
+.appCenterNotice { margin: 0; color: var(--success); font-size: 13px; }
+[data-theme="dark"] .appCenterDialogTarget,
+.appCenterAntDialogDark .appCenterDialogTarget { border-color: rgb(255 255 255 / 8%); background: #212121; }
+[data-theme="dark"] .appCenterDialogTarget small,
+.appCenterAntDialogDark .appCenterDialogTarget small { color: #a6a6a6; }
+[data-theme="dark"] .appCenterDialogTarget strong,
+.appCenterAntDialogDark .appCenterDialogTarget strong { color: #ececec; }
+.appCenterAntDialogDark .appCenterModeHint { color: #a6a6a6; }
+.appCenterAntDialogDark .appCenterField > span { color: #a6a6a6; }
+[data-theme="dark"] .appCenterWarning,
+.appCenterAntDialogDark .appCenterWarning { color: #fbbf24; background: rgb(217 119 6 / 12%); }
+[data-theme="dark"] .appCenterSuccessBadge,
+.appCenterAntDialogDark .appCenterSuccessBadge { color: #4ade80; background: rgb(34 197 94 / 12%); }
+
+/* ===== scope 编辑器（AppScopeEditor：Tag 行 + 树弹窗） ===== */
+.appCenterScopeNotice { margin: 0 0 8px; color: #6b7280; font-size: 13px; line-height: 20px; }
+.appScopeTags { display: flex; align-items: center; flex-wrap: wrap; gap: 4px 8px; min-height: 32px; }
+.appScopeTags .ant-tag { margin: 0; display: inline-flex; align-items: center; }
+.appScopeEmptyHint { color: #9ca3af; font-size: 13px; }
+.appScopeAdd.ant-btn { margin-left: 4px; }
+[data-theme="dark"] .appCenterScopeNotice,
+.appCenterAntDialogDark .appCenterScopeNotice { color: #a6a6a6; }
+[data-theme="dark"] .appScopeEmptyHint,
+.appCenterAntDialogDark .appScopeEmptyHint { color: #8c8c8c; }
+
+/* 树弹窗（对齐知识库 pkbPermissionTreeShell：固定高度 + 滚动） */
+.appScopeTreeSearch { margin-bottom: 12px; }
+.appScopeSelectionSummary { margin: 0 0 8px; color: #6b7280; font-size: 13px; }
+.appScopeSelectionSummary strong { color: #2563eb; }
+.appScopeTreeShell { max-height: 320px; overflow: auto; padding: 8px; border: 1px solid #f3f4f6; border-radius: 8px; background: #f9fafb; }
+.appScopeTreeShell .ant-tree { background: transparent; }
+.appScopeTreeShell .ant-tree-node-content-wrapper { border-radius: 4px; }
+.appScopeTreeTitle { display: inline-flex; align-items: center; gap: 6px; }
+.appScopeUnprovisioned { padding: 0 4px; border-radius: 4px; color: #d97706; background: rgb(217 119 6 / 12%); font-size: 11px; line-height: 16px; }
+.appScopeState { margin: 0; color: #6b7280; font-size: 13px; }
+[data-theme="dark"] .appScopeSelectionSummary,
+.appCenterAntDialogDark .appScopeSelectionSummary { color: #a6a6a6; }
+[data-theme="dark"] .appScopeSelectionSummary strong,
+.appCenterAntDialogDark .appScopeSelectionSummary strong { color: #60a5fa; }
+[data-theme="dark"] .appScopeTreeShell,
+.appCenterAntDialogDark .appScopeTreeShell { border-color: rgb(255 255 255 / 8%); background: #212121; }
+
+/* ===== 响应式 ===== */
+@media (min-width: 1600px) {
+  .appCenterPage .appCenterGrid { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+}
+@media (max-width: 1280px) {
+  .appCenterPageHeaderSubtitle { display: none; }
+}
+@media (max-width: 1200px) {
+  .appCenterPage .appCenterGrid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .chatViewWithPreview { display: block; }
+  .htmlPreviewPanel {
+    position: absolute;
+    z-index: 20;
+    top: 0;
+    right: 0;
+    width: min(70vw, 720px);
+    height: 100%;
+    border-left: 1px solid var(--border);
+    box-shadow: var(--shadow-modal);
+  }
+  .appCenterPage { padding: 22px 16px 36px; }
+}
+@media (max-width: 720px) {
+  .appCenterPage .appCenterGrid { grid-template-columns: 1fr; }
+}

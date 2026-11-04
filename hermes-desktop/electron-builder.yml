@@ -1,0 +1,74 @@
+appId: com.hermes.cowork
+productName: Hermes Work
+directories:
+  output: dist
+files:
+  - out/**
+  - package.json
+  # Playwright is a production dependency used by the Electron main process.
+  # Keep it external to Vite and ship its runtime package files in the asar.
+  - node_modules/playwright-core/**
+  - node_modules/chromium-bidi/**
+  - node_modules/mitt/**
+  - node_modules/zod/**
+  - node_modules/urlpattern-polyfill/**
+asar: true
+win:
+  # Ship a prebuilt .ico: letting electron-builder convert icon.png online
+  # pulls its icon-tool.js (CommonJS) into the project tree, where
+  # "type": "module" makes Node treat it as ESM and the build dies with
+  # "require is not defined". This multi-size ICO also controls the Windows
+  # executable/installer icon shown by the browser download bar.
+  icon: resources/icon.ico
+  target: nsis
+nsis:
+  # Use the installer wizard so a new machine can choose the destination.
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  perMachine: false
+  # Keep the public download URL free of spaces. Backend serves release files
+  # by their exact on-disk names and does not rewrite update-manifest URLs.
+  # Keep the application/product name unchanged while distributing the
+  # Windows installer under the externally visible Hermes Work brand.
+  artifactName: "Hermes-Work-Setup-${version}.${ext}"
+mac:
+  icon: resources/icon.icns
+  # Distribution builds must be code-signed before an external operator submits
+  # them to Apple Notary. forceCodeSigning turns a missing Developer ID
+  # Application identity into a build failure instead of an unsigned DMG.
+  forceCodeSigning: true
+  hardenedRuntime: true
+  entitlements: entitlements.mac.plist
+  entitlementsInherit: entitlements.mac.inherit.plist
+  # Notarization is intentionally performed by an external macOS operator.
+  # Keep electron-builder's integrated submission disabled so signing and
+  # notarization credentials remain separated.
+  notarize: false
+  # DMG is the user-facing installer; zip is required by Squirrel.Mac for
+  # electron-updater to download and apply a macOS update.
+  target:
+    - dmg
+    - zip
+  category: public.app-category.productivity
+dmg:
+  # The DMG is the manual macOS download. Keep its public filename aligned
+  # with the Windows distribution brand; the updater continues to use ZIP.
+  artifactName: "Hermes-Work-Setup-${version}.${ext}"
+extraResources:
+  # Taskbar icon on Windows/Linux (PNG; Electron's BrowserWindow.icon accepts
+  # PNG directly, no .ico conversion needed for the runtime path).
+  - from: resources/icon.png
+    to: resources/icon.png
+  - from: build/update-config.json
+    to: update-config.json
+  # Bundled Windows embeddable CPython for machines without their own Python.
+  # The win build script stages build/python before packaging; macOS builds
+  # must create an empty build/python directory (the system python3 there is
+  # the expected runtime).
+  - from: build/python
+    to: python
+publish:
+  provider: generic
+  # Runtime update-config.json supplies the real URL. This valid placeholder
+  # keeps ordinary installer builds working when no update source is configured.
+  url: https://updates.invalid/cowork-hermes

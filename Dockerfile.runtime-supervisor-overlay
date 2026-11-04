@@ -1,0 +1,435 @@
+# The only formal Hermes Runtime overlay. HERMES_BASE_IMAGE must be either an
+# official Hermes image verified against a fixed upstream source manifest, or
+# an Active Release digest with a valid parent-eligibility attestation.
+ARG HERMES_BASE_IMAGE
+ARG HERMES_PARENT_TYPE
+ARG DOTNET_SDK_IMAGE=mcr.microsoft.com/dotnet/sdk:8.0-bookworm-slim@sha256:306301580fcaa5b445180e759db59309979002d1000669cb4cf58a567d0014bc
+
+FROM ${HERMES_BASE_IMAGE} AS runtime-parent-verify
+
+FROM runtime-parent-verify AS upstream-capability-deps
+ARG HERMES_PARENT_TYPE
+USER root
+WORKDIR /opt/hermes
+COPY runtime/hermes-runtime-overlay/verify_dependency_compatibility.py \
+     /tmp/verify_dependency_compatibility.py
+COPY runtime/hermes-runtime-overlay/legacy-runtime-dependencies.requirements.lock \
+     /tmp/legacy-runtime-dependencies.requirements.lock
+RUN if [ "$HERMES_PARENT_TYPE" = "active-release" ] \
+       || [ "$HERMES_PARENT_TYPE" = "certified-runtime" ]; then \
+        test -x /opt/hermes/.venv/bin/python; \
+    else \
+        test -f pyproject.toml \
+        && test -f uv.lock \
+        && /usr/local/bin/uv sync \
+        --frozen \
+        --extra all \
+        --extra messaging \
+        --extra otlp \
+        --extra anthropic \
+        --extra bedrock \
+        --extra azure-identity \
+        --extra hindsight \
+        --extra matrix \
+        --extra edge-tts \
+        --extra fal \
+    && /usr/local/bin/uv --no-config pip install \
+        --python /opt/hermes/.venv/bin/python \
+        --no-cache \
+        --no-deps \
+        --require-hashes \
+        --requirements /tmp/legacy-runtime-dependencies.requirements.lock; \
+    fi \
+    && /opt/hermes/.venv/bin/python -c \
+        "import importlib, sys; from importlib.metadata import version; assert (3, 11) <= sys.version_info[:2] < (3, 14); assert version('Pillow') == '12.3.0'; assert version('edge-tts') == '7.2.7'; assert version('fal-client') == '0.13.1'; importlib.import_module('audioop'); assert sys.version_info[:2] < (3, 13) or version('audioop-lts') == '0.2.2'; assert version('simple-term-menu') == '1.6.6'" \
+    && /opt/hermes/.venv/bin/python /tmp/verify_dependency_compatibility.py
+
+FROM runtime-parent-verify AS cjk-extension-builder
+USER root
+WORKDIR /opt/hermes
+RUN test -x /usr/bin/gcc \
+    && dpkg-query -W -f='${Status}' libc6-dev \
+        | grep -q 'install ok installed' \
+    && test "$(sha256sum native/fts5_cjk/fts5_cjk.c | cut -d' ' -f1)" = \
+        "814e7dd9ab1b4c4f69673715ed147a2f8203e3443661c0152d36ecfabcb4768f" \
+    && test "$(sha256sum native/fts5_cjk/build.sh | cut -d' ' -f1)" = \
+        "fed26cb860b755e9b6055658e3f1f89d3ca6d0634321ea76c2d391aed2cb9b4c" \
+    && test "$(sha256sum native/fts5_cjk/vendor/sqlite3.h | cut -d' ' -f1)" = \
+        "abd1514e0351f79393d1be882830afdb40a8099e8257f311f0bfdf8486f11bea" \
+    && test "$(sha256sum native/fts5_cjk/vendor/sqlite3ext.h | cut -d' ' -f1)" = \
+        "9a91de0d5e5ccc04ec59041275c67972d6f8894f7543a10033e387b69987beb5" \
+    && native/fts5_cjk/build.sh /opt/hermes-platform/lib \
+    && /opt/hermes/.venv/bin/python -c \
+        "import sqlite3; c=sqlite3.connect(':memory:'); c.enable_load_extension(True); c.load_extension('/opt/hermes-platform/lib/libfts5_cjk.so'); c.execute(\"CREATE VIRTUAL TABLE docs USING fts5(content, tokenize='cjk_unicode61')\"); c.close()"
+
+FROM runtime-parent-verify AS browser-deps
+USER root
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+COPY runtime/hermes-browser-runtime/node/package.json \
+     runtime/hermes-browser-runtime/node/package-lock.json \
+     /tmp/hermes-browser-node/
+RUN mkdir -p /opt/hermes/browser-node \
+    && cp /tmp/hermes-browser-node/package.json \
+          /tmp/hermes-browser-node/package-lock.json \
+          /opt/hermes/browser-node/ \
+    && cd /opt/hermes/browser-node \
+    && npm ci --omit=dev \
+        --fetch-retries=5 --fetch-retry-factor=2 \
+        --fetch-retry-mintimeout=1000 --fetch-retry-maxtimeout=30000 \
+    && npm cache clean --force \
+    && node_modules/.bin/agent-browser --version \
+    && rm -rf /tmp/hermes-browser-node
+
+FROM runtime-parent-verify AS office-python-deps
+USER root
+COPY runtime/hermes-office-runtime-zh-v2/python/requirements.lock \
+     runtime/hermes-office-runtime-zh-v2/python/wheels \
+     /tmp/hermes-office-python/
+# The certified parent already carries the office venv converged to the
+# previous lock; converge incrementally from the committed wheels instead of
+# rebuilding the venv (BuildKit's network sandbox cannot reliably reach PyPI:
+# AAAA-first resolution dead-ends and the host loopback proxy is unreachable).
+RUN uv pip sync \
+        --python /opt/hermes/office-venv/bin/python \
+        --require-hashes \
+        --no-cache \
+        --offline \
+        --find-links /tmp/hermes-office-python \
+        /tmp/hermes-office-python/requirements.lock \
+    && /opt/hermes/office-venv/bin/python -c \
+        "import fitz, pathops, uharfbuzz, yaml, svglib, tiktoken, mammoth" \
+    && rm -rf /tmp/hermes-office-python
+
+FROM runtime-parent-verify AS office-node-deps
+USER root
+ENV PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1
+COPY runtime/hermes-office-runtime-zh-v2/node/package.json \
+     runtime/hermes-office-runtime-zh-v2/node/package-lock.json \
+     /tmp/hermes-office-node/
+RUN mkdir -p /opt/hermes/office-node \
+    && cp /tmp/hermes-office-node/package.json \
+          /tmp/hermes-office-node/package-lock.json \
+          /opt/hermes/office-node/ \
+    && cd /opt/hermes/office-node \
+    && npm ci --omit=dev --ignore-scripts \
+        --fetch-retries=5 --fetch-retry-factor=2 \
+        --fetch-retry-mintimeout=1000 --fetch-retry-maxtimeout=30000 \
+    && npm cache clean --force \
+    && rm -rf /tmp/hermes-office-node
+
+FROM runtime-parent-verify AS capability-tool-deps
+USER root
+COPY runtime/hermes-capability-runtime/python/requirements.lock \
+     /tmp/hermes-capability-python/requirements.lock
+RUN uv venv --clear /opt/hermes/tool-venv --python /opt/hermes/.venv/bin/python \
+    && uv pip sync --python /opt/hermes/tool-venv/bin/python \
+        --no-cache /tmp/hermes-capability-python/requirements.lock \
+    && rm -rf /tmp/hermes-capability-python
+COPY runtime/hermes-capability-runtime/node/package.json \
+     runtime/hermes-capability-runtime/node/package-lock.json \
+     /tmp/hermes-capability-node/
+RUN mkdir -p /opt/hermes/tool-node \
+    && cp /tmp/hermes-capability-node/package.json \
+          /tmp/hermes-capability-node/package-lock.json /opt/hermes/tool-node/ \
+    && cd /opt/hermes/tool-node \
+    && npm ci --omit=dev --ignore-scripts \
+        --fetch-retries=5 --fetch-retry-factor=2 \
+        --fetch-retry-mintimeout=1000 --fetch-retry-maxtimeout=30000 \
+    && npm cache clean --force \
+    && /opt/hermes/tool-venv/bin/pygount --version \
+    && node_modules/.bin/designmd --help >/dev/null \
+    && rm -rf /tmp/hermes-capability-node
+
+FROM ${DOTNET_SDK_IMAGE} AS docx-builder
+WORKDIR /src
+COPY runtime/hermes-office-runtime-zh-v2/dotnet/ ./
+RUN test -f MiniMaxAIDocx.Cli/packages.lock.json \
+    && test -f MiniMaxAIDocx.Core/packages.lock.json \
+    && dotnet restore --locked-mode \
+        MiniMaxAIDocx.Cli/MiniMaxAIDocx.Cli.csproj \
+    && dotnet publish \
+        MiniMaxAIDocx.Cli/MiniMaxAIDocx.Cli.csproj \
+        --configuration Release \
+        --no-restore \
+        --output /out/minimax-docx
+
+FROM runtime-parent-verify AS skill-assets
+USER root
+WORKDIR /tmp/hermes-runtime-overlay/repository
+COPY runtime/hermes-runtime-overlay/skill_inventory.py \
+     runtime/hermes-runtime-overlay/skill-inventory.json \
+     /tmp/hermes-runtime-overlay/inventory/
+COPY runtime/hermes-browser-skills/ \
+     runtime/hermes-browser-skills/
+COPY runtime/hermes-platform-skills/ \
+     runtime/hermes-platform-skills/
+COPY runtime/hermes-office-skills-zh-v2/ \
+     runtime/hermes-office-skills-zh-v2/
+COPY runtime/hermes-readonly-skills/ \
+     runtime/hermes-readonly-skills/
+RUN rm -rf /opt/hermes/platform-default-skills \
+        /opt/hermes/platform-readonly-skills \
+    && /opt/hermes/.venv/bin/python \
+        /tmp/hermes-runtime-overlay/inventory/skill_inventory.py \
+        stage \
+        --root platform-default-skills \
+        --repository-root /tmp/hermes-runtime-overlay/repository \
+        --inventory \
+          /tmp/hermes-runtime-overlay/inventory/skill-inventory.json \
+        --destination /opt/hermes/platform-default-skills \
+    && /opt/hermes/.venv/bin/python \
+        /tmp/hermes-runtime-overlay/inventory/skill_inventory.py \
+        stage \
+        --root platform-readonly-skills \
+        --repository-root /tmp/hermes-runtime-overlay/repository \
+        --inventory \
+          /tmp/hermes-runtime-overlay/inventory/skill-inventory.json \
+        --destination /opt/hermes/platform-readonly-skills \
+    && find /opt/hermes/platform-default-skills \
+        -type f -name SKILL.md -print | sort \
+    && test "$(find /opt/hermes/platform-default-skills \
+        -type f -name SKILL.md | wc -l)" -eq 5 \
+    && find /opt/hermes/platform-readonly-skills \
+        -type f -name SKILL.md -print | sort \
+    && test "$(find /opt/hermes/platform-readonly-skills \
+        -type f -name SKILL.md | wc -l)" -eq 1
+
+FROM upstream-capability-deps AS runtime-final
+USER root
+
+COPY runtime/hermes-runtime-overlay/relocate_venv_python.py \
+     /tmp/relocate_venv_python.py
+RUN /opt/hermes/.venv/bin/python /tmp/relocate_venv_python.py \
+    && rm -f /tmp/relocate_venv_python.py \
+    && test ! -L /opt/hermes/.venv/bin/python \
+    && test -x /opt/hermes/.venv/bin/python \
+    && /opt/hermes/.venv/bin/python -c \
+        "import sys; assert sys.prefix == '/opt/hermes/.venv'; assert sys.base_prefix == '/opt/hermes-platform/python'"
+
+ENV DEBIAN_FRONTEND=noninteractive \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    AGENT_BROWSER_EXECUTABLE_PATH=/usr/bin/chromium \
+    HERMES_CHROMIUM_PATH=/usr/bin/chromium \
+    HERMES_OFFICE_FONT_DIR=/usr/local/share/fonts/hermes-office \
+    HERMES_BUNDLED_SKILLS=/opt/hermes/platform-default-skills \
+    HERMES_DISABLE_LAZY_INSTALLS=1 \
+    HERMES_LAZY_INSTALL_TARGET="" \
+    HERMES_EXPECTED_CONFIG_SCHEMA=34 \
+    HERMES_FTS5_CJK_SO=/opt/hermes-platform/lib/libfts5_cjk.so \
+    DOTNET_ROOT=/usr/share/dotnet \
+    NODE_PATH=/opt/hermes/office-node/node_modules \
+    PATH=/opt/hermes/browser-node/node_modules/.bin:/opt/hermes/office-node/node_modules/.bin:/opt/hermes/tool-node/node_modules/.bin:/opt/hermes/office-venv/bin:/opt/hermes/tool-venv/bin:/usr/share/dotnet:${PATH}
+
+RUN sed -i 's|http://deb.debian.org|https://deb.debian.org|g' \
+        /etc/apt/sources.list /etc/apt/sources.list.d/*.sources 2>/dev/null || true; \
+    for attempt in 1 2 3; do \
+        rm -rf /var/lib/apt/lists/*; \
+        apt-get -o Acquire::Retries=3 -o Acquire::http::Pipeline-Depth=0 \
+          -o Acquire::By-Hash=false -o Acquire::CompressionTypes::Order::=gz update \
+        && break; \
+        test "$attempt" -lt 3 || exit 1; \
+        sleep "$attempt"; \
+    done \
+    && apt-get -o Acquire::Retries=3 -o Acquire::http::Pipeline-Depth=0 install -y --no-install-recommends \
+        ca-certificates \
+        chromium \
+        ffmpeg \
+        fontconfig \
+        libatomic1 \
+        libreoffice-calc \
+        libreoffice-impress \
+        libreoffice-writer \
+        pandoc \
+        poppler-utils \
+        unzip \
+        zip \
+    && rm -rf /var/lib/apt/lists/*
+
+COPY --from=browser-deps /opt/hermes/browser-node /opt/hermes/browser-node
+COPY --from=office-python-deps /opt/hermes/office-venv /opt/hermes/office-venv
+COPY --from=office-node-deps /opt/hermes/office-node /opt/hermes/office-node
+COPY --from=capability-tool-deps /opt/hermes/tool-venv /opt/hermes/tool-venv
+COPY --from=capability-tool-deps /opt/hermes/tool-node /opt/hermes/tool-node
+COPY --from=docx-builder /out/minimax-docx \
+     /opt/hermes/office-bin/minimax-docx
+COPY --from=docx-builder /usr/share/dotnet/dotnet /usr/share/dotnet/dotnet
+COPY --from=docx-builder /usr/share/dotnet/host /usr/share/dotnet/host
+COPY --from=docx-builder /usr/share/dotnet/shared/Microsoft.NETCore.App \
+     /usr/share/dotnet/shared/Microsoft.NETCore.App
+RUN ln -sfn /usr/share/dotnet/dotnet /usr/local/bin/dotnet \
+    && test "$(readlink /usr/local/bin/dotnet)" = "/usr/share/dotnet/dotnet" \
+    && dotnet --list-runtimes \
+    && test ! -d /usr/share/dotnet/sdk
+
+# COPY merges into pre-existing directories; drop the parent image's stale
+# curated tree first or retired Skills (e.g. pptx-generator) would survive.
+RUN rm -rf /opt/hermes/platform-default-skills \
+        /opt/hermes/platform-readonly-skills
+COPY --from=skill-assets /opt/hermes/platform-default-skills \
+     /opt/hermes/platform-default-skills
+COPY --from=skill-assets /opt/hermes/platform-readonly-skills \
+     /opt/hermes/platform-readonly-skills
+COPY --from=cjk-extension-builder /opt/hermes-platform/lib/libfts5_cjk.so \
+     /opt/hermes-platform/lib/libfts5_cjk.so
+COPY runtime/hermes-runtime-overlay/skill-inventory.json \
+     /opt/hermes-platform/runtime-overlay/skill-inventory.json
+COPY backend/app/hermes_runtime/official-upstream-skills.json \
+     /opt/hermes-platform/runtime-overlay/official-upstream-skills.json
+COPY runtime/hermes-runtime-overlay/skill_inventory.py \
+     runtime/hermes-runtime-overlay/overlay_contract.py \
+     runtime/hermes-runtime-overlay/source-normalization-f80f453-v1.yaml \
+     runtime/hermes-runtime-overlay/upstream_component_probe.py \
+     runtime/hermes-runtime-overlay/verify_dependency_compatibility.py \
+     runtime/hermes-runtime-overlay/verify_lazy_install_policy.py \
+     runtime/hermes-runtime-overlay/verify_platform_boundary_plugin.py \
+     runtime/hermes-runtime-overlay/verify_runtime_overlay.py \
+     runtime/hermes-runtime-overlay/verify_skill_visibility.py \
+     /opt/hermes-platform/runtime-overlay/
+COPY runtime/hermes-runtime-overlay/platform_main_conversation_boundary/ \
+     /opt/hermes-platform/runtime-overlay/platform_main_conversation_boundary/
+COPY runtime/hermes/compatibility/v0.20.1.yaml \
+     /opt/hermes-platform/runtime-overlay/v0.20.1.yaml
+
+COPY runtime/hermes-office-runtime-zh-v2/fonts/ \
+     /usr/local/share/fonts/hermes-office/
+COPY runtime/hermes-office-runtime-zh-v2/font-manifest.json \
+     /opt/hermes-platform/runtime-overlay/font-manifest.json
+COPY runtime/hermes-office-runtime-zh-v2/verify_fonts.py \
+     /opt/hermes-platform/runtime-overlay/verify_fonts.py
+COPY runtime/hermes-office-runtime-zh-v2/LICENSES/OFL-1.1.txt \
+     /usr/share/doc/hermes-office-fonts/LICENSE-OFL-1.1.txt
+COPY runtime/hermes-office-runtime-zh-v2/THIRD_PARTY_NOTICES.md \
+     /usr/share/doc/hermes-office-fonts/THIRD_PARTY_NOTICES.txt
+RUN /opt/hermes/.venv/bin/python \
+        /opt/hermes-platform/runtime-overlay/verify_fonts.py \
+        --manifest /opt/hermes-platform/runtime-overlay/font-manifest.json \
+        --font-dir /usr/local/share/fonts/hermes-office \
+    && fc-cache -f \
+    && fc-match 'Noto Sans CJK SC' \
+    && fc-match 'Noto Serif CJK SC'
+
+COPY runtime/hermes-browser-runtime/smoke/browser-functionality-test.py \
+     /usr/local/bin/hermes-browser-container-test
+COPY runtime/hermes-office-runtime-zh-v2/smoke/verify-runtime.sh \
+     /usr/local/bin/hermes-office-verify
+COPY runtime/hermes-office-runtime-zh-v2/smoke/container-functionality-test.py \
+     /usr/local/bin/hermes-office-container-test
+
+RUN mkdir -p \
+     /tmp/hermes-platform-overlay/supervisor \
+     /tmp/hermes-platform-overlay/enterprise-knowledge-plugin \
+     /tmp/hermes-platform-overlay/personal-knowledge-plugin \
+     /tmp/hermes-platform-overlay/clarify-lifecycle-plugin \
+     /tmp/hermes-platform-overlay/kanban-lifecycle-plugin \
+     /tmp/hermes-platform-overlay/expert-roster-plugin
+COPY runtime/supervisor /tmp/hermes-platform-overlay/supervisor/
+COPY runtime/enterprise-knowledge-plugin /tmp/hermes-platform-overlay/enterprise-knowledge-plugin/
+COPY runtime/personal-knowledge-plugin /tmp/hermes-platform-overlay/personal-knowledge-plugin/
+COPY runtime/clarify-lifecycle-plugin /tmp/hermes-platform-overlay/clarify-lifecycle-plugin/
+COPY runtime/kanban-lifecycle-plugin /tmp/hermes-platform-overlay/kanban-lifecycle-plugin/
+COPY runtime/expert-roster-plugin /tmp/hermes-platform-overlay/expert-roster-plugin/
+COPY runtime/hermes-runtime-overlay/platform_main_conversation_boundary \
+     /tmp/hermes-platform-overlay/platform-main-conversation-boundary
+COPY runtime/hermes-runtime-overlay/platform-build-tools.requirements.lock \
+     /tmp/hermes-platform-overlay/platform-build-tools.requirements.lock
+COPY runtime/kanban-dispatcher/s6-rc.d/kanban-dispatcher \
+     /etc/s6-overlay/s6-rc.d/kanban-dispatcher
+COPY runtime/kanban-dispatcher/s6-rc.d/user/contents.d/kanban-dispatcher \
+     /etc/s6-overlay/s6-rc.d/user/contents.d/kanban-dispatcher
+RUN /usr/local/bin/uv --no-config pip install \
+        --python /opt/hermes/.venv/bin/python \
+        --no-cache \
+        --no-deps \
+        --require-hashes \
+        --requirements \
+          /tmp/hermes-platform-overlay/platform-build-tools.requirements.lock \
+    && /opt/hermes/.venv/bin/python -c \
+        "from importlib.metadata import version; assert version('setuptools') == '83.0.0'; assert version('watchfiles') == '1.1.1'" \
+    && /usr/local/bin/uv --no-config pip install \
+        --python /opt/hermes/.venv/bin/python \
+        --no-cache \
+        --no-deps \
+        --no-build-isolation \
+        --reinstall \
+        /tmp/hermes-platform-overlay/supervisor \
+        /tmp/hermes-platform-overlay/enterprise-knowledge-plugin \
+        /tmp/hermes-platform-overlay/personal-knowledge-plugin \
+        /tmp/hermes-platform-overlay/clarify-lifecycle-plugin \
+        /tmp/hermes-platform-overlay/kanban-lifecycle-plugin \
+        /tmp/hermes-platform-overlay/expert-roster-plugin \
+        /tmp/hermes-platform-overlay/platform-main-conversation-boundary \
+    && install -D -o root -g root -m 0555 \
+        /tmp/hermes-platform-overlay/supervisor/platform_supervisor/hermes_sessiondb_helper.py \
+        /opt/hermes-platform/bin/hermes-sessiondb-helper.py \
+    && install -D -o root -g root -m 0555 \
+        /tmp/hermes-platform-overlay/supervisor/platform_supervisor/hermes_session_metadata_helper.py \
+        /opt/hermes-platform/bin/hermes-session-metadata-helper.py \
+    && install -D -o root -g root -m 0555 \
+        /tmp/hermes-platform-overlay/supervisor/platform_supervisor/hermes_posix_access_probe.py \
+        /opt/hermes-platform/bin/hermes-posix-access-probe.py \
+    && test "$(sha256sum \
+        /opt/hermes-platform/bin/hermes-sessiondb-helper.py | cut -d' ' -f1)" = \
+        "ba4160f0f5c82f10a54c37cb901fea9a2224b105c892b3c469dd66340e40a27c" \
+    && test "$(sha256sum \
+        /opt/hermes-platform/bin/hermes-session-metadata-helper.py | cut -d' ' -f1)" = \
+        "cc4094c8aa5257c3c41463db18a990f0ae91507dbfd2e3f3435b0d936db0815f" \
+    && test "$(sha256sum \
+        /opt/hermes-platform/bin/hermes-posix-access-probe.py | cut -d' ' -f1)" = \
+        "7abda9c68c9916300f3b310a61eb86f074ea19bcce29fc0c54e97143afa19187" \
+    && chmod 0755 \
+        /etc/s6-overlay/s6-rc.d/kanban-dispatcher/run \
+        /usr/local/bin/hermes-browser-container-test \
+        /usr/local/bin/hermes-office-verify \
+        /usr/local/bin/hermes-office-container-test \
+    && rm -rf /tmp/hermes-platform-overlay \
+    && /opt/hermes/.venv/bin/python \
+        /opt/hermes-platform/runtime-overlay/verify_dependency_compatibility.py \
+    && test "$(node --version | cut -d. -f1)" = "v26" \
+    && /usr/local/bin/hermes-office-verify \
+    && /opt/hermes/.venv/bin/python \
+        /opt/hermes-platform/runtime-overlay/verify_platform_boundary_plugin.py \
+        --manifest /opt/hermes-platform/runtime-overlay/v0.20.1.yaml \
+        --plugin-root \
+          /opt/hermes-platform/runtime-overlay/platform_main_conversation_boundary \
+    && /opt/hermes/.venv/bin/python \
+        /opt/hermes-platform/runtime-overlay/verify_lazy_install_policy.py \
+    && /opt/hermes/.venv/bin/python \
+        /opt/hermes-platform/runtime-overlay/verify_runtime_overlay.py
+
+ARG HERMES_UPSTREAM_VERSION
+ARG HERMES_UPSTREAM_COMMIT
+ARG HERMES_UPSTREAM_SOURCE_SHA256
+ARG HERMES_SOURCE_MANIFEST_SHA256
+ARG HERMES_PLATFORM_REVISION
+ARG HERMES_RELEASE_ID
+ARG HERMES_BASE_IMAGE_REFERENCE
+ARG HERMES_BASE_IMAGE_IMMUTABLE_REFERENCE
+ARG HERMES_BASE_IMAGE_DIGEST
+ARG HERMES_PARENT_TYPE
+ARG HERMES_PARENT_ATTESTATION_SHA256
+ARG HERMES_ROOT_OFFICIAL_IMAGE_DIGEST
+ARG HERMES_RUNTIME_OVERLAY_SHA256
+ARG HERMES_SKILL_INVENTORY_SHA256
+ARG HERMES_FONT_MANIFEST_SHA256
+ARG HERMES_RUNTIME_USER=root
+
+LABEL org.opencontainers.image.revision="${HERMES_UPSTREAM_COMMIT}" \
+      hermes.platform.upstream-version="${HERMES_UPSTREAM_VERSION}" \
+      hermes.platform.upstream-source-sha256="${HERMES_UPSTREAM_SOURCE_SHA256}" \
+      hermes.platform.source-manifest-sha256="${HERMES_SOURCE_MANIFEST_SHA256}" \
+      hermes.platform.revision="${HERMES_PLATFORM_REVISION}" \
+      hermes.platform.release-id="${HERMES_RELEASE_ID}" \
+      hermes.platform.base-image-reference="${HERMES_BASE_IMAGE_REFERENCE}" \
+      hermes.platform.base-image-immutable-reference="${HERMES_BASE_IMAGE_IMMUTABLE_REFERENCE}" \
+      hermes.platform.base-image-digest="${HERMES_BASE_IMAGE_DIGEST}" \
+      hermes.platform.parent-type="${HERMES_PARENT_TYPE}" \
+      hermes.platform.parent-attestation-sha256="${HERMES_PARENT_ATTESTATION_SHA256}" \
+      hermes.platform.root-official-image-digest="${HERMES_ROOT_OFFICIAL_IMAGE_DIGEST}" \
+      hermes.platform.runtime-overlay-sha256="${HERMES_RUNTIME_OVERLAY_SHA256}" \
+      hermes.platform.skill-inventory-sha256="${HERMES_SKILL_INVENTORY_SHA256}" \
+      hermes.platform.font-manifest-sha256="${HERMES_FONT_MANIFEST_SHA256}" \
+      hermes.platform.compute-host-model-sync="disabled" \
+      hermes.platform.build-strategy="complete-runtime-overlay"
+
+USER ${HERMES_RUNTIME_USER}

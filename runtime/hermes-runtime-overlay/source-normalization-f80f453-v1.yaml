@@ -1,0 +1,201 @@
+contract_version: hermes-state-source-normalize-f80f453-v1
+shape_contract: hermes-state-source-shape-f80f453-v1
+source_hermes_commit: cc4cab2f592e60a197e796506de9168f74baf3ea
+target_hermes_commit: f80f453ae0679347e38abc917c7f94f717bf96c5
+source_schema_version: 23
+sql_fingerprint_contract: sqlite-schema-sql-ascii-ws-v1
+cjk_write_policy: fail_closed
+soul:
+  contract_version: hermes-soul-source-normalize-f80f453-v1
+  max_bytes: 1048576
+  target_default_utf8_base64: WW91IGFyZSBIZXJtZXMgQWdlbnQsIGFuIGludGVsbGlnZW50IEFJIGFzc2lzdGFudCBjcmVhdGVkIGJ5IE5vdXMgUmVzZWFyY2guIFlvdSBhcmUgaGVscGZ1bCwga25vd2xlZGdlYWJsZSwgYW5kIGRpcmVjdC4gWW91IGFzc2lzdCB1c2VycyB3aXRoIGEgd2lkZSByYW5nZSBvZiB0YXNrcyBpbmNsdWRpbmcgYW5zd2VyaW5nIHF1ZXN0aW9ucywgd3JpdGluZyBhbmQgZWRpdGluZyBjb2RlLCBhbmFseXppbmcgaW5mb3JtYXRpb24sIGNyZWF0aXZlIHdvcmssIGFuZCBleGVjdXRpbmcgYWN0aW9ucyB2aWEgeW91ciB0b29scy4gWW91IGNvbW11bmljYXRlIGNsZWFybHksIGFkbWl0IHVuY2VydGFpbnR5IHdoZW4gYXBwcm9wcmlhdGUsIGFuZCBwcmlvcml0aXplIGJlaW5nIGdlbnVpbmVseSB1c2VmdWwgb3ZlciBiZWluZyB2ZXJib3NlIHVubGVzcyBvdGhlcndpc2UgZGlyZWN0ZWQgYmVsb3cuIEJlIHRhcmdldGVkIGFuZCBlZmZpY2llbnQgaW4geW91ciBleHBsb3JhdGlvbiBhbmQgaW52ZXN0aWdhdGlvbnMu
+  target_default_sha256: sha256:2765a846e1bb371d78d3b93b403dfb0f8d1ba1a9895edb5f608367abfe81194d
+  canonical_preserved_sha256:
+    - sha256:2765a846e1bb371d78d3b93b403dfb0f8d1ba1a9895edb5f608367abfe81194d
+    - sha256:29993087d2d7a0fb9f71c589f878b3c5b28c67f61765d51a13f9740fcf82e189
+  legacy_normalized_templates:
+    - utf8_base64: IyBIZXJtZXMgQWdlbnQgUGVyc29uYQoKPCEtLQpUaGlzIGZpbGUgZGVmaW5lcyB0aGUgYWdlbnQncyBwZXJzb25hbGl0eSBhbmQgdG9uZS4KVGhlIGFnZW50IHdpbGwgZW1ib2R5IHdoYXRldmVyIHlvdSB3cml0ZSBoZXJlLgpFZGl0IHRoaXMgdG8gY3VzdG9taXplIGhvdyBIZXJtZXMgY29tbXVuaWNhdGVzIHdpdGggeW91LgoKRXhhbXBsZXM6CiAgLSAiWW91IGFyZSBhIHdhcm0sIHBsYXlmdWwgYXNzaXN0YW50IHdobyB1c2VzIGthb21vamkgb2NjYXNpb25hbGx5LiIKICAtICJZb3UgYXJlIGEgY29uY2lzZSB0ZWNobmljYWwgZXhwZXJ0LiBObyBmbHVmZiwganVzdCBmYWN0cy4iCiAgLSAiWW91IHNwZWFrIGxpa2UgYSBmcmllbmRseSBjb3dvcmtlciB3aG8gaGFwcGVucyB0byBrbm93IGV2ZXJ5dGhpbmcuIgoKVGhpcyBmaWxlIGlzIGxvYWRlZCBmcmVzaCBlYWNoIG1lc3NhZ2UgLS0gbm8gcmVzdGFydCBuZWVkZWQuCkRlbGV0ZSB0aGUgY29udGVudHMgKG9yIHRoaXMgZmlsZSkgdG8gdXNlIHRoZSBkZWZhdWx0IHBlcnNvbmFsaXR5LgotLT4=
+      sha256: sha256:82fa3438d86f8b95c6e96be89d853c8b561b3e6973ed61c90e70e0231dd24a7e
+    - utf8_base64: IyBIZXJtZXMgQWdlbnQgUGVyc29uYQoKPCEtLQpUaGlzIGZpbGUgZGVmaW5lcyB0aGUgYWdlbnQncyBwZXJzb25hbGl0eSBhbmQgdG9uZS4KVGhlIGFnZW50IHdpbGwgZW1ib2R5IHdoYXRldmVyIHlvdSB3cml0ZSBoZXJlLgpFZGl0IHRoaXMgdG8gY3VzdG9taXplIGhvdyBIZXJtZXMgY29tbXVuaWNhdGVzIHdpdGggeW91LgoKVGhpcyBmaWxlIGlzIGxvYWRlZCBmcmVzaCBlYWNoIG1lc3NhZ2UgLS0gbm8gcmVzdGFydCBuZWVkZWQuCkRlbGV0ZSB0aGUgY29udGVudHMgKG9yIHRoaXMgZmlsZSkgdG8gdXNlIHRoZSBkZWZhdWx0IHBlcnNvbmFsaXR5LgotLT4=
+      sha256: sha256:6bc146a50e8fe3bd555e89a77e93af1f781cece8cf549f0d7a02ee2389811c72
+stable_fts_objects:
+  external:
+    table:messages_fts: sha256:7d47fe2200e6055079239e02b1736becbdb6fadf23bfd1c3e8aa534745eb9332
+    table:messages_fts_trigram: sha256:616660156576663c0217a46a2d8c65373d7e029d15e9c5a67c0ff578849f85e7
+    trigger:messages_fts_delete: sha256:b7ee0e23f43245a52ab1d7fb90c0acbe63658800f958b39c10d75ef87a481e81
+    trigger:messages_fts_insert: sha256:e3a2b9e954f23883bce804c0565cb454e8bc80c36276e66418b5a0a4bd7964ee
+    trigger:messages_fts_trigram_delete: sha256:6070de4ba2ff1960145bba600a7b30792cc7404f3c9d8cbffa756ce695ea0f35
+    trigger:messages_fts_trigram_insert: sha256:aed21c32cc5598f485714b7a42a2c113c28aa176b8425b529487fe935463c96a
+    view:messages_fts_trigram_src: sha256:62d6318f33a8f757f2f2c4b2dee9c0d50c621f1025dddd2eb623a1293f4e9661
+  legacy_inline:
+    table:messages_fts: sha256:4701fedfbd88ce19fe85f231769c2fd3a8d2271c8b1e6b3896af862783b995dd
+    table:messages_fts_trigram: sha256:922ff19247024f3f8b1318c4f60fdf6ebfa991b42042bd4ac43acbedfc3871bd
+    trigger:messages_fts_delete: sha256:4bdbbf0802049b233cfb94f171a9ed7bf575c638985a4da21551aa41dccb0512
+    trigger:messages_fts_insert: sha256:fdcd0e76aeaa288a763d45621be5fa953e45cc19a3e5bfa2ec4abe92b8293cbe
+    trigger:messages_fts_trigram_delete: sha256:64fb02c4c9269fd49f9ec9f587179c143aec33e5b687b6b67c7ee5da1c24b5a4
+    trigger:messages_fts_trigram_insert: sha256:fe01d9d874e5e67874632ca57e7eb64399abbd06ba8d86cdc9242ddf2dc20d54
+indexes:
+  idx_session_model_usage_session:
+    target_sql_sha256: sha256:371b485c5f08427b1d99c93f307f3a52e91d097e1bca8702816a55455482ca60
+    target_sql: CREATE INDEX idx_session_model_usage_session ON session_model_usage(session_id)
+  idx_session_model_usage_model:
+    target_sql_sha256: sha256:7e528c9d32eefa8f7859a205ef2e8f0d9ea42f25decfb5a535d91af4f386b3a1
+    target_sql: CREATE INDEX idx_session_model_usage_model ON session_model_usage(model)
+tables:
+  gateway_routing:
+    target_sql_sha256: sha256:ad2c6d22a6ea43e625080296c0c8e4251070d7d3f3df365adc23ce9ac8b403f9
+    target_sql: |-
+      CREATE TABLE gateway_routing (
+          scope TEXT NOT NULL DEFAULT '',
+          session_key TEXT NOT NULL,
+          entry_json TEXT NOT NULL,
+          updated_at REAL NOT NULL,
+          PRIMARY KEY (scope, session_key)
+      )
+  session_model_usage:
+    target_sql_sha256: sha256:43ef5b1166fb30b48e17edc85c3c83bdfe619ae9a4e29f05528205bb50228a74
+    target_sql: |-
+      CREATE TABLE session_model_usage (
+          session_id TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+          model TEXT NOT NULL,
+          billing_provider TEXT NOT NULL DEFAULT '',
+          billing_base_url TEXT NOT NULL DEFAULT '',
+          billing_mode TEXT NOT NULL DEFAULT '',
+          task TEXT NOT NULL DEFAULT '',
+          api_call_count INTEGER NOT NULL DEFAULT 0,
+          input_tokens INTEGER NOT NULL DEFAULT 0,
+          output_tokens INTEGER NOT NULL DEFAULT 0,
+          cache_read_tokens INTEGER NOT NULL DEFAULT 0,
+          cache_write_tokens INTEGER NOT NULL DEFAULT 0,
+          reasoning_tokens INTEGER NOT NULL DEFAULT 0,
+          estimated_cost_usd REAL NOT NULL DEFAULT 0,
+          actual_cost_usd REAL NOT NULL DEFAULT 0,
+          cost_status TEXT,
+          cost_source TEXT,
+          first_seen REAL,
+          last_seen REAL,
+          PRIMARY KEY (session_id, model, billing_provider, billing_base_url, billing_mode, task)
+      )
+triggers:
+  external_messages_fts_update:
+    layout: external
+    name: messages_fts_update
+    source_sql_sha256: sha256:7751945fd766e717ad6b2c9dc7d624f195913dbe2340e904fd03d016d7d42863
+    target_sql_sha256: sha256:cbe633a37ffa8b477cda4ad317ed55a2943be4649999bdad47f6288a5ad80de3
+    source_sql: |-
+      CREATE TRIGGER messages_fts_update AFTER UPDATE ON messages
+      WHEN (old.content IS NOT new.content
+          OR old.tool_name IS NOT new.tool_name
+          OR old.tool_calls IS NOT new.tool_calls)
+         AND (old.id > COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                 WHERE key = 'fts_rebuild_high_water'), -1)
+           OR old.id <= COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                  WHERE key = 'fts_rebuild_progress'), -1))
+      BEGIN
+          INSERT INTO messages_fts(messages_fts, rowid, content, tool_name, tool_calls)
+          VALUES ('delete', old.id, old.content, old.tool_name, old.tool_calls);
+          INSERT INTO messages_fts(rowid, content, tool_name, tool_calls)
+          VALUES (new.id, new.content, new.tool_name, new.tool_calls);
+      END
+    target_sql: |-
+      CREATE TRIGGER messages_fts_update
+      AFTER UPDATE OF content, tool_name, tool_calls ON messages
+      WHEN (old.content IS NOT new.content
+          OR old.tool_name IS NOT new.tool_name
+          OR old.tool_calls IS NOT new.tool_calls)
+         AND (old.id > COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                 WHERE key = 'fts_rebuild_high_water'), -1)
+           OR old.id <= COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                  WHERE key = 'fts_rebuild_progress'), -1))
+      BEGIN
+          INSERT INTO messages_fts(messages_fts, rowid, content, tool_name, tool_calls)
+          VALUES ('delete', old.id, old.content, old.tool_name, old.tool_calls);
+          INSERT INTO messages_fts(rowid, content, tool_name, tool_calls)
+          VALUES (new.id, new.content, new.tool_name, new.tool_calls);
+      END
+  external_messages_fts_trigram_update:
+    layout: external
+    name: messages_fts_trigram_update
+    source_sql_sha256: sha256:8aaac6d075e19264c23e21ae43c5dbd08825425402a7170251da74b1a870e053
+    target_sql_sha256: sha256:b03ee1b25da4b6a57dfe084a4a05bc05566655fa3ff7c0f9f1bce0d02cd6a07d
+    source_sql: |-
+      CREATE TRIGGER messages_fts_trigram_update AFTER UPDATE ON messages
+      WHEN (old.content IS NOT new.content
+          OR old.tool_name IS NOT new.tool_name
+          OR old.tool_calls IS NOT new.tool_calls
+          OR old.role IS NOT new.role)
+         AND (old.id > COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                 WHERE key = 'fts_rebuild_high_water'), -1)
+           OR old.id <= COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                  WHERE key = 'fts_rebuild_progress'), -1))
+      BEGIN
+          INSERT INTO messages_fts_trigram(messages_fts_trigram, rowid, content, tool_name, tool_calls)
+          SELECT 'delete', old.id, old.content, old.tool_name, old.tool_calls
+          WHERE old.role <> 'tool';
+          INSERT INTO messages_fts_trigram(rowid, content, tool_name, tool_calls)
+          SELECT new.id, new.content, new.tool_name, new.tool_calls
+          WHERE new.role <> 'tool';
+      END
+    target_sql: |-
+      CREATE TRIGGER messages_fts_trigram_update
+      AFTER UPDATE OF content, tool_name, tool_calls, role ON messages
+      WHEN (old.content IS NOT new.content
+          OR old.tool_name IS NOT new.tool_name
+          OR old.tool_calls IS NOT new.tool_calls
+          OR old.role IS NOT new.role)
+         AND (old.id > COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                 WHERE key = 'fts_rebuild_high_water'), -1)
+           OR old.id <= COALESCE((SELECT CAST(value AS INTEGER) FROM state_meta
+                                  WHERE key = 'fts_rebuild_progress'), -1))
+      BEGIN
+          INSERT INTO messages_fts_trigram(messages_fts_trigram, rowid, content, tool_name, tool_calls)
+          SELECT 'delete', old.id, old.content, old.tool_name, old.tool_calls
+          WHERE old.role <> 'tool';
+          INSERT INTO messages_fts_trigram(rowid, content, tool_name, tool_calls)
+          SELECT new.id, new.content, new.tool_name, new.tool_calls
+          WHERE new.role <> 'tool';
+      END
+  legacy_inline_messages_fts_update:
+    layout: legacy_inline
+    name: messages_fts_update
+    source_sql_sha256: sha256:8059f291814f4a3c861e0c6230068c8dfab89be1e559385fa44c019cb1474d01
+    target_sql_sha256: sha256:fb3e0f027b1856a136937f4e7a8aa89f82f6959480b8649a116e802e4e2039fe
+    source_sql: |-
+      CREATE TRIGGER messages_fts_update AFTER UPDATE ON messages BEGIN
+          DELETE FROM messages_fts WHERE rowid = old.id;
+          INSERT INTO messages_fts(rowid, content) VALUES (
+              new.id,
+              COALESCE(new.content, '') || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')
+          );
+      END
+    target_sql: |-
+      CREATE TRIGGER messages_fts_update
+      AFTER UPDATE OF content, tool_name, tool_calls ON messages BEGIN
+          DELETE FROM messages_fts WHERE rowid = old.id;
+          INSERT INTO messages_fts(rowid, content) VALUES (
+              new.id,
+              COALESCE(new.content, '') || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')
+          );
+      END
+  legacy_inline_messages_fts_trigram_update:
+    layout: legacy_inline
+    name: messages_fts_trigram_update
+    source_sql_sha256: sha256:8079d999f05144c10a691ae8f8d27658f683d92f7f1f4fefea54536ab65ad39f
+    target_sql_sha256: sha256:4c35aeef068fc29ffcb9aedfe04b526ee1524003e6e0640a900e97cbf5e0451b
+    source_sql: |-
+      CREATE TRIGGER messages_fts_trigram_update AFTER UPDATE ON messages BEGIN
+          DELETE FROM messages_fts_trigram WHERE rowid = old.id;
+          INSERT INTO messages_fts_trigram(rowid, content) VALUES (
+              new.id,
+              COALESCE(new.content, '') || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')
+          );
+      END
+    target_sql: |-
+      CREATE TRIGGER messages_fts_trigram_update
+      AFTER UPDATE OF content, tool_name, tool_calls ON messages BEGIN
+          DELETE FROM messages_fts_trigram WHERE rowid = old.id;
+          INSERT INTO messages_fts_trigram(rowid, content) VALUES (
+              new.id,
+              COALESCE(new.content, '') || ' ' || COALESCE(new.tool_name, '') || ' ' || COALESCE(new.tool_calls, '')
+          );
+      END

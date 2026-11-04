@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "operation_id": "asset-operation-0001",
+  "runtime_id": "rt-119",
+  "binding_id": 119,
+  "runtime_workspace_id": 119,
+  "runtime_agent_profile_id": 173,
+  "hermes_profile_name": "expert-173",
+  "desired_revision": 7,
+  "expected_applied_revision": 6,
+  "expected_effective_generation": 9,
+  "digests": {
+    "profile": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "skill": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "mcp": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+    "knowledge": "sha256:dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+  },
+  "profile_config": {
+    "platform_toolsets": {
+      "cli": ["hermes-cli", "mcp-crm"]
+    },
+    "mcp_servers": {
+      "crm": {
+        "transport": "streamable_http",
+        "url": "http://mcp-crm/mcp",
+        "enabled": true
+      }
+    }
+  },
+  "artifacts": [
+    {
+      "asset_type": "skill",
+      "asset_id": 11,
+      "version_id": 12,
+      "storage_uri": "object://skills/11/12.zip",
+      "sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "target_relative_path": "skills/releases/11/12"
+    }
+  ],
+  "capabilities": [
+    {
+      "capability_type": "skill",
+      "capability_id": 11,
+      "target_version_id": 12,
+      "desired_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "required": false
+    },
+    {
+      "capability_type": "knowledge_base",
+      "capability_id": 31,
+      "target_version_id": null,
+      "desired_digest": null,
+      "required": false
+    }
+  ]
+}

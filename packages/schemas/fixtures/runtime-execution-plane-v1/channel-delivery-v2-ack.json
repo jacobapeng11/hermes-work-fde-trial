@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "channel_fast_lane_schema_version": 2,
+  "type": "channel.delivery.ack",
+  "request_id": "delivery-v2-request-0001",
+  "gateway_instance_id": "backend-1:8011:im-gateway",
+  "channel_lease_epoch": 7,
+  "owner_delivery_id": "delivery-wecom-message-00000001",
+  "canonical_run_id": "run-parent-00000001",
+  "highest_contiguous_seq": 20,
+  "provider_request_id": "wecom-request-0002",
+  "provider_message_id": "wecom-message-0002",
+  "projection_version": 4,
+  "confirmed_at": "2026-08-14T08:00:08Z"
+}

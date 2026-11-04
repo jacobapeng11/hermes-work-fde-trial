@@ -1,0 +1,339 @@
+/* 定时任务模块（schedules）样式：随懒加载 chunk 加载 */
+
+/* ===== 页面骨架：灰底页面 + 白色工作面板（对齐看板区） ===== */
+.schedulesPage {
+  height: 100%;
+  overflow: auto;
+  padding: 16px 16px 44px;
+  color: var(--text-primary);
+  background: #f9fafb;
+}
+[data-theme="dark"] .schedulesPage { color: #ececec; background: #212121; }
+.schedulesWorkspace { width: 100%; box-sizing: border-box; padding: 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .schedulesWorkspace { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+.schedulesEmptyView { display: grid; place-items: center; }
+
+/* ===== 模块页头（图标容器 + 标题 + 副标题 + 右侧操作） ===== */
+.schedulesModuleHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid #f3f4f6; }
+.schedulesModuleHeaderMain { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.schedulesModuleHeaderIcon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; background: #dbeafe; color: #2563eb; font-size: 20px; }
+[data-theme="dark"] .schedulesModuleHeaderIcon { background: rgb(37 99 235 / 20%); color: #60a5fa; }
+[data-theme="dark"] .schedulesModuleHeader { border-bottom-color: rgb(255 255 255 / 6%); }
+.schedulesModuleHeaderText { min-width: 0; }
+.schedulesModuleHeaderTitle { margin: 0; color: #111827; font-size: 18px; font-weight: 600; line-height: 26px; }
+[data-theme="dark"] .schedulesModuleHeaderTitle { color: #ececec; }
+.schedulesModuleHeaderSubtitle { margin: 2px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .schedulesModuleHeaderSubtitle { color: #a6a6a6; }
+.schedulesModuleHeaderActions { display: flex; align-items: center; gap: 10px; flex: none; }
+
+/* ===== Alert / Empty 辅助 ===== */
+.schedulesAlert { margin: 12px 0 0; }
+.schedulesEmpty { display: grid; justify-items: center; gap: 8px; min-height: 300px; padding: 40px 20px; text-align: center; }
+.schedulesEmptyHint { max-width: 330px; margin: 0 0 12px; color: var(--text-secondary); font-size: 13px; line-height: 1.55; }
+
+.schedulesEmpty { display: grid; justify-items: center; gap: 9px; min-height: 300px; padding: 60px 20px; text-align: center; }
+
+.schedulesEmpty h3 { margin: 0; font-size: 17px; color: var(--text-primary); }
+
+.schedulesEmpty button { min-height: 36px; padding: 8px 13px; border: 1px solid var(--accent); border-radius: var(--radius-sm); color: white; background: var(--accent); font-size: 13px; font-weight: 500; }
+
+/* Scheduled tasks: compact task rows with on-demand execution detail. */
+
+.schedulePrimaryButton, .scheduleSecondaryButton { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 36px; padding: 8px 13px; border-radius: 8px; font-size: 12px; font-weight: 600; transition: border-color var(--transition-fast), background var(--transition-fast), transform var(--transition-fast); }
+
+.schedulePrimaryButton { border: 1px solid var(--accent); color: white; background: var(--accent); box-shadow: 0 4px 12px color-mix(in srgb, var(--accent) 20%, transparent); }
+
+.schedulePrimaryButton:hover { background: var(--accent-hover); transform: translateY(-1px); }
+
+.schedulePrimaryButton:active { background: var(--accent-active); transform: translateY(0); }
+
+.scheduleSecondaryButton { border: 1px solid var(--border); color: var(--text-secondary); background: var(--surface-secondary); }
+
+.scheduleSecondaryButton:hover { border-color: var(--border-bright); color: var(--text-primary); background: var(--surface-hover); }
+
+.scheduleSecondaryButton:active { background: var(--surface-active); }
+
+.schedulesLoading { margin: 0; padding: 38px 0; color: var(--text-muted); text-align: center; font-size: 13px; }
+
+.scheduleIconButton { display: inline-flex; align-items: center; justify-content: center; gap: 5px; min-width: 30px; min-height: 30px; padding: 6px; border: 1px solid transparent; border-radius: var(--radius-sm); color: var(--text-muted); background: transparent; cursor: pointer; transition: all var(--transition-fast); }
+
+.scheduleIconButton:hover:not(:disabled) { border-color: var(--border); color: var(--text-primary); background: var(--surface-tertiary); }
+
+.scheduleIconButton:disabled { opacity: .5; cursor: not-allowed; }
+
+.scheduleIconButtonAccent:hover:not(:disabled) { color: var(--accent-text); }
+
+.scheduleIconButtonDanger:hover:not(:disabled) { color: var(--danger); }
+
+.scheduleIconButton span { position: absolute; width: 1px; height: 1px; padding: 0; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0; }
+
+.schedulesEmpty { display: grid; justify-items: center; gap: 9px; min-height: 300px; padding: 60px 20px; text-align: center; }
+
+.schedulesEmpty h3 { margin: 0; font-size: 17px; }
+
+.sessionCombobox { position: relative; min-width: 0; }
+
+.sessionComboboxTrigger { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 9px; width: 100%; min-height: 38px; padding: 7px 10px; border: 1px solid var(--border); border-radius: 8px; color: var(--text-primary); background: var(--surface-secondary); text-align: left; cursor: pointer; }
+
+.sessionComboboxTrigger:hover:not(:disabled) { border-color: var(--border-bright); background: var(--surface-tertiary); }
+
+.sessionComboboxTrigger[aria-expanded="true"], .sessionComboboxTrigger:focus-visible { border-color: var(--accent); outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+.sessionComboboxTrigger:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.sessionComboboxTrigger > svg { flex: none; color: var(--text-muted); transition: transform var(--transition-fast); }
+
+.sessionComboboxTrigger[aria-expanded="true"] > svg { transform: rotate(180deg); }
+
+.sessionComboboxLabel { display: flex; align-items: center; gap: 7px; min-width: 0; }
+
+.sessionComboboxTitle { min-width: 0; overflow: hidden; color: var(--text-primary); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+
+.sessionComboboxUnavailable { flex: none; color: var(--text-muted); font-size: 11px; }
+
+.sessionComboboxPlaceholder { color: var(--text-muted); font-size: 12px; }
+
+.sessionComboboxDropdown { position: absolute; z-index: 20; top: calc(100% + 6px); right: 0; left: 0; max-height: min(280px, calc(100vh - 260px)); padding: 5px; border: 1px solid var(--border-bright); border-radius: 9px; background: var(--surface-elevated); box-shadow: var(--shadow-dropdown); overflow: auto; }
+
+.sessionComboboxOption { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: center; gap: 9px; width: 100%; min-height: 40px; padding: 7px 8px; border: 0; border-radius: 7px; color: var(--text-secondary); background: transparent; text-align: left; cursor: pointer; }
+
+.sessionComboboxOption:hover:not(:disabled), .sessionComboboxOption:focus-visible { color: var(--text-primary); background: var(--surface-hover); outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+.sessionComboboxOption[aria-selected="true"] { background: color-mix(in srgb, var(--accent) 10%, var(--surface-secondary)); }
+
+.sessionComboboxOption[aria-selected="true"] > svg { flex: none; color: var(--accent-text); }
+
+.sessionComboboxOption:disabled { cursor: not-allowed; opacity: 0.5; }
+
+.sessionComboboxOption:disabled .sessionComboboxTitle { color: var(--text-secondary); }
+
+.scheduledTaskSubmit:hover { background: var(--accent-hover); }
+
+.scheduleFields legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
+
+.scheduleFieldsHeading { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
+
+.scheduleFieldsHeading div { display: grid; gap: 3px; }
+
+.scheduleFieldsHeading strong { font-size: 12px; }
+
+.scheduleFieldsHeading span:not(.scheduleTimezoneBadge) { color: var(--text-muted); font-size: 11px; }
+
+.scheduleKindPills { display: grid; grid-template-columns: repeat(4, 1fr); gap: 4px; padding: 3px; border: 1px solid var(--border); border-radius: 8px; background: var(--surface-primary); }
+
+.scheduleCalendarNav { display: grid; place-items: center; min-width: 30px; min-height: 30px; padding: 0; border: 1px solid var(--border); border-radius: 7px; background: var(--surface-tertiary); cursor: pointer; color: var(--text-secondary); transition: background var(--transition-fast); }
+
+.scheduleCalendarNav:hover { background: var(--surface-hover); }
+
+.scheduleCalendarWeekdays, .scheduleCalendarGrid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+
+.scheduleCalendarWeekdays span { color: var(--text-muted); font-size: 11px; text-align: center; }
+
+.scheduleCalendarGrid > span { min-height: 30px; }
+
+.scheduleCalendarDay { min-width: 0; min-height: 30px; padding: 0; border: 1px solid transparent; border-radius: 7px; color: var(--text-secondary); background: transparent; font-size: 12px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all var(--transition-fast); }
+
+.scheduleCalendarDay:hover:not(:disabled) { border-color: var(--border); background: var(--surface-tertiary); }
+
+.scheduleCalendarDay[aria-pressed="true"] { border-color: var(--accent); color: white; background: var(--accent); }
+
+.scheduleCalendarDay:disabled { color: var(--text-muted); opacity: .38; cursor: not-allowed; }
+
+.sessionAgentBadge[data-agent-kind="expert"] { --session-agent-tone: #8b5cf6; }
+.sessionAgentBadge[data-agent-kind="wecom"] { --session-agent-tone: #16a085; }
+
+/* ===== antd 弹窗基线（portal 双类 scheduleAntDialog ± Dark，暗色主体由 antd 主题算法负责） ===== */
+.scheduleAntDialog { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+.scheduleAntDialog button, .scheduleAntDialog input, .scheduleAntDialog select, .scheduleAntDialog textarea { font-family: inherit; }
+.scheduleAntDialog .ant-btn, .scheduleAntDialog .ant-modal-title, .scheduleAntDialog .ant-alert { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif; }
+
+/* ===== 任务弹窗（antd Modal 外壳，表单字段保留原生控件） ===== */
+.scheduledTaskModal .ant-modal-body { padding-top: 10px; }
+.scheduledTaskModalSubtitle { margin: 0 0 12px; color: var(--text-secondary); font-size: 13px; }
+.scheduledTaskModal form { display: grid; gap: 20px; }
+/* ===== 定时任务卡（卡片家族三段式：Tag 行 / 主体 / footer 元信息+操作） ===== */
+.scheduledTaskList { display: grid; gap: 12px; min-height: 300px; padding: 16px; background: #f9fafb; }
+[data-theme="dark"] .scheduledTaskCard { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+.scheduledTaskSchedule { display: inline-flex; align-items: center; gap: 4px; color: #6b7280; font-size: 12px; line-height: 18px; }
+[data-theme="dark"] .scheduledTaskSchedule { color: #a6a6a6; }
+[data-theme="dark"] .scheduledTaskDanger:hover:not(:disabled) { color: #f87171 !important; background: rgb(248 113 113 / 14%) !important; }
+[data-theme="dark"] .scheduledTaskMain h3 { color: #ececec; }
+[data-theme="dark"] footer.scheduledTaskFooter { border-top-color: rgb(255 255 255 / 6%); }
+[data-theme="dark"] .scheduledTaskMeta { color: #a6a6a6; }
+[data-theme="dark"] .scheduledTaskSessionLink.ant-btn { color: #60a5fa; }
+[data-theme="dark"] .scheduledTaskTrigger.ant-btn { border-color: rgb(37 99 235 / 35%); color: #60a5fa; background: rgb(37 99 235 / 16%); }
+[data-theme="dark"] .scheduledTaskTrigger.ant-btn:hover:not(:disabled) { border-color: rgb(37 99 235 / 55%); background: rgb(37 99 235 / 26%); }
+[data-theme="dark"] .scheduledTaskDetails { background: rgb(255 255 255 / 4%); }
+[data-theme="dark"] .scheduledTaskDetails dd { color: #d1d5db; }
+.scheduledTaskRecovery { margin: 0; color: var(--warning, #d97706); font-size: 12px; line-height: 18px; }
+.scheduledTaskError { margin: 0; color: var(--danger, #dc2626); font-size: 12px; line-height: 18px; }
+
+/* ===== 任务弹窗表单字段（Modal 内原生控件，风格与 scheduleFields 一致） ===== */
+.scheduledTaskField { display: grid; gap: 6px; }
+.scheduledTaskField > label { display: block; margin-bottom: 6px; color: #374151; font-size: 13px; font-weight: 500; line-height: 18px; }
+.scheduledTaskField > input, .scheduledTaskField > textarea {
+  width: 100%; box-sizing: border-box; min-height: 36px; padding: 7px 10px;
+  border: 1px solid var(--border); border-radius: 6px;
+  color: var(--text-primary); background: var(--surface-secondary);
+  font: inherit; font-size: 13px; outline: none;
+  transition: border-color .15s ease, box-shadow .15s ease;
+}
+.scheduledTaskField > textarea { min-height: 86px; resize: vertical; line-height: 1.55; }
+.scheduledTaskField > input:focus, .scheduledTaskField > textarea:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-subtle);
+}
+.scheduledTaskField > input:disabled, .scheduledTaskField > textarea:disabled { opacity: .55; cursor: not-allowed; }
+.scheduledTaskFieldHint { color: var(--text-muted); font-size: 11px; line-height: 16px; }
+/* ===== 定时任务面板（按用户参考定版：Card 一体化头部 + 灰底卡片流） ===== */
+.schedulesPanel { width: 100%; box-sizing: border-box; overflow: hidden; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .schedulesPanel { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+.schedulesPanelHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 16px 24px; border-bottom: 1px solid #f0f0f0; }
+[data-theme="dark"] .schedulesPanelHeader { border-bottom-color: rgb(255 255 255 / 8%); }
+.schedulesPanelHeaderMain { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.schedulesPanelHeaderIcon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; color: #2563eb; background: #eff6ff; font-size: 20px; }
+[data-theme="dark"] .schedulesPanelHeaderIcon { color: #60a5fa; background: rgb(37 99 235 / 20%); }
+.schedulesPanelHeaderText { min-width: 0; }
+.schedulesPanelHeaderTitle { margin: 0; color: #111827; font-size: 16px; font-weight: 600; line-height: 22px; }
+[data-theme="dark"] .schedulesPanelHeaderTitle { color: #ececec; }
+.schedulesPanelHeaderSubtitle { margin: 2px 0 0; color: #6b7280; font-size: 12px; line-height: 16px; }
+[data-theme="dark"] .schedulesPanelHeaderSubtitle { color: #a6a6a6; }
+.schedulesPanelHeaderActions { display: flex; align-items: center; gap: 12px; flex: none; }
+[data-theme="dark"] .scheduledTaskList { background: rgb(255 255 255 / 3%); }
+
+/* ===== 任务卡（参考定版：名称+Tag+Switch / 单行指令 / 频率·目标·上次执行） ===== */
+.task-card-item { border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; padding: 12px 20px !important; box-shadow: 0 1px 2px rgb(0 0 0 / 3%); cursor: pointer; transition: all .3s ease; }
+.task-card-item:hover { border-color: #bfdbfe; box-shadow: 0 4px 12px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .task-card-item { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; }
+[data-theme="dark"] .task-card-item:hover { border-color: rgb(37 99 235 / 55%); box-shadow: none; }
+.task-card-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 4px; }
+.task-card-title-row { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+/* 标题默认公司品牌蓝，hover 加深以示交互反馈 */
+.task-card-name { margin: 0; overflow: hidden; color: #2563eb; font-size: 15px; font-weight: 600; line-height: 22px; text-overflow: ellipsis; white-space: nowrap; transition: color .2s ease; }
+.task-card-item:hover .task-card-name { color: #1d4ed8; }
+[data-theme="dark"] .task-card-name { color: #60a5fa; }
+[data-theme="dark"] .task-card-item:hover .task-card-name { color: #93c5fd; }
+.task-card-status.ant-tag { margin: 0; padding: 2px 6px; border: none; border-radius: 4px; font-size: 11px; line-height: 16px; }
+/* 已启用 Tag 强制 antd success 语义色（#f6ffed/#52c41a），防主题 token 干扰 */
+.task-card-status.scheduledTaskStatus-active.ant-tag { background: #f6ffed; color: #52c41a; }
+[data-theme="dark"] .task-card-status.scheduledTaskStatus-active.ant-tag { background: rgb(82 196 26 / 16%); color: #95de64; }
+.task-card-top-actions { display: inline-flex; align-items: center; gap: 12px; flex: none; }
+.task-card-hover-actions { display: inline-flex; align-items: center; gap: 2px; opacity: 0; transition: opacity .15s ease; }
+.task-card-item:hover .task-card-hover-actions, .task-card-item:focus-within .task-card-hover-actions { opacity: 1; }
+.task-card-danger:hover:not(:disabled) { color: #dc2626 !important; background: #fef2f2 !important; }
+[data-theme="dark"] .task-card-danger:hover:not(:disabled) { color: #f87171 !important; background: rgb(248 113 113 / 14%) !important; }
+.task-card-main { display: block; width: 100%; box-sizing: border-box; margin: 0; padding: 0; border: 0; overflow: hidden; color: #6b7280; background: transparent; font: inherit; font-size: 13px; line-height: 1.5; text-align: left; text-overflow: ellipsis; white-space: nowrap; cursor: pointer; }
+[data-theme="dark"] .task-card-main { color: #a6a6a6; }
+.task-card-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: 12px; padding-top: 12px; border-top: 1px solid #f0f0f0; color: #9ca3af; font-size: 12px; }
+[data-theme="dark"] .task-card-footer { border-top-color: rgb(255 255 255 / 6%); }
+.task-card-meta { display: inline-flex; align-items: center; gap: 16px; min-width: 0; }
+.task-card-meta > span, .task-card-meta > button { display: inline-flex; align-items: center; gap: 4px; min-width: 0; }
+.task-card-session.ant-btn { height: auto; padding: 0; color: #2563eb; font-size: 12px; line-height: 18px; }
+.task-card-session.ant-btn:hover { color: #1d4ed8; }
+[data-theme="dark"] .task-card-session.ant-btn { color: #60a5fa; }
+.task-card-footer-side { display: inline-flex; align-items: center; gap: 8px; flex: none; }
+.task-card-last-run { white-space: nowrap; }
+.task-card-trigger.ant-btn { border-color: #dbeafe; color: #2563eb; background: #eff6ff; font-size: 12px; }
+/* 展开/收起按钮右内边距归零：文字右缘与右上 Switch 右缘绝对对齐 */
+.task-card-expand.ant-btn { padding-inline-end: 0; }
+.task-card-trigger.ant-btn:hover:not(:disabled) { border-color: #bfdbfe; color: #2563eb; background: #dbeafe; }
+[data-theme="dark"] .task-card-trigger.ant-btn { border-color: rgb(37 99 235 / 35%); color: #60a5fa; background: rgb(37 99 235 / 16%); }
+[data-theme="dark"] .task-card-trigger.ant-btn:hover:not(:disabled) { border-color: rgb(37 99 235 / 55%); background: rgb(37 99 235 / 26%); }
+.task-card-details { display: grid; gap: 10px; margin-top: 12px; padding: 12px 16px; border-radius: 8px; background-color: #fafafa; }
+[data-theme="dark"] .task-card-details { background: rgb(255 255 255 / 4%); }
+.task-card-detail-prompt { margin: 0; color: var(--text-secondary); font-size: 12px; line-height: 1.6; white-space: pre-wrap; }
+.task-card-detail-meta { display: grid; grid-template-columns: 1fr 1.5fr 1fr 2fr; gap: 16px; margin: 0; }
+.task-card-detail-meta div { min-width: 0; }
+.task-card-detail-meta dt { margin-bottom: 4px; color: #9ca3af; font-size: 12px; line-height: 16px; }
+[data-theme="dark"] .task-card-detail-meta dt { color: #a6a6a6; }
+.task-card-detail-meta dd { margin: 0; overflow: hidden; color: #1f2937; font-size: 13px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+[data-theme="dark"] .task-card-detail-meta dd { color: #d1d5db; }
+
+/* ===== 计划类型 Segmented（参考定版：分段控制器） ===== */
+.scheduleKindSegmented.ant-segmented { display: flex; background: #f1f5f9; border-radius: 8px; padding: 2px; }
+.scheduleKindSegmented.ant-segmented .ant-segmented-item { flex: 1; }
+.scheduleKindSegmented.ant-segmented .ant-segmented-item-label { padding: 5px 0; color: #6b7280; font-size: 13px; font-weight: 500; line-height: 20px; }
+.scheduleKindSegmented.ant-segmented .ant-segmented-item-selected .ant-segmented-item-label { color: #2563eb; }
+.scheduleKindSegmented.ant-segmented .ant-segmented-thumb { border-radius: 6px; background: #fff; box-shadow: 0 1px 3px rgb(0 0 0 / 8%); }
+[data-theme="dark"] .scheduleKindSegmented.ant-segmented { background: rgb(255 255 255 / 6%); }
+[data-theme="dark"] .scheduleKindSegmented.ant-segmented .ant-segmented-item-label { color: #a6a6a6; }
+[data-theme="dark"] .scheduleKindSegmented.ant-segmented .ant-segmented-item-selected .ant-segmented-item-label { color: #60a5fa; }
+[data-theme="dark"] .scheduleKindSegmented.ant-segmented .ant-segmented-thumb { background: rgb(255 255 255 / 12%); }
+
+/* 时间触发器 hover（对齐 time-selector-trigger） */
+.scheduleOnceTrigger:hover { border-color: #4096ff; }
+
+/* ===== 新建任务弹窗（按参考 HTML 定版，.create-task-modal 作用域） ===== */
+.create-task-modal .ant-modal-title { padding: 20px 24px 0; color: #111827; font-size: 18px; font-weight: 600; line-height: 26px; }
+[data-theme="dark"] .create-task-modal .ant-modal-title { color: #ececec; }
+.create-task-body { padding: 0; }
+.create-task-subtitle { margin: 0; color: #6b7280; font-size: 13px; line-height: 18px; }
+[data-theme="dark"] .create-task-subtitle { color: #a6a6a6; }
+.create-task-form .create-task-field.ant-form-item { margin-bottom: 20px; }
+.create-task-form .create-task-last-field.ant-form-item { margin-bottom: 0; }
+.create-task-form .ant-form-item-label { padding: 0 0 6px; }
+.create-task-form .ant-form-item-label > label { color: #1f2937; font-size: 13px; font-weight: 500; line-height: 18px; }
+[data-theme="dark"] .create-task-form .ant-form-item-label > label { color: #e5e7eb; }
+.create-task-form .ant-input, .create-task-form .ant-input-affix-wrapper, .create-task-form .ant-select-selector, .create-task-form textarea.ant-input {
+  border-radius: 6px; border-color: #d9d9d9; transition: all .2s;
+}
+.create-task-form .ant-input:hover, .create-task-form .ant-select:not(.ant-select-disabled):hover .ant-select-selector { border-color: #4096ff !important; }
+.create-task-form .ant-input:focus, .create-task-form .ant-input-focused, .create-task-form .ant-select-focused .ant-select-selector {
+  border-color: #2563eb !important; box-shadow: 0 0 0 2px rgb(37 99 235 / 10%) !important;
+}
+[data-theme="dark"] .create-task-form .ant-input, [data-theme="dark"] .create-task-form .ant-select-selector { border-color: #424242; }
+.create-task-counter-hint { display: block; margin-top: 4px; color: #9ca3af; font-size: 11px; line-height: 16px; }
+[data-theme="dark"] .create-task-counter-hint { color: #8c8c8c; }
+.create-task-errors { margin: 12px 0 0; padding: 10px 12px; border-radius: 6px; color: #dc2626; background: rgb(220 38 38 / 6%); font-size: 12px; line-height: 18px; }
+.create-task-errors p { margin: 0; }
+.create-task-footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 16px 24px; border-top: 1px solid #f0f0f0; background: #f9fafb; }
+[data-theme="dark"] .create-task-footer { border-top-color: rgb(255 255 255 / 8%); background: rgb(255 255 255 / 3%); }
+.create-task-footer-tz { color: #6b7280; font-size: 12px; line-height: 18px; }
+[data-theme="dark"] .create-task-footer-tz { color: #a6a6a6; }
+.create-task-submit.ant-btn { box-shadow: 0 1px 2px rgb(0 0 0 / 5%); }
+
+/* 输出对话 Select 选项：种类 Tag + 标题 */
+.task-session-option { display: inline-flex; align-items: center; gap: 8px; min-width: 0; }
+.task-session-tag.ant-tag { margin: 0; padding: 0 6px; border: none; border-radius: 4px; font-size: 10px; line-height: 16px; }
+.task-session-tag[data-kind="expert"].ant-tag { color: #9333ea; background: #faf5ff; }
+.task-session-tag[data-kind="wecom"].ant-tag { color: #16a34a; background: #f0fdf4; }
+.task-session-tag[data-kind="default"].ant-tag { color: #2563eb; background: #eff6ff; }
+[data-theme="dark"] .task-session-tag[data-kind="expert"].ant-tag { color: #c084fc; background: rgb(147 51 234 / 16%); }
+[data-theme="dark"] .task-session-tag[data-kind="wecom"].ant-tag { color: #4ade80; background: rgb(74 222 128 / 14%); }
+[data-theme="dark"] .task-session-tag[data-kind="default"].ant-tag { color: #60a5fa; background: rgb(37 99 235 / 16%); }
+.task-session-option-title { overflow: hidden; color: #374151; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.task-session-option-state { flex: none; color: #9ca3af; font-size: 12px; }
+
+/* ===== 详细版调优：紧凑头部/表单间距 16/灰容器动态区/选择器边框统一 ===== */
+.create-task-modal .ant-modal-header { padding: 20px 24px 0; }
+.create-task-modal .ant-modal-title { padding: 0; font-size: 17px; line-height: 24px; }
+.create-task-body { padding: 0; }
+.create-task-subtitle { margin: 0; }
+.create-task-form .create-task-field.ant-form-item { margin-bottom: 16px; }
+.create-task-modal .ant-select-selector,
+.create-task-modal .ant-picker { border-color: #d1d5db !important; box-shadow: none !important; border-radius: 6px !important; }
+.create-task-modal .ant-select-selector:hover,
+.create-task-modal .ant-picker:hover { border-color: #4096ff !important; }
+.create-task-modal .ant-select-focused .ant-select-selector,
+.create-task-modal .ant-picker-focused { border-color: #2563eb !important; box-shadow: 0 0 0 2px rgb(37 99 235 / 10%) !important; }
+[data-theme="dark"] .create-task-modal .ant-select-selector,
+[data-theme="dark"] .create-task-modal .ant-picker { border-color: #424242 !important; }
+
+/* Segmented 之下的动态设置区（浅灰圆角容器） */
+.scheduleDynamicArea { margin-top: 12px; padding: 12px; border: 1px solid #f3f4f6; border-radius: 8px; background: #f9fafb; }
+[data-theme="dark"] .scheduleDynamicArea { border-color: rgb(255 255 255 / 8%); background: rgb(255 255 255 / 4%); }
+.scheduleDynamicRow { display: flex; gap: 12px; }
+.scheduleDynamicRow .scheduleDynamicField { flex: 1 1 0; min-width: 0; }
+.scheduleDynamicField { display: grid; gap: 6px; }
+.scheduleDynamicLabel { color: #6b7280; font-size: 12px; line-height: 16px; }
+[data-theme="dark"] .scheduleDynamicLabel { color: #a6a6a6; }
+.scheduleFieldsHeading { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 8px; }
+.scheduleFieldsTitle { color: #1f2937; font-size: 13px; font-weight: 500; line-height: 18px; }
+[data-theme="dark"] .scheduleFieldsTitle { color: #e5e7eb; }
+.scheduleTimezoneBadge { display: inline-flex; align-items: center; gap: 4px; color: #9ca3af; font-size: 12px; }
+
+/* ===== Portal 弹窗暗色补齐（依赖 body[data-theme] 同步命中） ===== */
+[data-theme="dark"] .scheduleTimezoneBadge { color: #a6a6a6; }
+[data-theme="dark"] .create-task-errors { color: #f87171; background: rgb(248 113 113 / 12%); }
+[data-theme="dark"] .task-session-option-title { color: #e5e7eb; }
+[data-theme="dark"] .task-session-option-state { color: #a6a6a6; }

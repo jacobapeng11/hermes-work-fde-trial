@@ -1,0 +1,15 @@
+{
+  "request": {
+    "action": "list_profile_mcp_servers",
+    "params": {
+      "profile_name": "expert-7"
+    }
+  },
+  "response": {
+    "result": [
+      {
+        "name": "scoped-docs"
+      }
+    ]
+  }
+}

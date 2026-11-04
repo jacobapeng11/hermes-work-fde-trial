@@ -1,0 +1,11 @@
+{
+  "name": "hermes-im-gateway-wecom-bridge",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Backend-owned IPC bridge for the official WeCom AI Bot SDK",
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@wecom/aibot-node-sdk": "1.0.7"
+  }
+}

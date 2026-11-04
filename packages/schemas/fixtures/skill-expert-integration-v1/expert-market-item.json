@@ -1,0 +1,26 @@
+{
+  "expert_package_id": 17,
+  "expert_package_version_id": 32,
+  "name": "写作专家",
+  "description": "公众号文章写作",
+  "avatar_url": null,
+  "provider_name": "专家市场",
+  "version": 2,
+  "installed": true,
+  "installed_runtime_agent_profile_id": 71,
+  "catalog_status": "published",
+  "execution_status": "enabled",
+  "allowed_actions": {
+    "view_detail": true,
+    "install": false,
+    "uninstall": true,
+    "summon": true,
+    "edit": false,
+    "copy": false,
+    "publish": false,
+    "unlist": false,
+    "delete": false
+  },
+  "operation": null,
+  "updated_at": "2026-08-28T12:00:00Z"
+}

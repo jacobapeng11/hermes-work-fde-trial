@@ -1,0 +1,131 @@
+/* ===== 侧栏底部用户区 + 数字人菜单浮层（014 §11 用户菜单重构） =====
+   demo：yqf-demo/前端样式操作/点击头像弹框-参考.html（Tailwind 版按项目基线映射）。
+   手写浮层而非 antd Dropdown/Switch：AppSidebar 在主入口静态图，antd 不得进入口 chunk；
+   Switch 为 antd small（28×16）等价复刻。暗色用 [data-theme="dark"] 配对（浮层在 appShell 内，非 Portal）。 */
+
+/* ----- 触发区（底部用户信息） ----- */
+.profileMenu { position: relative; margin-top: auto; padding: 12px 0 0; border-top: 1px solid var(--workspace-border, var(--border)); }
+.profileButton {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 8px;
+  border: 0;
+  border-radius: 8px;
+  color: #374151;
+  background: transparent;
+  text-align: left;
+  transition: background var(--transition-fast);
+}
+.profileButton:hover, .profileButton[aria-expanded="true"] { background: #f3f4f6; }
+.profileName { flex: 1; min-width: 0; overflow: hidden; color: #1f2937; font-size: 14px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.profileMoreIcon { flex: none; color: #9ca3af; transition: color var(--transition-fast); }
+.profileButton:hover .profileMoreIcon, .profileButton[aria-expanded="true"] .profileMoreIcon { color: #4b5563; }
+.profileAvatarWrap { position: relative; display: inline-flex; flex: none; }
+.sidebarProfileAvatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid rgb(229 231 235 / 60%);
+  border-radius: 50%;
+  color: var(--text-muted);
+  background: var(--surface-tertiary);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+  font-size: 12px;
+  font-weight: 500;
+}
+/* 在线圆点：右下角绝对定位，2px 边框与触发区底色融合 */
+.profilePresenceDot {
+  position: absolute;
+  right: -1px;
+  bottom: -1px;
+  width: 10px;
+  height: 10px;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  background: #22c55e;
+}
+.appShell[data-theme="dark"] .profileButton { color: var(--text-secondary); }
+.appShell[data-theme="dark"] .profileButton:hover, .appShell[data-theme="dark"] .profileButton[aria-expanded="true"] { background: rgb(255 255 255 / 8%); }
+.appShell[data-theme="dark"] .profileName { color: var(--text-primary); }
+.appShell[data-theme="dark"] .profileMoreIcon { color: #8c8c8c; }
+.appShell[data-theme="dark"] .profileButton:hover .profileMoreIcon { color: #d1d5db; }
+.appShell[data-theme="dark"] .sidebarProfileAvatar { border-color: rgb(255 255 255 / 12%); box-shadow: none; }
+.appShell[data-theme="dark"] .profilePresenceDot { border-color: var(--workspace-sidebar, #171717); }
+
+/* ----- 弹出层容器：悬浮于触发区正上方，宽度与用户容器对齐 ----- */
+.user-menu-popover {
+  position: absolute;
+  z-index: 50;
+  bottom: calc(100% + 4px);
+  left: 0;
+  width: 100%;
+  padding: 6px;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 4px 20px -4px rgb(0 0 0 / 10%);
+  animation: message-in 160ms ease-out;
+}
+.appShell[data-theme="dark"] .user-menu-popover { border-color: rgb(255 255 255 / 10%); background: #303030; box-shadow: 0 4px 20px -4px rgb(0 0 0 / 50%); }
+
+/* ----- 菜单项 ----- */
+.user-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-sizing: border-box;
+  width: 100%;
+  min-height: 36px;
+  padding: 0 12px;
+  border: 0;
+  border-radius: 6px;
+  color: #374151;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.user-menu-item svg { flex: none; color: #9ca3af; transition: color var(--transition-fast); }
+.user-menu-item:hover { background: #f3f4f6; }
+.user-menu-item:hover svg { color: #6b7280; }
+.user-menu-item:focus-visible { outline: 2px solid var(--border-focus, #2563eb); outline-offset: -2px; }
+.user-menu-item-switch { justify-content: space-between; padding-right: 10px; }
+.user-menu-item-main { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.appShell[data-theme="dark"] .user-menu-item { color: #d1d5db; }
+.appShell[data-theme="dark"] .user-menu-item svg { color: #8c8c8c; }
+.appShell[data-theme="dark"] .user-menu-item:hover { background: rgb(255 255 255 / 8%); }
+.appShell[data-theme="dark"] .user-menu-item:hover svg { color: #d1d5db; }
+
+/* ----- 主题 Switch（antd small 28×16 等价复刻，纯展示；点击由整行 menuitem 承接） ----- */
+.user-menu-switch {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex: none;
+  width: 28px;
+  height: 16px;
+  border-radius: 999px;
+  background: rgb(0 0 0 / 25%);
+  transition: background .2s ease-in-out;
+  pointer-events: none;
+}
+.user-menu-switch-dot {
+  position: absolute;
+  left: 2px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 4px rgb(0 0 0 / 20%);
+  transition: transform .2s ease-in-out;
+}
+.user-menu-switch[data-checked="true"] { background: #2563eb; }
+.user-menu-switch[data-checked="true"] .user-menu-switch-dot { transform: translateX(12px); }
+.appShell[data-theme="dark"] .user-menu-switch { background: rgb(255 255 255 / 30%); }
+.appShell[data-theme="dark"] .user-menu-switch[data-checked="true"] { background: #2563eb; }

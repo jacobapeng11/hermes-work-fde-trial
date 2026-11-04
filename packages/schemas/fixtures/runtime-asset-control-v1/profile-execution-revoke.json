@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "operation_id": "profile-revoke-00000031",
+  "action": "revoke",
+  "runtime_id": "rt-119",
+  "binding_id": 119,
+  "runtime_workspace_id": 119,
+  "runtime_agent_profile_id": 173,
+  "admission_generation": 8,
+  "reason_code": "EXPERT_FORCE_DISABLED",
+  "cancel_active_runs": false
+}

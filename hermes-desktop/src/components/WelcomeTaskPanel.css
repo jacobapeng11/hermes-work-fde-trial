@@ -1,0 +1,390 @@
+/* ===== 空会话首页 ChatHome（2026-11-02-002 demo 迁移） =====
+   类名统一 chatHome* 前缀（旧 welcome* 面板类已移除）；
+   浅色硬编码值逐条以 .appShell[data-theme="dark"] 后代选择器配对。
+   本组件位于主入口静态图，样式不依赖 antd。 */
+
+/* 2026-11-03-014：面板不再自带宽度限制（原 width: min(100%, 850px) 已删），
+   宽度由外层 .main-axis（conversation-lane.css）统一接管，撑满主轴即可。 */
+.chatHomePanel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  text-align: center;
+}
+
+.chatHomePanel > h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+}
+
+/* 模式切换 Segmented：灰底槽 + 选中蓝底白字（demo .segmented-container） */
+.chatHomeModeSwitch {
+  display: inline-flex;
+  gap: 4px;
+  max-width: 100%;
+  margin-top: 28px;
+  padding: 4px;
+  border-radius: 10px;
+  background: #f4f4f5;
+  overflow-x: auto;
+}
+.chatHomeModeSwitch button {
+  padding: 8px 32px;
+  border: 0;
+  border-radius: 8px;
+  color: #52525b;
+  background: transparent;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.chatHomeModeSwitch button:hover:not(.is-active) { color: #111827; }
+.chatHomeModeSwitch button.is-active {
+  color: #fff;
+  background: #2563eb;
+  box-shadow: 0 2px 4px rgba(37, 99, 235, .2);
+}
+.chatHomeModeSwitch button:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+.chatHomeConfigState {
+  margin: 24px 0 0;
+  color: var(--text-muted);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+/* 视图切换淡入（demo .view-section fadeIn） */
+.chatHomeView {
+  width: 100%;
+  margin-top: 32px;
+  animation: chatHomeFadeIn .3s ease-out;
+}
+@keyframes chatHomeFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* 引导卡：白底圆角卡（Info 提示 + 下划线 Tab + Tag 微卡片） */
+.chatHomeGuideCard {
+  padding: 24px;
+  border: 1px solid #f3f4f6;
+  border-radius: 16px;
+  background: var(--surface-elevated, #fff);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 5%);
+  text-align: left;
+}
+
+.chatHomeTip {
+  display: flex;
+  gap: 8px;
+  margin: 0 0 20px;
+  padding: 16px;
+  border: 1px solid #f3f4f6;
+  border-radius: 12px;
+  color: #6b7280;
+  background: #f8fafc;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.chatHomeTipBlue {
+  border-color: #dbeafe;
+  border-radius: 8px;
+  background: #eff6ff;
+}
+.chatHomeTip svg { flex-shrink: 0; margin-top: 2px; color: #3b82f6; }
+
+/* 下划线 Tab（demo .tab-item：选中蓝字 + 底部 2px 蓝线）。
+   2026-11-02-003：Tab 超量时横向滚动（nowrap + overflow-x），不换行撑破引导卡。 */
+.chatHomeTopicTabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 24px;
+  border-bottom: 1px solid #f3f4f6;
+  overflow-x: auto;
+}
+.chatHomeTopicTabs button {
+  position: relative;
+  flex-shrink: 0;
+  padding: 0 0 10px;
+  border: 0;
+  background: transparent;
+  color: #4b5563;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color .2s ease;
+}
+.chatHomeTopicTabs button:hover { color: #111827; }
+.chatHomeTopicTabs button.is-active { color: #2563eb; }
+.chatHomeTopicTabs button.is-active::after {
+  content: "";
+  position: absolute;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: #2563eb;
+}
+.chatHomeTopicTabs button:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+/* 快捷提示词 Tag 微卡片（demo .prompt-tag：hover 上浮浅蓝边 / 选中浅蓝底深蓝边发光） */
+.chatHomeTagList {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+.chatHomeTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  color: #4b5563;
+  background: var(--surface-elevated, #fff);
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .02);
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.chatHomeTag svg { color: #9ca3af; transition: color .2s ease; }
+.chatHomeTag:hover {
+  border-color: #93c5fd;
+  background: #f8fafc;
+  color: #1d4ed8;
+  transform: translateY(-1px);
+}
+.chatHomeTag:hover svg { color: #2563eb; }
+.chatHomeTag.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 500;
+  box-shadow: 0 0 0 1px #2563eb, 0 2px 4px rgba(37, 99, 235, .1);
+}
+.chatHomeTag.is-active svg { color: #2563eb; }
+.chatHomeTag:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+
+/* 区块标题行（案例广场 / 推荐办公模板 共用） */
+.chatHomeBoardSection { margin-top: 32px; text-align: left; }
+.chatHomeSectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+.chatHomeSectionHeader h3 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 22px;
+}
+.chatHomeViewAll {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 6px;
+  border: 0;
+  background: transparent;
+  color: #2563eb;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 18px;
+  cursor: pointer;
+  transition: color .2s ease;
+}
+.chatHomeViewAll:hover { color: #1d4ed8; }
+.chatHomeViewAll:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; border-radius: 4px; }
+
+/* 案例广场：横向滑动卡轨（2026-11-02-004 由两列左图右文改为上下结构紧凑卡）。
+   nowrap + overflow-x 单轴开启，与页面纵向滚动链（messageFeed）正交；
+   隐藏滚动条三件套，触控板横滑 / 轨道末端裁切卡提示可滑。 */
+.chatHomeBoardRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 16px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.chatHomeBoardRow::-webkit-scrollbar { display: none; }
+.chatHomeBoardCard {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 220px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: var(--surface-elevated, #fff);
+  overflow: hidden;
+  color: inherit;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.chatHomeBoardCard:hover {
+  transform: translateY(-2px);
+  border-color: #bfdbfe;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, .08);
+}
+.chatHomeBoardCard:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.chatHomeBoardThumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+/* iframe 缩略不支持 object-fit，300% + scale(1/3) 契约等效「铺满裁切」 */
+.chatHomeBoardThumb iframe {
+  width: 300%;
+  height: 300%;
+  border: 0;
+  background: #fff;
+  pointer-events: none;
+  transform: scale(0.3333);
+  transform-origin: top left;
+}
+.chatHomeBoardInfo {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+  padding: 12px;
+}
+.chatHomeBoardInfo strong {
+  display: block;
+  overflow: hidden;
+  color: var(--text-primary);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.chatHomeBoardSkeleton { border-style: dashed; cursor: default; }
+
+/* 推荐办公模板：三列卡（彩底图标 + 标题 + 简述，hover 上浮） */
+.chatHomeOfficeGrid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+.chatHomeOfficeCard {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: var(--surface-elevated, #fff);
+  text-align: left;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.chatHomeOfficeCard:hover {
+  transform: translateY(-2px);
+  border-color: #bfdbfe;
+  box-shadow: 0 8px 16px -4px rgba(0, 0, 0, .08);
+}
+.chatHomeOfficeCard:focus-visible { outline: 2px solid var(--border-focus); outline-offset: 2px; }
+.chatHomeOfficeIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+  border-radius: 8px;
+}
+.chatHomeTone-blue { color: #3b82f6; background: #eff6ff; }
+.chatHomeTone-green { color: #10b981; background: #f0fdf4; }
+.chatHomeTone-orange { color: #f97316; background: #fff7ed; }
+.chatHomeOfficeInfo { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.chatHomeOfficeInfo strong {
+  color: var(--text-primary);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+}
+.chatHomeOfficeInfo small {
+  overflow: hidden;
+  color: #6b7280;
+  font-size: 12px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ===== 暗色配对 ===== */
+.appShell[data-theme="dark"] .chatHomeModeSwitch { background: #2f2f2f; }
+.appShell[data-theme="dark"] .chatHomeModeSwitch button { color: #a6a6a6; }
+.appShell[data-theme="dark"] .chatHomeModeSwitch button:hover:not(.is-active) { color: #ececec; }
+.appShell[data-theme="dark"] .chatHomeModeSwitch button.is-active {
+  color: #fff;
+  background: var(--accent);
+  box-shadow: 0 2px 4px rgb(0 0 0 / 40%);
+}
+.appShell[data-theme="dark"] .chatHomeGuideCard { border-color: rgb(255 255 255 / 8%); box-shadow: none; }
+.appShell[data-theme="dark"] .chatHomeTip { border-color: rgb(255 255 255 / 8%); background: #212121; color: #b4b4b4; }
+.appShell[data-theme="dark"] .chatHomeTipBlue { border-color: rgb(37 99 235 / 35%); background: rgb(0 63 122 / 18%); }
+.appShell[data-theme="dark"] .chatHomeTip svg { color: #55a9ee; }
+.appShell[data-theme="dark"] .chatHomeTopicTabs { border-bottom-color: rgb(255 255 255 / 8%); }
+.appShell[data-theme="dark"] .chatHomeTopicTabs button { color: #a6a6a6; }
+.appShell[data-theme="dark"] .chatHomeTopicTabs button:hover { color: #ececec; }
+.appShell[data-theme="dark"] .chatHomeTopicTabs button.is-active { color: #55a9ee; }
+.appShell[data-theme="dark"] .chatHomeTopicTabs button.is-active::after { background: #176cae; }
+.appShell[data-theme="dark"] .chatHomeTag { border-color: rgb(255 255 255 / 12%); color: #b4b4b4; box-shadow: none; }
+.appShell[data-theme="dark"] .chatHomeTag svg { color: #8c8c8c; }
+.appShell[data-theme="dark"] .chatHomeTag:hover { border-color: #176cae; background: #2f2f2f; color: #55a9ee; }
+.appShell[data-theme="dark"] .chatHomeTag:hover svg { color: #55a9ee; }
+.appShell[data-theme="dark"] .chatHomeTag.is-active {
+  border-color: #176cae;
+  background: rgb(0 63 122 / 25%);
+  color: #55a9ee;
+  box-shadow: 0 0 0 1px #176cae, 0 2px 4px rgb(0 0 0 / 30%);
+}
+.appShell[data-theme="dark"] .chatHomeTag.is-active svg { color: #55a9ee; }
+.appShell[data-theme="dark"] .chatHomeViewAll { color: #55a9ee; }
+.appShell[data-theme="dark"] .chatHomeViewAll:hover { color: #86c5f5; }
+.appShell[data-theme="dark"] .chatHomeBoardCard { border-color: rgb(255 255 255 / 10%); box-shadow: none; }
+.appShell[data-theme="dark"] .chatHomeBoardCard:hover { border-color: #176cae; box-shadow: 0 8px 16px -4px rgb(0 0 0 / 50%); }
+.appShell[data-theme="dark"] .chatHomeBoardThumb { background: #2f2f2f; }
+.appShell[data-theme="dark"] .chatHomeBoardThumb iframe { background: #1b1b1b; }
+.appShell[data-theme="dark"] .chatHomeOfficeCard { border-color: rgb(255 255 255 / 10%); box-shadow: none; }
+.appShell[data-theme="dark"] .chatHomeOfficeCard:hover { border-color: #176cae; box-shadow: 0 8px 16px -4px rgb(0 0 0 / 50%); }
+.appShell[data-theme="dark"] .chatHomeTone-blue { color: #60a5fa; background: rgb(37 99 235 / 16%); }
+.appShell[data-theme="dark"] .chatHomeTone-green { color: #4ade80; background: rgb(16 185 129 / 14%); }
+.appShell[data-theme="dark"] .chatHomeTone-orange { color: #fbbf24; background: rgb(249 115 22 / 14%); }
+.appShell[data-theme="dark"] .chatHomeOfficeInfo small { color: #a6a6a6; }
+
+/* ===== 窄屏（2026-11-02-003：720 → 768，覆盖平板竖屏与左右分屏半宽） ===== */
+@media (max-width: 768px) {
+  .chatHomePanel > h2 { font-size: 21px; }
+  .chatHomeModeSwitch button { padding: 7px 20px; }
+  .chatHomeModeSwitch { margin-top: 22px; }
+  .chatHomeView { margin-top: 24px; }
+  .chatHomeGuideCard { padding: 16px; }
+  /* 案例广场为横向滑动卡轨（chatHomeBoardRow），窄屏靠滑动浏览，无需降列；
+     办公模板三列降单列。 */
+  .chatHomeOfficeGrid { grid-template-columns: 1fr; }
+  .chatHomeBoardSection { margin-top: 24px; }
+}

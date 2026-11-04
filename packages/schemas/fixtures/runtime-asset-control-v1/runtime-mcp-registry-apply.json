@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "operation_id": "registry-operation-0001",
+  "runtime_id": "rt-119",
+  "binding_id": 119,
+  "runtime_workspace_id": 119,
+  "desired_revision": 4,
+  "expected_applied_revision": 3,
+  "registry_digest": "sha256:ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+  "servers": [
+    {
+      "mcp_id": 21,
+      "mcp_version_id": 22,
+      "server_slug": "crm",
+      "transport": "streamable_http",
+      "connection_config": {
+        "url": "http://mcp-crm/mcp"
+      },
+      "credential_refs": {
+        "authorization": "Bearer test-token"
+      },
+      "config_digest": "sha256:1111111111111111111111111111111111111111111111111111111111111111"
+    }
+  ]
+}

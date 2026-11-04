@@ -1,0 +1,10 @@
+#!/command/with-contenv sh
+set -eu
+
+interval="${HERMES_KANBAN_DISPATCH_INTERVAL_SECONDS:-5}"
+exec env HERMES_HOME="${HERMES_HOME:-/opt/data}" \
+    /opt/hermes/.venv/bin/hermes kanban daemon \
+    --force \
+    --interval "${interval}" \
+    --pidfile /run/hermes-kanban-dispatcher.pid \
+    --verbose

@@ -1,0 +1,37 @@
+{
+  "profiles": [
+    {
+      "profile_id": 10,
+      "org_id": 1,
+      "user_id": 2,
+      "runtime_workspace_id": 3,
+      "profile_kind": "default"
+    }
+  ],
+  "bindings": [
+    {
+      "source_table": "user_runtime_mcp",
+      "source_id": 11,
+      "org_id": 1,
+      "user_id": 2,
+      "runtime_workspace_id": 3,
+      "profile_id": 10,
+      "asset_type": "mcp",
+      "logical_asset_key": "mcp-runtime-name:crm",
+      "version_key": "legacy-head",
+      "content_digest": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    },
+    {
+      "source_table": "runtime_mcp_binding",
+      "source_id": 12,
+      "org_id": 1,
+      "user_id": 2,
+      "runtime_workspace_id": 3,
+      "profile_id": 10,
+      "asset_type": "mcp",
+      "logical_asset_key": "mcp-runtime-name:crm",
+      "version_key": "legacy-head",
+      "content_digest": "sha256:cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  ]
+}

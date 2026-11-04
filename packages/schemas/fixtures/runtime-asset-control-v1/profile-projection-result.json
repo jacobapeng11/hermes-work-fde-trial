@@ -1,0 +1,39 @@
+{
+  "schema_version": 1,
+  "operation_id": "profile-apply-00000027",
+  "runtime_agent_profile_id": 51,
+  "desired_revision": 27,
+  "applied_revision": 27,
+  "effective_generation": 10,
+  "status": "applied_degraded",
+  "digests": {
+    "profile": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+    "skill": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+    "mcp": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+    "knowledge": "sha256:5555555555555555555555555555555555555555555555555555555555555555"
+  },
+  "capabilities": [
+    {
+      "capability_type": "skill",
+      "capability_id": 11,
+      "target_version_id": 12,
+      "status": "applied",
+      "applied_digest": "sha256:eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+      "error_code": null,
+      "error_message": null,
+      "retry_classification": "none"
+    },
+    {
+      "capability_type": "knowledge_base",
+      "capability_id": 31,
+      "target_version_id": null,
+      "status": "unavailable",
+      "applied_digest": null,
+      "error_code": "KNOWLEDGE_BASE_UNAVAILABLE",
+      "error_message": "知识能力暂时不可用，系统将自动重试",
+      "retry_classification": "transient"
+    }
+  ],
+  "error_code": null,
+  "error_message": null
+}

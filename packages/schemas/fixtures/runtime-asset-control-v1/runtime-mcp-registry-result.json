@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "operation_id": "registry-apply-00000008",
+  "desired_revision": 8,
+  "applied_revision": 8,
+  "status": "ready",
+  "registry_digest": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+  "servers": [
+    {
+      "server_slug": "crm",
+      "status": "ready",
+      "tools_schema_digest": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+      "tool_names": [
+        "crm.search_customer",
+        "crm.create_follow_up"
+      ],
+      "error_code": null
+    }
+  ],
+  "affected_active_run_ids": [
+    "run-01234567"
+  ],
+  "error_code": null,
+  "error_message": null
+}

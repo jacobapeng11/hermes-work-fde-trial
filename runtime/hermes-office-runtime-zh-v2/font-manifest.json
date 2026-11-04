@@ -1,0 +1,43 @@
+{
+  "source": "https://github.com/notofonts/noto-cjk",
+  "release": "Serif2.003",
+  "license": "SIL Open Font License 1.1",
+  "fonts": [
+    {
+      "file": "NotoSansCJKsc-Regular.otf",
+      "sha256": "2c76254f6fc379fddfce0a7e84fb5385bb135d3e399294f6eeb6680d0365b74b",
+      "family": "Noto Sans CJK SC",
+      "weight": "Regular"
+    },
+    {
+      "file": "NotoSansCJKsc-Bold.otf",
+      "sha256": "b5f0d1a190a7f9b43c310a8850630af12553df32c4c050543f9059732d9b4c0a",
+      "family": "Noto Sans CJK SC",
+      "weight": "Bold"
+    },
+    {
+      "file": "NotoSerifCJKsc-Regular.otf",
+      "sha256": "2a2eae2628df83556c54018c41e20fa532c1b862c5256ae8b3f23feb918d12ca",
+      "family": "Noto Serif CJK SC",
+      "weight": "Regular"
+    },
+    {
+      "file": "NotoSerifCJKsc-Bold.otf",
+      "sha256": "8af07d4b6c2e82bcc72a30e066eaf295f11b9424f4aad2eaa9fe0e9c3b38fc73",
+      "family": "Noto Serif CJK SC",
+      "weight": "Bold"
+    },
+    {
+      "file": "NotoSansSC-VF.ttf",
+      "sha256": "d68bafcb48a2707749396aa12bbbd833cb70401f3a9a689fd2902c7e0d295964",
+      "family": "Noto Sans SC",
+      "weight": "Variable (PDF embedding)"
+    },
+    {
+      "file": "NotoSerifSC-VF.ttf",
+      "sha256": "5326cfb097e3ab26fcb39329752b5c0a439bf8d5c4649520e4b492939c352a09",
+      "family": "Noto Serif SC",
+      "weight": "Variable (PDF embedding)"
+    }
+  ]
+}

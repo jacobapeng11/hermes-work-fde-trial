@@ -1,0 +1,22 @@
+numpy==2.2.6
+reportlab
+pypdf
+matplotlib
+pandas
+openpyxl
+markitdown[pptx]
+# ppt-master (platform-readonly-skills) offline pipeline dependencies.
+# PyMuPDF stays on 1.x: ppt-master pdf_to_md.py imports the legacy `fitz` API.
+# uharfbuzz stays <=0.56.x: the Runtime venv is CPython 3.11 and 0.56.4 ships
+# cp310-abi3 wheels (0.57.0 failed to resolve in the image builder).
+# SVG->PNG uses the pure-Python svglib fallback (cairosvg would need libcairo).
+# Deliberately NOT installed: flask/werkzeug (local web UI tools), nbconvert/
+# nbformat/ebooklib (ipynb/epub sources), curl_cffi (TLS impersonation),
+# python playwright (visual review), stable-whisper (video subtitles).
+pymupdf==1.28.2
+skia-pathops
+uharfbuzz==0.56.4
+pyyaml
+svglib
+tiktoken
+mammoth

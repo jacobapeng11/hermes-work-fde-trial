@@ -1,0 +1,398 @@
+schema_version: 2
+upstream_version: v0.20.1
+release_tag: v2026.8.13
+upstream_commit: f80f453ae0679347e38abc917c7f94f717bf96c5
+source_archive_sha256: "570900ec79d2c292a9bf04a015032b417412fb962f329c2c7a13381beda9d154"
+state_schema: 25
+config_schema: 34
+supported_pod_configs:
+  personal_agent: true
+  application_agent: true
+required_checks:
+  - source_integrity
+  - environment_integrity
+  - clean_start
+  - personal_runtime_smoke
+  - application_runtime_smoke
+  - storage_clone_upgrade
+  - restart_after_upgrade
+  - forward_failure_freeze
+  - official_skill_inventory
+  - upstream_component_isolation
+  - boundary_plugin_integrity
+  - lazy_install_negative
+  - python_distribution_fingerprint
+
+runtime_overlay:
+  python_requires: ">=3.11,<3.14"
+  hermes_root: /opt/hermes
+  dependency_lock:
+    kind: upstream-uv-lock
+    path: /opt/hermes/uv.lock
+    sync_extras:
+      - all
+      - messaging
+      - otlp
+      - anthropic
+      - bedrock
+      - azure-identity
+      - hindsight
+      - matrix
+      - edge-tts
+      - fal
+    required_distributions:
+      Pillow: 12.3.0
+      edge-tts: 7.2.7
+      fal-client: 0.13.1
+      simple-term-menu: 1.6.6
+      setuptools: 83.0.0
+      watchfiles: 1.1.1
+  official_skills:
+    source_root: /opt/hermes/skills
+    official_source_count: 81
+    policy_version: 3
+    default_policy: balanced_allowlist
+    required_checks:
+      - duplicate_frontmatter_name
+      - missing_skill_file
+      - symlink_escape
+      - linux_effective_visibility
+      - kanban_effective_visibility
+      - platform_and_user_overlay
+  fts5_cjk_extension:
+    contract: hermes-fts5-cjk-extension-v1
+    immutable_path: /opt/hermes-platform/lib/libfts5_cjk.so
+    source_root: native/fts5_cjk
+    source_files:
+      fts5_cjk.c: sha256:814e7dd9ab1b4c4f69673715ed147a2f8203e3443661c0152d36ecfabcb4768f
+      build.sh: sha256:fed26cb860b755e9b6055658e3f1f89d3ca6d0634321ea76c2d391aed2cb9b4c
+      vendor/sqlite3.h: sha256:abd1514e0351f79393d1be882830afdb40a8099e8257f311f0bfdf8486f11bea
+      vendor/sqlite3ext.h: sha256:9a91de0d5e5ccc04ec59041275c67972d6f8894f7543a10033e387b69987beb5
+    init_symbol: sqlite3_fts5_cjk_init
+    tokenizer: cjk_unicode61
+    build_cflags: [-shared, -fPIC, -O2, -Wall, -Wextra]
+  state_schema_probe:
+    contract: hermes-state-schema-probe-f80f453-v1
+    row_digest_contract: hermes-sqlite-row-stream-v1
+    supported_source_schemas: [23, 25]
+    target_schema: 25
+    core_tables_by_schema:
+      23: [schema_version, sessions, messages, state_meta]
+      25: [schema_version, system_prompts, sessions, messages, state_meta]
+    stable_session_columns:
+      - id
+      - source
+      - user_id
+      - session_key
+      - chat_id
+      - chat_type
+      - thread_id
+      - display_name
+      - origin_json
+      - expiry_finalized
+      - model
+      - model_config
+      - parent_session_id
+      - started_at
+      - ended_at
+      - end_reason
+      - message_count
+      - tool_call_count
+      - input_tokens
+      - output_tokens
+      - cache_read_tokens
+      - cache_write_tokens
+      - reasoning_tokens
+      - cwd
+      - git_branch
+      - git_repo_root
+      - billing_provider
+      - billing_base_url
+      - billing_mode
+      - estimated_cost_usd
+      - actual_cost_usd
+      - cost_status
+      - cost_source
+      - pricing_version
+      - title
+      - api_call_count
+      - handoff_state
+      - handoff_platform
+      - handoff_error
+      - compression_failure_cooldown_until
+      - compression_failure_error
+      - compression_fallback_streak
+      - compression_ineffective_count
+      - profile_name
+      - rewind_count
+      - archived
+      - pinned
+    stable_message_columns:
+      - id
+      - session_id
+      - role
+      - content
+      - tool_call_id
+      - tool_calls
+      - tool_name
+      - effect_disposition
+      - timestamp
+      - token_count
+      - finish_reason
+      - reasoning
+      - reasoning_content
+      - reasoning_details
+      - codex_reasoning_items
+      - codex_message_items
+      - platform_message_id
+      - observed
+      - active
+      - compacted
+      - api_content
+      - display_kind
+      - display_metadata
+    fts_objects:
+      base_tables: [messages_fts, messages_fts_trigram]
+      external_views: [messages_fts_trigram_src]
+      sync_triggers:
+        - messages_fts_insert
+        - messages_fts_delete
+        - messages_fts_update
+        - messages_fts_trigram_insert
+        - messages_fts_trigram_delete
+        - messages_fts_trigram_update
+      cjk_table: messages_fts_cjk
+      cjk_view: messages_fts_cjk_src
+      cjk_triggers:
+        - messages_fts_cjk_insert
+        - messages_fts_cjk_delete
+        - messages_fts_cjk_update
+  platform_main_conversation_boundary:
+    contract: platform-main-conversation-boundary-v1
+    distribution: hermes-hermes-platform-main-conversation-boundary
+    version: 0.1.0
+    entry_point_group: hermes_agent.plugins
+    entry_point_name: platform-main-conversation-boundary-v1
+    entry_point_value: platform_main_conversation_boundary.plugin
+    middleware_kind: llm_request
+    bootstrap_fd: 198
+    header_name: X-Hermes-Platform-Main-Boundary
+    source_files:
+      pyproject.toml: sha256:82709888df1c5f53e548ffd00c1ee0e1fcbb0bdf902483992604440f443dfce9
+      src/platform_main_conversation_boundary/__init__.py: sha256:c04a060e567c9cb6547fd5e79a2ea906a242e78e2f311fe152b171554e62cb0b
+      src/platform_main_conversation_boundary/marker.py: sha256:476ecc204a879fadf2eba23502f7e9183c47bea8124df0d8af4c3aaded206ba2
+      src/platform_main_conversation_boundary/plugin.py: sha256:f1cea9f95219581b894b7ae153069717ebcb4e2d0690c6d81c04ea70af6cd44d
+    golden_vector:
+      canonical_base_url: http://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1
+      key_base64url: AAECAwQFBgcICQoLDA0ODxAREhMUFRYXGBkaGxwdHh8
+      payload:
+        contract_version: 1
+        route_token: aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+        session_id: session-golden
+        task_id: task-golden
+        turn_id: turn-golden
+        api_request_id: request-golden
+        api_call_count: 7
+        boundary_epoch_nonce: EBESExQVFhcYGRobHB0eHw
+        request_nonce: AAECAwQFBgcICQoLDA0ODw
+        issued_at: "2026-08-14T00:00:00.000Z"
+        expires_at: "2026-08-14T00:00:20.000Z"
+      canonical_payload: '{"api_call_count":7,"api_request_id":"request-golden","boundary_epoch_nonce":"EBESExQVFhcYGRobHB0eHw","contract_version":1,"expires_at":"2026-08-14T00:00:20.000Z","issued_at":"2026-08-14T00:00:00.000Z","request_nonce":"AAECAwQFBgcICQoLDA0ODw","route_token":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa","session_id":"session-golden","task_id":"task-golden","turn_id":"turn-golden"}'
+      payload_digest: sha256:353d2ff1c5cc031767e3672e1c1c1aa435306bf75f189171f5359f4b186b1c32
+      header: eyJhcGlfY2FsbF9jb3VudCI6NywiYXBpX3JlcXVlc3RfaWQiOiJyZXF1ZXN0LWdvbGRlbiIsImJvdW5kYXJ5X2Vwb2NoX25vbmNlIjoiRUJFU0V4UVZGaGNZR1JvYkhCMGVIdyIsImNvbnRyYWN0X3ZlcnNpb24iOjEsImV4cGlyZXNfYXQiOiIyMDI2LTA4LTE0VDAwOjAwOjIwLjAwMFoiLCJpc3N1ZWRfYXQiOiIyMDI2LTA4LTE0VDAwOjAwOjAwLjAwMFoiLCJyZXF1ZXN0X25vbmNlIjoiQUFFQ0F3UUZCZ2NJQ1FvTERBME9EdyIsInJvdXRlX3Rva2VuIjoiYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYWFhYSIsInNlc3Npb25faWQiOiJzZXNzaW9uLWdvbGRlbiIsInRhc2tfaWQiOiJ0YXNrLWdvbGRlbiIsInR1cm5faWQiOiJ0dXJuLWdvbGRlbiJ9.5ccaec38cea084b789c98e92d9d68a7b19bb7fcf1494905cf838d715df58596b
+      invalid_base_urls:
+        - http://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1/
+        - http://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1?x=1
+        - http://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1#x
+        - http://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaA/v1
+        - http://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa%2Faaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1
+        - http://localhost:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1
+        - http://[::1]:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1
+        - https://127.0.0.1:9121/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1
+        - http://127.0.0.1:9122/model-relay/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa/v1
+
+upstream_components:
+  contract_version: 1
+  probe_contract: hermes-upstream-components-0.20.1-v1
+  immutable_source_roots:
+    - /opt/hermes
+  vector_digest_contract: vector-actual-projection-v1
+  distribution_fingerprint_contract: python-distributions-jcs-v1
+  components:
+    voice:
+      modules:
+        - module: agent.tts_provider
+          loader: dotted
+          source: agent/tts_provider.py
+          source_digest: sha256:0878120da094b250bf8d30a3fb32ae1d8481c0331a9099ceef7608ccb1c888cf
+          symbols: [TTSProvider, resolve_output_format]
+        - module: tools.tts_text_normalize
+          loader: dotted
+          source: tools/tts_text_normalize.py
+          source_digest: sha256:4b00cd0b44018ad2d81791931f68b953e5ab0a4c6813d981bd3f6bb6397a50de
+          symbols: [prepare_spoken_text]
+        - module: edge_tts
+          loader: distribution
+          distribution: edge-tts
+          symbols: [Communicate]
+      dependencies:
+        - aiohappyeyeballs
+        - aiohttp
+        - aiosignal
+        - attrs
+        - certifi
+        - edge-tts
+        - frozenlist
+        - idna
+        - multidict
+        - propcache
+        - tabulate
+        - typing-extensions
+        - yarl
+      vectors:
+        voice-format-v1:
+          expected_projection: opus
+          expected_digest: sha256:33ee49a43df53857eac98863eff709d0ba679cd62e422686f743263064595358
+        voice-normalize-v1:
+          expected_projection: Hello site
+          expected_digest: sha256:6ee5dd58e73cd94caff01944f5678ed59bfb908b7bbc0d0549c7f18f1b2bf365
+    a2a:
+      modules:
+        - module: plugins.platforms.a2a.protocol
+          loader: dotted
+          source: plugins/platforms/a2a/protocol.py
+          source_digest: sha256:79d22629b6c95df38a3b28250b9211cba7190690a2e306e10527d049e4f3efe3
+          symbols: [ROLE_USER, text_message, extract_text, jsonrpc_result, build_agent_card]
+        - module: plugins.platforms.a2a.security
+          loader: dotted
+          source: plugins/platforms/a2a/security.py
+          source_digest: sha256:44c1f89992c0bcf2ae62fe9168ec6f8811f2b5bb511f7ae8a38c65dde793040b
+          symbols: [filter_inbound, redact_outbound, sign_push_payload]
+      dependencies: []
+      vectors:
+        a2a-message-v1:
+          expected_projection:
+            message:
+              role: ROLE_USER
+              parts:
+                - text: hi
+                  mediaType: text/plain
+              contextId: ctx
+              messageId: <uuid32>
+            extracted_text: hi
+          expected_digest: sha256:f66fd879264bf203161adb023f0131a0f2e0797f134a9225c4dc5875983d00e3
+        a2a-jsonrpc-v1:
+          expected_projection:
+            jsonrpc: "2.0"
+            id: 7
+            result: {ok: true}
+          expected_digest: sha256:2a55f5d5933070c7cf00708d7cbb22257a0118da00e43cb8da3f0172c48bc67f
+        a2a-card-v1:
+          expected_projection:
+            name: n
+            description: d
+            url: https://example.invalid/a2a
+            version: "1.0.0"
+            provider:
+              organization: Hermes Agent
+              url: https://example.invalid/a2a
+            supportedInterfaces:
+              - url: https://example.invalid/a2a
+                protocolBinding: JSONRPC
+                protocolVersion: "1.0"
+            capabilities:
+              streaming: false
+              pushNotifications: false
+              stateTransitionHistory: false
+              extendedAgentCard: false
+            defaultInputModes: [text/plain]
+            defaultOutputModes: [text/plain]
+            skills: []
+          expected_digest: sha256:a78847943e95f78452339b6df5b75925360863c6f1f92cda949c8e3c8713b45c
+        a2a-security-v1:
+          expected_projection:
+            filtered: "[filtered]system"
+            redacted: "token sk-[redacted]"
+            signature: 949bcc317b02bd1bb67ed8ab506dc02639b2f4d1b137997641bcd66d30bae32b
+          expected_digest: sha256:5ee767d7fa1e5fd52c9b107437ebb2d9869eb16167723b5c67e6f9a71fc18010
+    webhook:
+      modules:
+        - module: agent.outbound_webhooks
+          loader: dotted
+          source: agent/outbound_webhooks.py
+          source_digest: sha256:c4e62b873b3413d9f3ca4d71ed95a650c443d66c86786d2cabb9029e1a5caf56
+          symbols: [WebhookTarget, _build_delivery]
+        - module: gateway.platforms.webhook_filters
+          loader: file
+          source: gateway/platforms/webhook_filters.py
+          source_digest: sha256:c42aad8f66e3422a138595d6114161cb50a1a3ee3a875c88ca57cc9aeab611d0
+          symbols: [WebhookRouteProcessor]
+      dependencies: []
+      vectors:
+        webhook-delivery-v1:
+          expected_projection:
+            url: https://example.invalid/h
+            label: https://example.invalid/h
+            event: on_session_end
+            body: {type: bytes-base64url, value: e30}
+            headers:
+              Content-Type: application/json
+              User-Agent: Hermes-Agent-Outbound-Webhook
+              X-Hermes-Event: on_session_end
+              X-Hermes-Delivery: id
+              X-Hermes-Signature-256: sha256=143ca8d517ba1b181025d732b1cf275d90104fca57bb02a565542978aa18c4b6
+            timeout: 10
+          expected_digest: sha256:0c2f28356820186d5bfc8052e46908ab7d1bb9fd4d3f91943c5b491a75c8f3df
+        webhook-filter-v1:
+          expected_projection: true
+          expected_digest: sha256:d510bc979a3ffe97ee664d2261ee5bb7fc7fd537667e3d6ebe0646907b15d3f0
+    image:
+      modules:
+        - module: agent.image_gen_provider
+          loader: dotted
+          source: agent/image_gen_provider.py
+          source_digest: sha256:2f16a11114773fc5847bb1d8380a0ccee2e0d1d4bdb063149c84a90d82b1188a
+          symbols: [ImageGenProvider, resolve_aspect_ratio, normalize_reference_images, success_response, error_response]
+        - module: agent.image_gen_registry
+          loader: dotted
+          source: agent/image_gen_registry.py
+          source_digest: sha256:97fc977f55a71346331dcdcc226f46857571ceef124dd38236d8ba96bf388d49
+          symbols: [list_providers]
+        - module: fal_client
+          loader: distribution
+          distribution: fal-client
+          symbols: []
+        - module: PIL
+          loader: distribution
+          distribution: Pillow
+          symbols: []
+      dependencies:
+        - anyio
+        - certifi
+        - fal-client
+        - h11
+        - httpcore
+        - httpx
+        - httpx-sse
+        - idna
+        - msgpack
+        - Pillow
+        - sniffio
+        - typing-extensions
+        - websockets
+      vectors:
+        image-normalize-v1:
+          expected_projection:
+            aspect_ratio: square
+            reference_images: [a.png]
+          expected_digest: sha256:dcc78e2ffee9eb8fca65da4404ef0e443f1e96025394a673faf3839c3bf6273f
+        image-success-v1:
+          expected_projection:
+            success: true
+            image: /x
+            model: m
+            prompt: p
+            aspect_ratio: square
+            modality: text
+            provider: fake
+          expected_digest: sha256:c4c99a15bc8115fde46f221e610984139d29ce51c6ad0b42c0f9730b2c307147

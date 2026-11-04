@@ -1,0 +1,67 @@
+.sessionDeleteConfirm {
+  position: fixed;
+  z-index: 1000;
+  box-sizing: border-box;
+  width: 240px;
+  padding: 16px;
+  border: 1px solid var(--border-bright);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  background: var(--surface-elevated);
+  box-shadow: var(--shadow-modal);
+}
+
+.sessionDeleteConfirm > strong {
+  display: block;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.sessionDeleteConfirm > p {
+  margin: 8px 0 0;
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.sessionDeleteConfirm > .sessionDeleteError {
+  color: var(--error);
+}
+
+.sessionDeleteActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.sessionDeleteActions button {
+  min-height: 32px;
+  padding: 8px 16px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  background: var(--surface-secondary);
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.sessionDeleteActions button:hover:not(:disabled) {
+  color: var(--text-primary);
+  background: var(--surface-hover);
+}
+
+.sessionDeleteActions button.danger {
+  border-color: var(--error);
+  color: var(--error);
+  background: var(--error-bg);
+}
+
+.sessionDeleteActions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

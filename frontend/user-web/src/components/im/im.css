@@ -1,0 +1,123 @@
+/* ===== IM 模块（第五期 antd 重构） =====
+   骨架/卡片/Tag 基线与 experts.css、mcp.css 同源（frontend-engineering Skill）。
+   imDialogBackdrop / modalBackdrop 为 ApplicationAgentWeComPanel 共享类，留在 styles.css；
+   旧 imChannelsPage、imChannel*、imWeComDialog、imQr*、imCredential* 等专属规则在 T5 从
+   styles.css 删除（ApplicationAgentWeComPanel 仍使用的除外）。
+   暗色：页面元素用 [data-theme="dark"] 前缀（body 已由 PlatformThemeProvider 同步）；
+   Portal 内自定义元素用 .imAntDialogDark 双类。 */
+
+/* ===== 模块页骨架：灰底页面 + 白色工作面板 ===== */
+.imPage {
+  height: 100%;
+  overflow: auto;
+  padding: 16px 16px 44px;
+  color: var(--text-primary);
+  background: #f9fafb;
+}
+[data-theme="dark"] .imPage { color: #ececec; background: #212121; }
+.imPanel { width: 100%; box-sizing: border-box; padding: 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .imPanel { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+
+/* ===== 模块页头（图标容器 + 标题 + 副标题） ===== */
+.imModuleHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid #f3f4f6; }
+.imModuleHeaderMain { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.imModuleHeaderIcon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; background: #dbeafe; color: #2563eb; }
+[data-theme="dark"] .imModuleHeaderIcon { background: rgb(37 99 235 / 20%); color: #60a5fa; }
+[data-theme="dark"] .imModuleHeader { border-bottom-color: rgb(255 255 255 / 6%); }
+.imModuleHeaderText { min-width: 0; }
+.imModuleHeaderTitle { margin: 0; color: #111827; font-size: 18px; font-weight: 600; line-height: 26px; }
+[data-theme="dark"] .imModuleHeaderTitle { color: #ececec; }
+.imModuleHeaderSubtitle { margin: 2px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .imModuleHeaderSubtitle { color: #a6a6a6; }
+
+.imPanelAlert { margin-top: 12px; }
+.imLoadingText { margin: 20px 0 0; color: #6b7280; font-size: 13px; }
+[data-theme="dark"] .imLoadingText { color: #a6a6a6; }
+
+/* ===== 通道卡片 ===== */
+.imCatalogGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin: 20px 0 0; }
+.im-card {
+  display: flex; flex-direction: column; gap: 10px;
+  padding: 16px;
+  border: 1px solid #e5e7eb; border-radius: 12px; background: #fff;
+  transition: all .3s ease;
+}
+.im-card:hover { border-color: #bfdbfe; box-shadow: 0 4px 12px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .im-card { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; }
+[data-theme="dark"] .im-card:hover { border-color: rgb(37 99 235 / 55%); box-shadow: none; }
+.im-card-main { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-width: 0; }
+.im-card-open { display: flex; align-items: center; gap: 12px; flex: 1; min-width: 0; padding: 0; border: 0; background: transparent; cursor: pointer; text-align: left; }
+.im-card-open:disabled { cursor: not-allowed; }
+.im-card-open:disabled .im-card-logo,
+.im-card-open:disabled .im-card-info strong { opacity: .45; }
+.im-card-open:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; border-radius: 6px; }
+.im-card-logo { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; background: #dbeafe; color: #2563eb; font-size: 16px; font-weight: 600; }
+[data-theme="dark"] .im-card-logo { background: rgb(37 99 235 / 20%); color: #60a5fa; }
+.im-card-info { display: flex; flex-direction: column; align-items: flex-start; gap: 5px; min-width: 0; }
+.im-card-info strong { overflow: hidden; color: #111827; font-size: 15px; font-weight: 600; line-height: 22px; text-overflow: ellipsis; white-space: nowrap; }
+[data-theme="dark"] .im-card-info strong { color: #ececec; }
+.im-card-tag.ant-tag { margin: 0; padding: 0 8px; border-radius: 4px; font-size: 11px; line-height: 18px; }
+.im-card-tag.green.ant-tag { border-color: transparent; color: #16a34a; background: #f0fdf4; }
+[data-theme="dark"] .im-card-tag.green.ant-tag { color: #4ade80; background: rgb(74 222 128 / 14%); }
+.im-card-tag.red.ant-tag { border-color: transparent; color: #dc2626; background: #fef2f2; }
+[data-theme="dark"] .im-card-tag.red.ant-tag { color: #f87171; background: rgb(248 113 113 / 14%); }
+.im-card-tag.blue.ant-tag { border-color: transparent; color: #2563eb; background: #eff6ff; }
+[data-theme="dark"] .im-card-tag.blue.ant-tag { color: #60a5fa; background: rgb(37 99 235 / 16%); }
+.im-card-tag.muted.ant-tag { border-color: transparent; color: #6b7280; background: #f3f4f6; }
+[data-theme="dark"] .im-card-tag.muted.ant-tag { color: #a6a6a6; background: rgb(255 255 255 / 8%); }
+.im-card-side { display: inline-flex; align-items: center; gap: 8px; flex: none; }
+.im-card-side small { color: #6b7280; font-size: 12px; }
+[data-theme="dark"] .im-card-side small { color: #a6a6a6; }
+.im-card-session { color: #9ca3af; font-size: 11px; line-height: 16px; }
+[data-theme="dark"] .im-card-session { color: #8c8c8c; }
+
+/* ===== 企微注册弹窗（Portal） ===== */
+.imAntDialog .ant-modal-body { max-height: calc(100vh - 220px); overflow-y: auto; }
+.imRegisterHint { margin: 0 0 12px; color: #6b7280; font-size: 13px; line-height: 20px; }
+.imGuide { margin-bottom: 16px; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb; }
+.imGuide summary { padding: 8px 12px; color: #2563eb; font-size: 13px; cursor: pointer; }
+.imGuide p { margin: 0; padding: 0 12px 10px; color: #6b7280; font-size: 12px; line-height: 19px; }
+.imModeGroup { margin-bottom: 16px; }
+.imModeGroupTitle { margin: 0 0 8px; color: #111827; font-size: 14px; font-weight: 600; line-height: 22px; }
+.imModeList { display: flex; flex-direction: column; gap: 8px; }
+.imModeList .ant-radio-wrapper { align-items: flex-start; margin: 0; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; }
+.imModeList .ant-radio-wrapper-checked { border-color: #2563eb; background: #eff6ff; }
+.imModeList .ant-radio { margin-top: 3px; }
+.imModeText { display: flex; flex-direction: column; gap: 2px; }
+.imModeText strong { color: #111827; font-size: 13px; font-weight: 600; line-height: 20px; }
+.imModeText small { color: #6b7280; font-size: 12px; line-height: 18px; }
+.imQuickBindBtn.ant-btn { height: 36px; margin-bottom: 16px; border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+.imQuickBindBtn.ant-btn:hover:not(:disabled) { border-color: #93c5fd !important; color: #2563eb !important; background: #dbeafe !important; }
+.imQrSection { display: flex; align-items: center; gap: 14px; margin-bottom: 16px; padding: 14px; border: 1px solid #e5e7eb; border-radius: 8px; background: #f9fafb; }
+/* 二维码容器白底为有意保留：暗色下二维码也需白底黑码才可扫描，不做暗色配对 */
+.imQrCodeBox { display: grid; place-items: center; flex: none; padding: 8px; border-radius: 6px; background: #fff; }
+.imQrInfo { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; min-width: 0; }
+.imQrInfo strong { color: #111827; font-size: 13px; line-height: 20px; }
+.imQrInfo small { color: #6b7280; font-size: 12px; }
+.imQrInfo .uploadSpinner { color: #2563eb; }
+.imQrInfo svg:not(.uploadSpinner) { color: #55cf8b; }
+.imCredentialField { display: grid; gap: 7px; margin-bottom: 14px; }
+.imCredentialField > span { color: #374151; font-size: 13px; font-weight: 500; }
+.imRegisterAlert { margin-bottom: 14px; }
+.imRevokeArea { display: flex; align-items: center; gap: 10px; margin-top: 2px; padding-top: 12px; border-top: 1px solid #f0f0f0; }
+.imRevokeArea small { color: #6b7280; font-size: 12px; }
+
+/* Portal 暗色：双类标记命中弹窗内自定义元素 */
+.imAntDialogDark .imRegisterHint { color: #a6a6a6; }
+.imAntDialogDark .imGuide { border-color: rgb(255 255 255 / 10%); background: #242424; }
+.imAntDialogDark .imGuide summary { color: #60a5fa; }
+.imAntDialogDark .imGuide p { color: #a6a6a6; }
+.imAntDialogDark .imModeGroupTitle { color: #ececec; }
+.imAntDialogDark .imModeList .ant-radio-wrapper { border-color: #424242; }
+.imAntDialogDark .imModeList .ant-radio-wrapper-checked { border-color: rgb(37 99 235 / 55%); background: rgb(37 99 235 / 12%); }
+.imAntDialogDark .imModeText strong { color: #ececec; }
+.imAntDialogDark .imModeText small { color: #a6a6a6; }
+.imAntDialogDark .imQuickBindBtn.ant-btn { border-color: rgb(37 99 235 / 45%); color: #60a5fa; background: rgb(37 99 235 / 16%); }
+.imAntDialogDark .imQuickBindBtn.ant-btn:hover:not(:disabled) { border-color: rgb(37 99 235 / 65%) !important; color: #60a5fa !important; background: rgb(37 99 235 / 26%) !important; }
+.imAntDialogDark .imQrSection { border-color: rgb(255 255 255 / 10%); background: #242424; }
+.imAntDialogDark .imQrInfo strong { color: #ececec; }
+.imAntDialogDark .imQrInfo small { color: #a6a6a6; }
+.imAntDialogDark .imQrInfo .uploadSpinner { color: #60a5fa; }
+.imAntDialogDark .imCredentialField > span { color: #e5e7eb; }
+.imAntDialogDark .imRevokeArea { border-top-color: rgb(255 255 255 / 8%); }
+.imAntDialogDark .imRevokeArea small { color: #a6a6a6; }

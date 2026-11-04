@@ -1,0 +1,10 @@
+{
+  "schema_version": 1,
+  "type": "run.submit",
+  "client_message_id": "message-01234567",
+  "session_grant": "fixture.session.grant.token.0123456789abcdef",
+  "prompt": "请概括本周项目进展。",
+  "attachment_file_ids": [
+    "file-01234567"
+  ]
+}

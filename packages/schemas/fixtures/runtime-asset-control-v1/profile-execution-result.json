@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "operation_id": "profile-revoke-00000031",
+  "runtime_agent_profile_id": 173,
+  "action": "revoke",
+  "admission_generation": 8,
+  "status": "applied",
+  "affected_active_run_ids": [
+    "run-active-0001"
+  ],
+  "error_code": null,
+  "error_message": null
+}

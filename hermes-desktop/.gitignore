@@ -1,0 +1,13 @@
+node_modules/
+.npm-cache/
+out/
+dist/
+build/
+.electron-builder-cache/
+builder-*.log
+.env
+.env-smoke-user-data/
+*.tsbuildinfo
+*.p12
+*.pfx
+*.key

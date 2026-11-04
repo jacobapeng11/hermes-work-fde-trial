@@ -1,0 +1,39 @@
+{
+  "query": "部署",
+  "rag_results": [
+    {
+      "knowledge_base_id": 3,
+      "knowledge_base_name": "制度库",
+      "file_id": 33,
+      "filename": "制度.pdf",
+      "chunk_id": null,
+      "content": "部署证据",
+      "score": 0.91,
+      "page": 2,
+      "source_url": "/?view=knowledge&tab=personal&kb=3&file=33",
+      "image_source_url": null
+    }
+  ],
+  "wiki_results": [
+    {
+      "source_type": "wiki_page",
+      "knowledge_base_id": 2,
+      "knowledge_base_name": "制度库",
+      "slug": "concept/deploy",
+      "title": "部署",
+      "summary": "部署概念",
+      "match_snippet": "部署流程",
+      "source_url": "/?view=knowledge&tab=personal&kb=2",
+      "source_files": [
+        {
+          "file_id": 22,
+          "filename": "制度 B.pdf",
+          "source_url": "/?view=knowledge&tab=personal&kb=2&file=22"
+        }
+      ]
+    }
+  ],
+  "rag_searched_knowledge_base_ids": [3],
+  "wiki_searched_knowledge_base_ids": [2],
+  "low_confidence": false
+}

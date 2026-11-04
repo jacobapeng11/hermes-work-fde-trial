@@ -1,0 +1,217 @@
+/* ===== 新建看板弹窗（2026-11-02-001：demo 迁移，antd Modal 外壳 + 自定义内容区） =====
+   样式隔离红线：所有自定义类使用 appCenterCreate* 语义前缀；对 .ant-* 的覆盖仅限
+   .appCenterCreateModal / .appCenterAntDialogDark 作用域内，不写全局 .ant-* 规则。
+   浅色硬编码值逐条以 .appCenterAntDialogDark（portal 暗色根）配对。 */
+
+/* --- 外壳：头部（18px 标题 + 细分割线）/ 可滚动正文 / 固定底栏 --- */
+.appCenterCreateModal.ant-modal { max-width: calc(100vw - 32px); }
+.appCenterCreateModal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  max-height: calc(90vh - 48px);
+}
+.appCenterCreateModal .ant-modal-header { flex-shrink: 0; margin-bottom: 0; padding-bottom: 16px; border-bottom: 1px solid #f3f4f6; }
+.appCenterCreateModal .ant-modal-title { font-size: 18px; font-weight: 700; letter-spacing: -0.01em; }
+.appCenterCreateModal .ant-modal-body { flex: 1 1 auto; min-height: 0; overflow-y: auto; padding: 24px; }
+.appCenterCreateModal .ant-modal-body::-webkit-scrollbar { width: 6px; }
+.appCenterCreateModal .ant-modal-body::-webkit-scrollbar-thumb { background: #e5e7eb; border-radius: 4px; }
+.appCenterCreateModal .ant-modal-footer { flex-shrink: 0; margin: 0; padding: 0; overflow: hidden; background: #fafafa; border-top: 1px solid #f3f4f6; border-radius: 0 0 10px 10px; }
+.appCenterCreateFooter { display: flex; justify-content: flex-end; gap: 12px; padding: 14px 24px; }
+
+/* --- 区块 A：连接说明 Banner（浅蓝底 + Info 图标） --- */
+.appCenterCreateBanner { display: flex; gap: 12px; padding: 16px; border: 1px solid #dbeafe; border-radius: 8px; background: #eff6ff; color: #4b5563; }
+.appCenterCreateBanner p { margin: 0; font-size: 13px; line-height: 1.5; }
+.appCenterCreateBanner strong { color: #1f2937; font-weight: 600; }
+.appCenterCreateBannerIcon { flex-shrink: 0; margin-top: 2px; color: #3b82f6; font-size: 16px; }
+
+/* --- 区块标题（方式一蓝指示条 / 方式二灰指示条） --- */
+.appCenterCreateCardTitle { display: flex; align-items: center; gap: 8px; margin: 0 0 16px; color: #111827; font-size: 15px; font-weight: 600; line-height: 22px; }
+.appCenterCreateCardTitle::before { content: ""; flex-shrink: 0; width: 3px; height: 16px; border-radius: 2px; background: #2563eb; }
+.appCenterCreateCardTitleMuted::before { background: #d1d5db; }
+
+/* --- 区块 B：方式一白卡 + 分段控制器（凸起质感） --- */
+.appCenterCreateCard { margin-top: 24px; padding: 20px; border: 1px solid #e5e7eb; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 2%); }
+.appCenterCreateSegmented { display: inline-flex; gap: 4px; max-width: 100%; padding: 4px; border-radius: 8px; background: #f4f4f5; }
+.appCenterCreateSegItem {
+  padding: 6px 16px;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #52525b;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+  transition: all .2s cubic-bezier(.4, 0, .2, 1);
+}
+.appCenterCreateSegItem:hover:not(:disabled) { color: #111827; }
+.appCenterCreateSegItem.is-active { background: #fff; color: #2563eb; font-weight: 500; box-shadow: 0 1px 3px rgba(0, 0, 0, .1), 0 1px 2px rgba(0, 0, 0, .06); }
+.appCenterCreateSegItem:disabled { cursor: not-allowed; opacity: .6; }
+
+/* --- 区块 B：快捷提示词 Tag 微卡片（白底边框 / hover 浅蓝 / 选中蓝底发光） --- */
+.appCenterCreateTagList { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; }
+.appCenterCreateTag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  background: #fff;
+  color: #4b5563;
+  font-size: 13px;
+  line-height: 20px;
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .02);
+  transition: all .2s ease;
+}
+.appCenterCreateTag:hover:not(:disabled) { border-color: #93c5fd; background: #f8fafc; color: #1d4ed8; }
+.appCenterCreateTag.is-active {
+  border-color: #2563eb;
+  background: #eff6ff;
+  color: #2563eb;
+  font-weight: 500;
+  box-shadow: 0 0 0 1px #2563eb, 0 2px 4px rgba(37, 99, 235, .1);
+}
+.appCenterCreateTag:disabled { cursor: not-allowed; opacity: .6; }
+.appCenterCreateTagIcon { color: #9ca3af; font-size: 12px; transition: color .2s; }
+.appCenterCreateTag:hover:not(:disabled) .appCenterCreateTagIcon,
+.appCenterCreateTag.is-active .appCenterCreateTagIcon { color: #2563eb; }
+
+/* --- 区块 C：方式二模板库（2026-11-02-005：真实广场看板横向滑动卡轨 + 从空白开始）。
+   形态对齐首页案例广场（chatHomeBoardRow）：nowrap + overflow-x 单轴 + 隐藏滚动条；
+   卡片 180px 定宽禁压缩、110px iframe 缩略（300% + scale 契约）+ 标题单行截断。 --- */
+.appCenterCreateSection { margin-top: 24px; }
+.appCenterCreateBoardRow {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 12px;
+  padding-bottom: 4px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.appCenterCreateBoardRow::-webkit-scrollbar { display: none; }
+.appCenterCreateBoardCard {
+  display: flex;
+  flex-direction: column;
+  flex: 0 0 180px;
+  padding: 0;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  background: #fff;
+  overflow: hidden;
+  cursor: pointer;
+  text-align: left;
+  transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.appCenterCreateBoardCard:hover:not(:disabled) {
+  transform: translateY(-3px);
+  border-color: #93c5fd;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .1), 0 4px 6px -4px rgba(0, 0, 0, .1);
+}
+.appCenterCreateBoardCard.is-active { border-color: #2563eb; box-shadow: 0 0 0 1px #2563eb, 0 2px 4px rgba(37, 99, 235, .1); }
+.appCenterCreateBoardCard:disabled { cursor: not-allowed; opacity: .6; }
+.appCenterCreateBoardThumb {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 110px;
+  overflow: hidden;
+  background: #f3f4f6;
+}
+/* iframe 缩略不支持 object-fit，300% + scale(1/3) 契约等效铺满裁切（同首页广场） */
+.appCenterCreateBoardThumb iframe {
+  width: 300%;
+  height: 300%;
+  border: 0;
+  background: #fff;
+  pointer-events: none;
+  transform: scale(0.3333);
+  transform-origin: top left;
+}
+.appCenterCreateBoardName {
+  display: block;
+  overflow: hidden;
+  padding: 10px 12px;
+  color: #374151;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.appCenterCreateBoardCard.is-active .appCenterCreateBoardName { color: #2563eb; }
+.appCenterCreateBoardSkeleton { border-style: dashed; cursor: default; }
+.appCenterCreateBoardEmpty { margin: 8px 0 0; color: #9ca3af; font-size: 12px; line-height: 18px; }
+
+/* 空白创建卡：虚线边框 + 灰加号封面，hover 不位移 */
+.appCenterCreateBlankCard { border-style: dashed; border-color: #d1d5db; box-shadow: none; }
+.appCenterCreateBlankCard:hover:not(:disabled) { background: #f9fafb; border-color: #60a5fa; box-shadow: none; transform: none; }
+.appCenterCreateBlankCard.is-active { border-color: #2563eb; background: #eff6ff; box-shadow: 0 0 0 1px #2563eb; }
+.appCenterCreateBlankCover {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 110px;
+  border-bottom: 0;
+  background: #fafafa;
+}
+.appCenterCreateBlankIcon { width: 24px; height: 24px; color: #d1d5db; transition: color .2s; }
+.appCenterCreateBlankCard:hover:not(:disabled) .appCenterCreateBlankIcon,
+.appCenterCreateBlankCard.is-active .appCenterCreateBlankIcon { color: #2563eb; }
+
+/* --- 键盘焦点可见（项目可访问性惯例） --- */
+.appCenterCreateSegItem:focus-visible,
+.appCenterCreateTag:focus-visible,
+.appCenterCreateBoardCard:focus-visible { outline: 2px solid var(--border-focus, #2563eb); outline-offset: 2px; }
+
+/* --- 提交失败提示 --- */
+.appCenterCreateError.ant-alert { margin-top: 16px; text-align: left; }
+
+/* ===== 暗色配对（portal 根 .appCenterAntDialogDark；antd 自身组件色交给 darkAlgorithm） ===== */
+.appCenterAntDialogDark .appCenterCreateModal .ant-modal-header { border-bottom-color: rgb(255 255 255 / 8%); }
+.appCenterAntDialogDark .appCenterCreateModal .ant-modal-body::-webkit-scrollbar-thumb { background: #424242; }
+.appCenterAntDialogDark .appCenterCreateModal .ant-modal-footer { background: #1b1b1b; border-top-color: rgb(255 255 255 / 8%); }
+.appCenterAntDialogDark .appCenterCreateBanner { border-color: rgb(37 99 235 / 35%); background: rgb(0 63 122 / 18%); color: #b4b4b4; }
+.appCenterAntDialogDark .appCenterCreateBanner strong { color: #ececec; }
+.appCenterAntDialogDark .appCenterCreateBannerIcon { color: #55a9ee; }
+.appCenterAntDialogDark .appCenterCreateCardTitle { color: #ececec; }
+.appCenterAntDialogDark .appCenterCreateCardTitle::before { background: #176cae; }
+.appCenterAntDialogDark .appCenterCreateCardTitleMuted::before { background: #4b5563; }
+.appCenterAntDialogDark .appCenterCreateCard { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+.appCenterAntDialogDark .appCenterCreateSegmented { background: #2f2f2f; }
+.appCenterAntDialogDark .appCenterCreateSegItem { color: #a6a6a6; }
+.appCenterAntDialogDark .appCenterCreateSegItem:hover:not(:disabled) { color: #ececec; }
+.appCenterAntDialogDark .appCenterCreateSegItem.is-active { background: #303030; color: #55a9ee; box-shadow: 0 1px 3px rgba(0, 0, 0, .4); }
+.appCenterAntDialogDark .appCenterCreateTag { border-color: rgb(255 255 255 / 12%); background: #212121; color: #b4b4b4; }
+.appCenterAntDialogDark .appCenterCreateTag:hover:not(:disabled) { border-color: #176cae; background: #2f2f2f; color: #55a9ee; }
+.appCenterAntDialogDark .appCenterCreateTag.is-active { border-color: #176cae; background: rgb(0 63 122 / 25%); color: #55a9ee; box-shadow: 0 0 0 1px #176cae, 0 2px 4px rgba(0, 63, 122, .3); }
+.appCenterAntDialogDark .appCenterCreateTagIcon { color: #8c8c8c; }
+.appCenterAntDialogDark .appCenterCreateTag:hover:not(:disabled) .appCenterCreateTagIcon,
+.appCenterAntDialogDark .appCenterCreateTag.is-active .appCenterCreateTagIcon { color: #55a9ee; }
+.appCenterAntDialogDark .appCenterCreateBoardCard { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; }
+.appCenterAntDialogDark .appCenterCreateBoardCard:hover:not(:disabled) { border-color: #176cae; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, .5); }
+.appCenterAntDialogDark .appCenterCreateBoardCard.is-active { border-color: #176cae; box-shadow: 0 0 0 1px #176cae, 0 2px 4px rgba(0, 63, 122, .3); }
+.appCenterAntDialogDark .appCenterCreateBoardThumb { background: #2f2f2f; }
+.appCenterAntDialogDark .appCenterCreateBoardThumb iframe { background: #1b1b1b; }
+.appCenterAntDialogDark .appCenterCreateBoardName { color: #b4b4b4; }
+.appCenterAntDialogDark .appCenterCreateBoardCard.is-active .appCenterCreateBoardName { color: #55a9ee; }
+.appCenterAntDialogDark .appCenterCreateBoardEmpty { color: #8c8c8c; }
+.appCenterAntDialogDark .appCenterCreateBlankCard { border-color: #4b5563; }
+.appCenterAntDialogDark .appCenterCreateBlankCard:hover:not(:disabled) { background: #212121; border-color: #176cae; }
+.appCenterAntDialogDark .appCenterCreateBlankCard.is-active { border-color: #176cae; background: rgb(0 63 122 / 25%); box-shadow: 0 0 0 1px #176cae; }
+.appCenterAntDialogDark .appCenterCreateBlankCover { background: #212121; }
+.appCenterAntDialogDark .appCenterCreateBlankIcon { color: #4b5563; }
+.appCenterAntDialogDark .appCenterCreateBlankCard:hover:not(:disabled) .appCenterCreateBlankIcon,
+.appCenterAntDialogDark .appCenterCreateBlankCard.is-active .appCenterCreateBlankIcon { color: #55a9ee; }
+
+/* ===== 窄屏收缩（模板库为横向滑动卡轨，窄屏靠滑动浏览，无需降列） ===== */
+@media (max-width: 760px) {
+  .appCenterCreateTagList { gap: 8px; }
+  .appCenterCreateSegmented { display: flex; flex-wrap: wrap; }
+}
+@media (max-width: 520px) {
+  .appCenterCreateFooter { padding: 12px 16px; }
+  .appCenterCreateModal .ant-modal-body { padding: 16px; }
+}

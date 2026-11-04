@@ -1,0 +1,6 @@
+# Compatibility dependencies retained from the fixed Hermes 0.19.1 uv.lock.
+# Do not resolve or upgrade these packages at build time.
+audioop-lts==0.2.2; python_version >= '3.13' \
+    --hash=sha256:51c916108c56aa6e426ce611946f901badac950ee2ddaf302b7ed35d9958970d
+simple-term-menu==1.6.6 \
+    --hash=sha256:c2a869efa7a9f7e4a9c25858b42ca6974034951c137d5e281f5339b06ed8c9c2

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuites name="vitest tests" tests="46" failures="0" errors="0" time="7.353">
+    <testsuite name="src/pages/chatRunProjection.test.ts" timestamp="2026-07-27T06:52:21.734Z" hostname="demo" tests="46" failures="0" errors="0" skipped="0" time="0.656246928">
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; first visible agent event &gt; accepts only events that produce visible agent output" time="0.020723356">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; reports completed-only assistant text as a visible mutation" time="0.074442915">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps one assistant placeholder from submit through started and removes it for real content" time="0.060011609">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; settles cancellation and removes only an empty assistant placeholder" time="0.001430012">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; preserves a real partial assistant answer while settling cancellation" time="0.017906254">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; reports rendered progress but not parked, blank, transport, or duplicate events as visible" time="0.003082265">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; uses the stable rendered tool group as the visible mutation target" time="0.005794306">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; creates a correlated optimistic turn and binds it to the accepted run" time="0.005018746">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; attaches stream errors to the active assistant without deleting partial output" time="0.004742589">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; marks a request failure before acceptance on the optimistic assistant" time="0.003320517">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; ignores pre-run asset status events" time="0.00584006">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; ignores pre-run asset reload failures" time="0.000400996">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; projects one runtime run into stable user and assistant bubbles with seq dedupe" time="0.004077692">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; projects the live scheduled source onto the user bubble" time="0.000553713">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; merges a replayed scheduled source into an existing optimistic user bubble" time="0.014823677">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; hydrates scheduled source on the latest user bubble during reconnect" time="0.004487161">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps existing projection state when an older seq arrives" time="0.000283214">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps reasoning separate from final content and deduplicates replayed chunks" time="0.018798193">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; attaches TTFT only to the first effective output event" time="0.019573449">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; ignores blank reasoning and attaches TTFT to the first visible reasoning row" time="0.061133079">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; uses camelized toolName and preserves TTFT across tool updates" time="0.04244351">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; attaches TTFT to the first visible stable subagent event" time="0.013127399">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; ignores an unstable subagent event instead of creating a background task" time="0.027053435">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps TTFT on a tool row as the tool status changes" time="0.0005726">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; preserves preview and TTFT when a stable tool completes" time="0.027960628">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; correlates unstable lifecycle events without merging later same-name calls" time="0.037687799">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; does not downgrade a stable terminal tool on a late running event" time="0.013062908">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; starts a new reasoning segment after a tool boundary" time="0.020566261">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps the run active while a background delegation is parked and projects its progress" time="0.011645046">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.failed to failed without an explicit status" time="0.000386064">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.error to failed without an explicit status" time="0.042899866">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.interrupted to interrupted without an explicit status" time="0.000555657">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.canceled to interrupted without an explicit status" time="0.007026812">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.complete status failed to failed" time="0.000443935">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.complete status error to failed" time="0.000251764">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.complete status timeout to failed" time="0.004324245">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.complete status interrupted to interrupted" time="0.000379069">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.complete status canceled to interrupted" time="0.000376945">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; maps subagent.complete status cancelled to interrupted" time="0.000279827">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps the run active while the runtime transport reconnects and clears the notice after resume" time="0.005255029">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; shows post-turn self-evolution without re-opening a completed user turn" time="0.000544758">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; keeps agent progress out of the terminal answer until message completion" time="0.010971955">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; removes only the exact terminal-answer suffix from the final activity segment" time="0.000562338">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; removes an activity segment when it is exactly the terminal answer" time="0.008103448">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; removes persisted fallback reasoning and activity copies of the terminal answer" time="0.029449208">
+        </testcase>
+        <testcase classname="src/pages/chatRunProjection.test.ts" name="chat run projection reducer &gt; preserves a completed tool input when updating its stable call" time="0.003359677">
+        </testcase>
+    </testsuite>
+</testsuites>

@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "type": "channel.turn.submit",
+  "request_id": "fastlane-request-0001",
+  "gateway_instance_id": "backend-1:8011:im-gateway",
+  "channel_lease_epoch": 7,
+  "envelope": {
+    "schema_version": 1,
+    "command_id": "cmd_fastlane000000000000000000000000000000000001",
+    "runtime_id": "runtime-115",
+    "binding_id": "193",
+    "admission_generation": 11,
+    "payload_digest": "735ab9c4b2d0af1e500ea78bfff2a7af22dbf9796a6718b8c7286952dc4b04c4",
+    "issued_at": "2026-08-14T08:00:00Z",
+    "deadline_at": "2026-08-14T08:10:00Z",
+    "payload": {
+      "type": "internal_turn",
+      "source": "personal_wecom",
+      "run_id": "rr-fastlane-00000001",
+      "client_message_id": "im-wecom-message-00000001",
+      "identity": {
+        "user_id": 7,
+        "org_id": 1,
+        "session_id": "session-wecom-0001",
+        "profile_id": "default",
+        "runtime_agent_profile_id": 51,
+        "profile_desired_revision": 27,
+        "profile_applied_revision": 27,
+        "profile_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+        "skill_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+        "mcp_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+        "knowledge_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+        "model_id": "19",
+        "upstream_model_id": "deepseek-chat",
+        "context_length": 128000,
+        "runtime_capabilities": {
+          "reasoning_replay": "optional",
+          "thinking_mode": "provider_default"
+        },
+        "config_revision": "generation-3",
+        "admission_generation": 11,
+        "max_prompt_bytes": 1048576,
+        "max_output_tokens": 32768
+      },
+      "prompt": "继续分析",
+      "attachment_file_ids": [],
+      "channel_execution_lease": {
+        "version": 1,
+        "lease_id": "channel-lease-00000001",
+        "org_id": 1,
+        "channel_id": 31,
+        "target_type": "personal_agent",
+        "target_id": 115,
+        "subject_user_id": 7,
+        "runtime_id": "runtime-115",
+        "binding_id": "193",
+        "runtime_session_id": "session-wecom-0001",
+        "model_entry_id": "19",
+        "profile_id": "default",
+        "gateway_instance_id": "backend-1:8011:im-gateway",
+        "channel_lease_epoch": 7,
+        "channel_generation": 4,
+        "config_generation": 3,
+        "admission_generation": 11,
+        "authorization_epoch": 1,
+        "issued_at": "2026-08-14T08:00:00Z",
+        "expires_at": "2026-08-14T08:02:00Z",
+        "signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      }
+    }
+  }
+}

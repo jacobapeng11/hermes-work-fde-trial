@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "command_id": "command-01234567",
+  "runtime_id": "runtime-application-3",
+  "binding_id": "binding-01234567",
+  "admission_generation": 11,
+  "payload_digest": "7c35f8e7b6f6bcebcba0ba4b80170f6bbb26cd6e3c4a187221a2f5217e1a0ae8",
+  "issued_at": "2026-08-07T00:00:00Z",
+  "deadline_at": "2026-08-07T00:10:00Z",
+  "payload": {
+    "type": "internal_turn",
+    "source": "openapi",
+    "run_id": "run-01234567",
+    "client_message_id": "message-01234567",
+    "identity": {
+      "user_id": 42,
+      "org_id": 7,
+      "session_id": "session-01234567",
+      "profile_id": "application-agent-3",
+      "runtime_agent_profile_id": 0,
+      "profile_desired_revision": 0,
+      "profile_applied_revision": 0,
+      "profile_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "skill_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "mcp_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "knowledge_digest": "sha256:0000000000000000000000000000000000000000000000000000000000000000",
+      "model_id": "model-3",
+      "context_length": 1000000,
+      "runtime_capabilities": {
+        "reasoning_replay": "not_supported",
+        "thinking_mode": "provider_default"
+      },
+      "config_revision": "revision-18",
+      "admission_generation": 11,
+      "max_prompt_bytes": 1048576,
+      "max_output_tokens": 32768
+    },
+    "prompt": "请概括本周项目进展。",
+    "attachment_file_ids": []
+  }
+}

@@ -1,0 +1,105 @@
+/* ===== 会话主轴布局（2026-11-03-014） =====
+   三段式 Flex：Header 由 .mainArea 的 60px 固定行承担（等效 flex-shrink: 0），
+   .messageFeedStage 自适应滚动，.composerFooter 固定沉底。
+   .main-axis 是唯一宽度权威（max-width 850px + 居中 + 左右 24px），
+   消息列与输入区共用同一主轴容器：空会话欢迎态与对话态切换不再发生宽度跳变。
+   本文件接管 styles.css 中的会话车道布局规则；历史微调 014 §10 的
+   「宽屏内容占满主区」条款自此作废，会话车道恒定 850px。 */
+
+/* 2026-11-03-015 宽度调优：主轴 850px → 1200px（宽屏利用率），可读性由气泡级
+   max-width 800px 承担（styles.css .message），主轴本身不再收窄；
+   --conversation-lane-max 与 .main-axis 共用同一变量，改宽度只动这一处。 */
+.main-axis {
+  width: 100%;
+  max-width: var(--conversation-lane-max, 1200px);
+  margin: 0 auto;
+  padding: 0 32px;
+}
+
+.conversation {
+  --conversation-lane-max: 1200px;
+  --conversation-gutter: 24px;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 0;
+  transition: background .25s ease;
+}
+
+.messageFeedStage {
+  position: relative;
+  flex: 1 1 0;
+  min-width: 0;
+  min-height: 0;
+  overflow: hidden;
+}
+
+.messageFeed {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  min-width: 0;
+  min-height: 0;
+  padding: 32px 0 40px;
+  overflow: auto;
+  overflow-anchor: none;
+}
+.messageFeed[data-empty="true"] { padding-bottom: 12px; }
+.messageFeed[data-empty="true"]:has(.chatHomePanel) { padding-top: 16px; }
+
+/* ChatHome 空会话态（2026-11-02-002）：对话区整体灰底，白卡与输入卡靠底色差分层。
+   2026-11-03-014：原 :has(.chatHomePanel) 同时改背景与 --conversation-lane-max，
+   是欢迎态 → 对话态切换时输入框宽度跳变的根因；车道限宽已恒定由 .conversation
+   承担，本规则只保留灰底语义（背景切换带 transition 平滑过渡）。 */
+.conversation:has(.chatHomePanel) { background: #f9fafb; }
+.appShell[data-theme="dark"] .conversation:has(.chatHomePanel) { background: var(--workspace-main); }
+
+.messageFeedInner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 28px;
+  min-height: 100%;
+}
+.messageFeedInner[data-has-messages="true"] { justify-content: flex-start; }
+.messageFeedInner[data-has-messages="false"] { justify-content: flex-start; }
+
+/* 底部固定输入区（2026-11-03-014）：flex 固定沉底（不参与滚动、不用绝对定位），
+   向上微渐变让滚动末行内容从输入卡下方淡出；输入卡与免责声明同处一个
+   .main-axis，与消息列宽度恒等。渐变底色跟随会话态灰底/白底切换。 */
+.composerFooter {
+  flex: 0 0 auto;
+  padding-top: 6px;
+  background: linear-gradient(to top, var(--workspace-main, var(--surface-primary)) 72%, transparent);
+}
+.conversation:has(.chatHomePanel) .composerFooter {
+  background: linear-gradient(to top, #f9fafb 72%, transparent);
+}
+.appShell[data-theme="dark"] .conversation:has(.chatHomePanel) .composerFooter {
+  background: linear-gradient(to top, var(--workspace-main) 72%, transparent);
+}
+
+.composerCard {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px 10px 8px;
+  border: 1px solid var(--workspace-border, var(--border-bright));
+  border-radius: 16px;
+  background: var(--workspace-panel, var(--surface-secondary));
+  box-shadow: 0 4px 20px -2px rgb(0 0 0 / 3%), var(--surface-highlight);
+  font-family: var(--font-sans);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast), background var(--transition-fast);
+}
+.composerCard:focus-within { border-color: #93c5fd; box-shadow: 0 0 0 3px rgb(37 99 235 / 10%), 0 8px 30px -4px rgb(37 99 235 / 10%); }
+.appShell[data-theme="dark"] .composerCard:focus-within { border-color: var(--border-focus); box-shadow: 0 0 0 3px color-mix(in srgb, var(--border-focus) 14%, transparent); }
+
+/* 免责提示：输入卡正下方（同一主轴内），居中弱化 */
+.composerDisclaimer { margin: 12px auto 20px; padding: 0; color: #9ca3af; font-size: 12px; font-weight: 400; text-align: center; }
+
+/* ===== 窄屏（≤760px）：主轴左右留白收窄，滚动区上下 padding 收紧 ===== */
+@media (max-width: 760px) {
+  .main-axis { padding: 0 16px; }
+  .conversation { --conversation-gutter: 16px; }
+  .messageFeed { padding-top: 22px; padding-bottom: 22px; }
+  .composerCard { padding: 10px 10px 8px; }
+}

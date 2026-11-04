@@ -1,0 +1,62 @@
+{
+  "profiles": [
+    {
+      "profile_id": 11,
+      "runtime_workspace_id": 7,
+      "profile_kind": "expert",
+      "ownership_type": "market_installed",
+      "status": "active",
+      "display_name_key": "写作专家",
+      "desired_revision": 3,
+      "applied_revision": 3
+    }
+  ],
+  "packages": [
+    {
+      "package_id": 21,
+      "org_id": 1,
+      "status": "published",
+      "execution_status": "enabled",
+      "market_name_key": "写作专家",
+      "current_version_id": 31
+    }
+  ],
+  "versions": [
+    {
+      "version_id": 31,
+      "package_id": 21,
+      "status": "approved",
+      "skill_ids": [41],
+      "unresolved_skill_refs": []
+    }
+  ],
+  "installations": [
+    {
+      "binding_id": 51,
+      "runtime_workspace_id": 7,
+      "package_id": 21,
+      "version_id": 31,
+      "profile_id": 11,
+      "status": "enabled",
+      "installation_epoch": 1
+    }
+  ],
+  "skill_bindings": [
+    {
+      "binding_id": 61,
+      "profile_id": 11,
+      "skill_id": 41,
+      "skill_version_id": null,
+      "version_policy": "follow_latest",
+      "status": "enabled"
+    }
+  ],
+  "skills": [
+    {
+      "asset_id": 41,
+      "current_version_id": 71
+    }
+  ],
+  "skill_versions": [71],
+  "incomplete_rollouts": []
+}

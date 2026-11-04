@@ -1,0 +1,25 @@
+{
+  "root_key_base64url": "cnVudGltZS1wcm92aWRlci1yb3V0ZS1yb290LWtleS0zMmJ5dGVzISE",
+  "binding": {
+    "runtime_id": "runtime-10002",
+    "binding_type": "personal_runtime",
+    "binding_id": 193,
+    "pvc_storage_identity_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+  },
+  "grant": {
+    "version": 1,
+    "capsule": "prc1.3.AQEBAQEBAQEBAQEB.uurSaWlPMnS9XviiQ0CM_MlnMsdHXCGSmBTMWtlVBXYNseJd7E3S6OfvbUU6FOte1F2MlNlCzpchzw06s73QUVBV_Y_xVuUyjIFPaC3S2DQRPlwawugqfwuEzvS-8J7KBq7IgiAOl04uO2Bm1sQWzji3ADWaUJZZVNazqe0emJYuvtVCElGtxYtzg1aZAlzWsrJ5FziHcrpzfxv7MR4wFaKjh8mWHwfCKm6i9Z0y9jJS066U6Rxsu1-mmkdiWdyhoHSypQNgBM3srOKcK0eFcddsg9i-CFBEdBMiJnARHnPfPLInM_E4Pkc8yhp8seO9CfB-7jRCHgsDb6d9cXIGPTopyLP5VL1QakxYxHISWjWQk4rEPaj6NZpEYS_1WrEbFRgDtdZRtHFsHlLAmi39c8zulte2tjl-dGbNoc4KPCwAcYwWMum3takAHfIe0mxZT-d2WkGFOQ-JJOwDmR6z5vqrpV8gzbRW0poUdfRSEUFHWK015laJeIiIS8FYlLE5r042UmEPP3wQhcqg5V5wVIHbCIJ5eR926nZFBGxpM5PWfCToJFR6iPUN4Lr0WQILNMQG1BF4eCskNPEufI9iXq2Y57gHS3tDuPjIbr0l1eWayRUN8nQY_3Ewo9TyccApn5bt99g7s7h_wU71_skjOUxkQMcUZsMGZZ3xj6SngLSkbuzpntuRNMydPp_1EhO6x4Yc7Pfx6_kBjojySNdZGD0PVlWDiP07do3EbG6KDs7lZyk1JuB3RideLlkG4WDGLfllnx-OlDPc6x0C0M2Uyiu2pApb7pf7Fs7H",
+    "digest": "sha256:1c12a97fbd2355b3ff40df82f1a7eedf6994feb229e4402353c9e34da882d47a"
+  },
+  "expected": {
+    "org_id": 1,
+    "model_entry_id": 21,
+    "provider_id": 17,
+    "upstream_model_id": "qwen3.7-plus",
+    "provider_base_url": "https://coding.dashscope.aliyuncs.com/v1",
+    "provider_api_key": "dashscope-secret-value",
+    "model_catalog_version": 35,
+    "provider_catalog_version": 35
+  },
+  "now": "2026-08-18T08:01:00Z"
+}

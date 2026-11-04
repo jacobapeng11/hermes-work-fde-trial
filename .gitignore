@@ -1,0 +1,32 @@
+# Private configuration and credentials
+.env
+**/.env
+**/.env.*
+!backend/env.example
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*kubeconfig*
+
+# Local build and runtime data
+__pycache__/
+*.pyc
+.venv/
+node_modules/
+dist/
+out/
+build/
+.runtime/
+logs/
+*.log
+coverage/
+playwright-report/
+test-results/
+*.sqlite
+*.db
+*.dump
+*.pid
+*.tsbuildinfo
+desktop_release/

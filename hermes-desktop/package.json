@@ -1,0 +1,52 @@
+{
+  "name": "cowork-hermes-desktop",
+  "version": "1.0.22",
+  "private": true,
+  "type": "module",
+  "description": "Sun-Cowork cross-platform desktop client",
+  "author": "Hermes",
+  "main": "out/main/index.js",
+  "scripts": {
+    "dev": "electron-vite dev",
+    "build": "tsc -p tsconfig.node.json && tsc -p tsconfig.web.json && electron-vite build",
+    "typecheck": "tsc -p tsconfig.node.json --noEmit && tsc -p tsconfig.web.json --noEmit",
+    "preview": "electron-vite preview",
+    "test:desktop": "node --experimental-strip-types --import ./tests/ts-resolver-register.mjs --test tests/*.test.mjs tests/renderer/*.test.mjs tests/packaging/*.test.mjs tests/authentication/*.test.mjs",
+    "write-update-config": "node scripts/write-update-config.mjs",
+    "package:win": "npm run write-update-config && npm run build && electron-builder --win --publish never",
+    "package:mac": "npm run write-update-config && npm run build && electron-builder --mac --publish never",
+    "release:win": "npm run write-update-config && npm run build && electron-builder --win --publish always",
+    "release:mac": "npm run write-update-config && npm run build && electron-builder --mac --publish always"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.6.1",
+    "@hermes-cloud/schemas": "file:../packages/schemas",
+    "@vitejs/plugin-react": "^4.3.4",
+    "antd": "^5.29.3",
+    "chromium-bidi": "^0.6.3",
+    "electron-updater": "^6.6.2",
+    "lucide-react": "^0.468.0",
+    "playwright-core": "^1.52.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-dropzone": "^14.3.8",
+    "react-markdown": "^10.1.0",
+    "react-qr-code": "^2.0.18",
+    "remark-gfm": "^4.0.1"
+  },
+  "devDependencies": {
+    "@electron-toolkit/tsconfig": "^2.0.0",
+    "@noble/hashes": "^1.8.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "electron": "^44.7.0",
+    "electron-builder": "^26.0.12",
+    "electron-vite": "^3.1.0",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.11"
+  },
+  "overrides": {
+    "@noble/hashes": "^1.8.0"
+  }
+}

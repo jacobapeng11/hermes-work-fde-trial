@@ -1,0 +1,30 @@
+{
+  "token_type": "session_grant",
+  "schema_version": 1,
+  "user_id": 42,
+  "org_id": 7,
+  "runtime_id": "runtime-personal-42",
+  "admission_generation": 11,
+  "session_id": "session-01234567",
+  "profile_id": "profile-9",
+  "runtime_agent_profile_id": 9,
+  "model_id": "model-3",
+  "upstream_model_id": "qwen3-235b-a22b",
+  "context_length": 1000000,
+  "runtime_capabilities": {
+    "reasoning_replay": "not_supported",
+    "thinking_mode": "provider_default"
+  },
+  "config_revision": "revision-18",
+  "profile_desired_revision": 27,
+  "profile_applied_revision": 27,
+  "profile_digest": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+  "skill_digest": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+  "mcp_digest": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+  "knowledge_digest": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+  "max_prompt_bytes": 1048576,
+  "max_output_tokens": 32768,
+  "attachments": [],
+  "issued_at": 1786070400,
+  "expires_at": 1786072200
+}

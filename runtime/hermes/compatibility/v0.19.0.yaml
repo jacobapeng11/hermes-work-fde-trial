@@ -1,0 +1,17 @@
+schema_version: 1
+upstream_version: v0.19.0
+upstream_commit: f4df260f26c93f15694698869f3ea8e965eea301
+state_schema: 22
+config_schema: 33
+supported_pod_configs:
+  personal_agent: true
+  application_agent: true
+required_checks:
+  - source_integrity
+  - environment_integrity
+  - clean_start
+  - personal_runtime_smoke
+  - application_runtime_smoke
+  - storage_clone_upgrade
+  - restart_after_upgrade
+  - forward_failure_freeze

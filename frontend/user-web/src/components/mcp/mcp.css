@@ -1,0 +1,110 @@
+/* ===== MCP 模块（第五期 antd 重构） =====
+   骨架/卡片/Tag 基线与 experts.css 同源（frontend-engineering Skill 模块页面骨架基线）。
+   assetHeader 类留在 styles.css（ApplicationAgentConfigurationPanel 自身 JSX 使用）；
+   modalBackdrop / imDialogBackdrop 为跨组件共享类，同样保留在 styles.css。
+   暗色：页面元素用 [data-theme="dark"] 前缀（body 已由 PlatformThemeProvider 同步）；
+   Portal 内自定义元素用 .mcpAntDialogDark 双类（与第四期 expertAntDialog 模式一致）。 */
+
+/* ===== 模块页骨架：灰底页面 + 白色工作面板 ===== */
+.mcpPage {
+  height: 100%;
+  overflow: auto;
+  padding: 16px 16px 44px;
+  color: var(--text-primary);
+  background: #f9fafb;
+}
+[data-theme="dark"] .mcpPage { color: #ececec; background: #212121; }
+.mcpWorkspace { width: 100%; box-sizing: border-box; padding: 16px; border: 1px solid #e5e7eb; border-radius: 8px; background: #fff; box-shadow: 0 1px 2px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .mcpWorkspace { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; box-shadow: none; }
+
+/* ===== 模块页头（图标容器 + 标题 + 副标题） ===== */
+.mcpModuleHeader { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding-bottom: 12px; border-bottom: 1px solid #f3f4f6; }
+.mcpModuleHeaderMain { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.mcpModuleHeaderIcon { display: grid; place-items: center; width: 40px; height: 40px; flex: none; border-radius: 8px; background: #dbeafe; color: #2563eb; }
+[data-theme="dark"] .mcpModuleHeaderIcon { background: rgb(37 99 235 / 20%); color: #60a5fa; }
+[data-theme="dark"] .mcpModuleHeader { border-bottom-color: rgb(255 255 255 / 6%); }
+.mcpModuleHeaderText { min-width: 0; }
+.mcpModuleHeaderTitle { margin: 0; color: #111827; font-size: 18px; font-weight: 600; line-height: 26px; }
+[data-theme="dark"] .mcpModuleHeaderTitle { color: #ececec; }
+.mcpModuleHeaderSubtitle { margin: 2px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .mcpModuleHeaderSubtitle { color: #a6a6a6; }
+
+/* 面板说明行与全局状态 */
+.mcpPanelHint { margin: 12px 0 0; color: #6b7280; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .mcpPanelHint { color: #a6a6a6; }
+.mcpPanelStatus { margin: 8px 0 0; color: #2563eb; font-size: 13px; line-height: 20px; }
+[data-theme="dark"] .mcpPanelStatus { color: #60a5fa; }
+.mcpPanelAlert { margin-top: 12px; }
+
+/* ===== 卡片网格（基线同 expertCatalogGrid） ===== */
+.mcpCatalogGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin: 20px 0 0; }
+.mcp-card {
+  display: flex; flex-direction: column; min-height: 150px;
+  border: 1px solid #e5e7eb; border-radius: 12px; overflow: hidden; background: #fff;
+  cursor: pointer;
+  transition: all .3s ease;
+}
+.mcp-card:hover { border-color: #bfdbfe; box-shadow: 0 4px 12px rgb(0 0 0 / 5%); }
+[data-theme="dark"] .mcp-card { border-color: rgb(255 255 255 / 10%); background: #1b1b1b; }
+[data-theme="dark"] .mcp-card:hover { border-color: rgb(37 99 235 / 55%); box-shadow: none; }
+
+.mcp-card-header { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 12px 16px; border-bottom: 1px solid #f9fafb; }
+[data-theme="dark"] .mcp-card-header { border-bottom-color: rgb(255 255 255 / 6%); }
+.mcp-card-tags { display: inline-flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; }
+.mcp-card-tag.ant-tag { margin: 0; padding: 0 8px; border-radius: 4px; font-size: 11px; line-height: 18px; }
+.mcp-card-tag.owned.ant-tag { border-color: #dbeafe; color: #2563eb; background: #eff6ff; }
+[data-theme="dark"] .mcp-card-tag.owned.ant-tag { border-color: rgb(37 99 235 / 45%); color: #60a5fa; background: rgb(37 99 235 / 16%); }
+.mcp-card-tag.muted.ant-tag { border-color: transparent; color: #6b7280; background: #f3f4f6; }
+[data-theme="dark"] .mcp-card-tag.muted.ant-tag { color: #a6a6a6; background: rgb(255 255 255 / 8%); }
+.mcp-card-tag.green.ant-tag { border-color: transparent; color: #16a34a; background: #f0fdf4; }
+[data-theme="dark"] .mcp-card-tag.green.ant-tag { color: #4ade80; background: rgb(74 222 128 / 14%); }
+.mcp-card-tag.red.ant-tag { border-color: transparent; color: #dc2626; background: #fef2f2; }
+[data-theme="dark"] .mcp-card-tag.red.ant-tag { color: #f87171; background: rgb(248 113 113 / 14%); }
+.mcp-card-tag.blue.ant-tag { border-color: transparent; color: #2563eb; background: #eff6ff; }
+[data-theme="dark"] .mcp-card-tag.blue.ant-tag { color: #60a5fa; background: rgb(37 99 235 / 16%); }
+
+.mcp-card-body { display: flex; gap: 12px; flex: 1; min-height: 0; padding: 16px; }
+.mcp-card-text { display: flex; flex: 1; min-width: 0; flex-direction: column; gap: 4px; }
+/* 标题即详情入口：透明按钮承载可点击语义（保留键盘焦点） */
+.mcp-card-title-btn { display: block; width: 100%; min-width: 0; margin: 0; padding: 0; border: 0; background: transparent; text-align: left; cursor: pointer; }
+.mcp-card-title-btn:focus-visible { outline: 2px solid #2563eb; outline-offset: 2px; border-radius: 4px; }
+.mcp-card-title { margin: 0; overflow: hidden; color: #111827; font-size: 15px; font-weight: 600; line-height: 22px; text-overflow: ellipsis; white-space: nowrap; transition: color .2s ease; }
+.mcp-card:hover .mcp-card-title { color: #2563eb; }
+[data-theme="dark"] .mcp-card-title { color: #ececec; }
+[data-theme="dark"] .mcp-card:hover .mcp-card-title { color: #60a5fa; }
+.mcp-card-desc { margin: 0; display: -webkit-box; overflow: hidden; color: #6b7280; font-size: 13px; line-height: 1.5; text-overflow: ellipsis; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+[data-theme="dark"] .mcp-card-desc { color: #a6a6a6; }
+.mcp-card-operation { color: #2563eb; font-size: 12px; line-height: 18px; }
+[data-theme="dark"] .mcp-card-operation { color: #60a5fa; }
+
+.mcp-card-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-top: auto; padding: 12px 16px; border-top: 1px solid #f0f0f0; background: #fcfcfc; }
+[data-theme="dark"] .mcp-card-footer { border-top-color: rgb(255 255 255 / 6%); background: rgb(255 255 255 / 3%); }
+.mcp-card-meta { flex: 1 1 auto; min-width: 0; overflow: hidden; color: #6b7280; font-size: 12px; line-height: 18px; text-overflow: ellipsis; white-space: nowrap; }
+[data-theme="dark"] .mcp-card-meta { color: #a6a6a6; }
+.mcp-card-footer > .ant-btn { flex: none; width: fit-content; width: -moz-fit-content; }
+.mcp-card .ghost-primary-btn.ant-btn { height: 24px; padding: 2px 10px; border: none; border-radius: 6px; color: #2563eb; background: #eff6ff; box-shadow: none; font-size: 12px; font-weight: 500; }
+.mcp-card .ghost-primary-btn.ant-btn:hover:not(:disabled) { background: #dbeafe !important; color: #2563eb !important; }
+[data-theme="dark"] .mcp-card .ghost-primary-btn.ant-btn { color: #60a5fa; background: rgb(37 99 235 / 16%); }
+[data-theme="dark"] .mcp-card .ghost-primary-btn.ant-btn:hover:not(:disabled) { background: rgb(37 99 235 / 26%) !important; color: #60a5fa !important; }
+/* .uploadSpinner 旋转动画由 styles.css 全局规则提供（reasoning-spin） */
+.mcp-card .mcp-card-action-btn .uploadSpinner { margin-right: 5px; }
+.mcpDetailModal .uploadSpinner { margin-right: 5px; }
+
+/* 空态：透明无框（antd Empty 居中） */
+.mcpEmpty { grid-column: 1 / -1; display: grid; place-items: center; min-height: 260px; padding: 55px 20px; }
+
+/* ===== 详情弹窗（Portal） ===== */
+.mcpAntDialog .ant-modal-body { max-height: calc(100vh - 220px); overflow-y: auto; }
+.mcpDetailDescription { margin: 0 0 16px; color: #4b5563; font-size: 13px; line-height: 22px; white-space: pre-wrap; overflow-wrap: break-word; }
+.mcpDetailSection { margin-top: 16px; }
+.mcpDetailSection h3 { margin: 0 0 8px; color: #111827; font-size: 14px; font-weight: 600; line-height: 22px; }
+.mcpDetailMeta { margin: 0; display: grid; gap: 8px; }
+.mcpDetailMeta > div { min-width: 0; padding: 10px 12px; border: 1px solid #e5e7eb; border-radius: 6px; background: #f9fafb; }
+.mcpDetailMeta dt { color: #6b7280; font-size: 12px; line-height: 18px; }
+.mcpDetailMeta dd { margin: 2px 0 0; overflow: hidden; color: #1f2937; font-size: 13px; line-height: 20px; overflow-wrap: break-word; }
+/* Portal 暗色：双类标记命中弹窗内自定义元素 */
+.mcpAntDialogDark .mcpDetailDescription { color: #a6a6a6; }
+.mcpAntDialogDark .mcpDetailSection h3 { color: #ececec; }
+.mcpAntDialogDark .mcpDetailMeta > div { border-color: rgb(255 255 255 / 10%); background: #242424; }
+.mcpAntDialogDark .mcpDetailMeta dt { color: #a6a6a6; }
+.mcpAntDialogDark .mcpDetailMeta dd { color: #e5e7eb; }

@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "type": "run.redirect_pending",
+  "redirect_id": "redirect-00000001",
+  "client_message_id": "message-correction-00000001",
+  "parent_run_id": "run-parent-00000001",
+  "input_admission_seq": 201,
+  "dispatch_group_id": null,
+  "dispatch_group_position": null,
+  "event_seq": 31,
+  "start_after_seq": null
+}

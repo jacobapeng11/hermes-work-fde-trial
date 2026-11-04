@@ -1,0 +1,31 @@
+{
+  "source": "frontend/user-web/src/styles.css before Hermes Desktop visual parity migration",
+  "capturedOn": "2026-07-13",
+  "captureMode": "static CSS and DOM contract; browser engine unavailable in the workspace",
+  "desktop": {
+    "appShellColumns": "252px minmax(0,1fr)",
+    "appShellHeight": "100vh",
+    "mainAreaRows": "64px minmax(0,1fr)",
+    "sidebarWidthPx": 252,
+    "headerHeightPx": 64,
+    "filesPaneCollapsedWidthPx": 52,
+    "filesPaneExpandedWidthPx": 320,
+    "capabilityDrawerMaxWidthPx": 410,
+    "composerMargin": "0 28px 24px"
+  },
+  "breakpoints": {
+    "filesPaneCollapseMaxWidthPx": 1100,
+    "mobileLayoutMaxWidthPx": 760,
+    "minimumViewportWidthPx": 320,
+    "mobileSidebarHeightPx": 62,
+    "mobileHeaderHeightPx": 60
+  },
+  "domOrder": {
+    "sidebar": ["brand", "primary-navigation", "recent-sessions", "profile-menu"],
+    "navigation": ["chat", "skills", "knowledge", "experts", "schedules"],
+    "mainArea": ["app-header", "error-notice-when-present", "active-view"],
+    "chatLayout": ["conversation", "files-pane"],
+    "conversation": ["message-feed", "composer"],
+    "composer": ["message-input", "attachment", "voice", "model", "set-default", "send-or-stop"]
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "command_id": "command-clarify-cancel-0001",
+  "runtime_id": "runtime-clarify-1",
+  "binding_id": "binding-clarify-1",
+  "admission_generation": 11,
+  "payload_digest": "0a70f8b713ea9c541c46b2cf7bbb9973625cd37bb0b81336885aa6afb5e89590",
+  "issued_at": "2026-10-18T00:00:00Z",
+  "deadline_at": "2026-10-18T00:00:30Z",
+  "payload": {
+    "type": "cancel",
+    "run_id": "run-clarify-0001",
+    "clarify_request_id": "clr_12345678"
+  }
+}

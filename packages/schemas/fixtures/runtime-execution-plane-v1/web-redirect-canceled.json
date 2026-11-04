@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "type": "run.redirect_canceled",
+  "redirect_id": "redirect-00000003",
+  "client_message_id": "message-correction-00000003",
+  "parent_run_id": "run-parent-00000001",
+  "input_admission_seq": 203,
+  "dispatch_group_id": null,
+  "dispatch_group_position": null,
+  "event_seq": 35,
+  "start_after_seq": null,
+  "cancel_reason": "PARENT_RUN_CANCELED"
+}

@@ -1,0 +1,13 @@
+{
+  "schema_version": 1,
+  "type": "channel.delivery.ack",
+  "request_id": "delivery-request-0001",
+  "gateway_instance_id": "backend-1:8011:im-gateway",
+  "channel_lease_epoch": 7,
+  "run_id": "rr-fastlane-00000001",
+  "highest_contiguous_seq": 12,
+  "provider_request_id": "wecom-request-0001",
+  "provider_message_id": "wecom-message-0001",
+  "projection_version": 3,
+  "confirmed_at": "2026-08-14T08:00:05Z"
+}

@@ -1,0 +1,117 @@
+/* ===== Composer 工具栏下拉弹框（014 §12 专家/模型选择重构） =====
+   demo：yqf-demo/前端样式操作/专家+模型弹框参考.html。
+   手写浮层而非 antd Dropdown：Composer/ModelPicker 在主入口静态图，antd 不得进入口 chunk（014 §2 红线）；
+   视觉按 antd 设计语言复刻。字体继承 appShell 标准栈（--font-sans）。
+   暗色：浮层在 appShell 内（非 Portal），用 [data-theme="dark"] 前缀配对。 */
+
+/* ----- 共用外壳：白底 / 12px 圆角 / 弥散阴影 / 极浅边框 ----- */
+.composerDropdownPanel {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid #f0f0f0;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 24px -4px rgb(0 0 0 / 12%), 0 3px 8px -2px rgb(0 0 0 / 4%);
+}
+.appShell[data-theme="dark"] .composerDropdownPanel { border-color: rgb(255 255 255 / 10%); background: #303030; box-shadow: 0 6px 24px -4px rgb(0 0 0 / 50%); }
+
+/* ----- 通用列表项状态（demo 三态：默认无背景 / hover 浅灰 / 选中浅蓝+品牌蓝+对勾） ----- */
+.dropdownOption {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: calc(100% - 8px);
+  margin: 1px 4px;
+  padding: 8px;
+  border: 0;
+  border-radius: 6px;
+  color: #374151;
+  background: transparent;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 13px;
+  text-align: left;
+  transition: background var(--transition-fast), color var(--transition-fast);
+}
+.dropdownOption:hover { background: #f3f4f6; }
+.dropdownOption:focus-visible { outline: 2px solid #2563eb; outline-offset: -2px; }
+.dropdownOption[aria-checked="true"], .dropdownOption[aria-selected="true"] { color: #2563eb; background: #eff6ff; }
+.dropdownOption > svg:first-child { flex: none; color: #9ca3af; }
+.dropdownOption[aria-checked="true"] > svg:first-child, .dropdownOption[aria-selected="true"] > svg:first-child { color: #2563eb; }
+.appShell[data-theme="dark"] .dropdownOption { color: #d1d5db; }
+.appShell[data-theme="dark"] .dropdownOption > svg:first-child { color: #8c8c8c; }
+.appShell[data-theme="dark"] .dropdownOption:hover { background: rgb(255 255 255 / 8%); }
+.appShell[data-theme="dark"] .dropdownOption[aria-checked="true"], .appShell[data-theme="dark"] .dropdownOption[aria-selected="true"] { color: #60a5fa; background: rgb(37 99 235 / 20%); }
+.appShell[data-theme="dark"] .dropdownOption[aria-checked="true"] > svg:first-child, .appShell[data-theme="dark"] .dropdownOption[aria-selected="true"] > svg:first-child { color: #60a5fa; }
+
+/* 分组标题：11px 浅灰、不可点击 */
+.dropdownGroupLabel { color: #9ca3af; font-size: 11px; font-weight: 500; letter-spacing: .02em; white-space: nowrap; }
+.appShell[data-theme="dark"] .dropdownGroupLabel { color: #8c8c8c; }
+
+/* 选中蓝色对勾（行尾） */
+.dropdownCheck { display: grid; flex: none; place-items: center; margin-left: auto; color: #2563eb; }
+.appShell[data-theme="dark"] .dropdownCheck { color: #60a5fa; }
+
+/* ----- 专家选择弹框（Agent Picker） ----- */
+.composerAgentMenu { position: absolute; z-index: 25; bottom: calc(100% + 8px); left: 0; width: min(280px, calc(100vw - 32px)); padding: 6px; }
+.composerAgentPrimaryMenu { display: grid; min-width: 0; align-content: start; }
+.composerAgentMenuLabel { margin: 0; padding: 6px 10px 4px; }
+.composerAgentMenuGroupLabel { margin: 4px 0 2px; padding: 6px 10px 4px; border-top: 1px solid #f3f4f6; }
+.composerAgentMenuLabel + .composerAgentMenuGroupLabel { margin-top: 0; border-top: 0; }
+.appShell[data-theme="dark"] .composerAgentMenuGroupLabel { border-top-color: rgb(255 255 255 / 8%); }
+.composerExpertSubmenuList { display: grid; min-width: 0; max-height: min(260px, calc(100vh - 220px)); overflow-y: auto; }
+.composerExpertSubmenuList::-webkit-scrollbar { width: 4px; }
+.composerExpertSubmenuList::-webkit-scrollbar-thumb { border-radius: 4px; background: #d1d5db; }
+/* 专家项：24px 圆角头像 + 两行（加粗名字 / 灰色简介单行截断），顶对齐 */
+.composerExpertSubmenuList > .dropdownOption { align-items: flex-start; }
+.composerExpertAvatar { display: grid !important; place-items: center; flex: 0 0 24px; width: 24px; height: 24px; margin-top: 1px; overflow: hidden !important; border-radius: 6px; color: var(--accent-contrast); background: linear-gradient(145deg, var(--accent), var(--accent-hover)); font-size: 10px; }
+.composerExpertAvatar img, .composerExpertAvatar svg, .composerExpertAvatar .avatarInitialFallback { width: 100%; height: 100%; object-fit: contain; }
+.composerAgentPrimaryMenu > .dropdownOption > span:last-child, .composerExpertSubmenuList > .dropdownOption > span:nth-child(2) { display: grid; flex: 1; min-width: 0; gap: 2px; }
+.composerAgentMenu strong { overflow: hidden; color: #1f2937; font-size: 13px; font-weight: 500; text-overflow: ellipsis; white-space: nowrap; }
+.composerAgentMenu small { overflow: hidden; color: #9ca3af; font-size: 11px; text-overflow: ellipsis; white-space: nowrap; }
+.dropdownOption[aria-checked="true"] strong { color: #2563eb; }
+.appShell[data-theme="dark"] .composerAgentMenu strong { color: #ececec; }
+.appShell[data-theme="dark"] .composerAgentMenu small { color: #8c8c8c; }
+.appShell[data-theme="dark"] .dropdownOption[aria-checked="true"] strong { color: #60a5fa; }
+.composerExpertEmpty { margin: 8px 10px; color: #9ca3af; font-size: 12px; }
+.appShell[data-theme="dark"] .composerExpertEmpty { color: #8c8c8c; }
+
+/* ----- 模型选择弹框（Model Picker） ----- */
+.modelPickerDropdown { position: absolute; z-index: 100; bottom: calc(100% + 6px); left: 0; width: min(320px, calc(100vw - 32px)); }
+/* 顶部固定搜索区：灰底输入容器，focus-within 白底 + 蓝边框 + 光晕 */
+.modelPickerSearchArea { flex: none; padding: 8px; border-bottom: 1px solid #f3f4f6; background: #fff; }
+.modelPickerSearchBox { display: flex; align-items: center; gap: 8px; padding: 6px 10px; border: 1px solid transparent; border-radius: 8px; background: #f3f4f6; transition: background var(--transition-fast), border-color var(--transition-fast), box-shadow var(--transition-fast); }
+.modelPickerSearchBox > svg { flex: none; color: #9ca3af; }
+.modelPickerSearchBox:focus-within { border-color: #2563eb; background: #fff; box-shadow: 0 0 0 3px rgb(37 99 235 / 10%); }
+.modelPickerSearch { flex: 1; min-width: 0; padding: 0; border: 0; outline: 0; background: transparent; color: #374151; font-family: inherit; font-size: 13px; }
+.modelPickerSearch::placeholder { color: #9ca3af; }
+.modelPickerSearch::-webkit-search-cancel-button { -webkit-appearance: none; }
+.appShell[data-theme="dark"] .modelPickerSearchArea { border-bottom-color: rgb(255 255 255 / 8%); background: #303030; }
+.appShell[data-theme="dark"] .modelPickerSearchBox { background: rgb(255 255 255 / 8%); }
+.appShell[data-theme="dark"] .modelPickerSearchBox > svg { color: #8c8c8c; }
+.appShell[data-theme="dark"] .modelPickerSearchBox:focus-within { border-color: #2563eb; background: #1f1f1f; box-shadow: 0 0 0 3px rgb(37 99 235 / 20%); }
+.appShell[data-theme="dark"] .modelPickerSearch { color: #ececec; }
+.appShell[data-theme="dark"] .modelPickerSearch::placeholder { color: #8c8c8c; }
+/* 滚动区：260px 上限，分组间极弱底边线 */
+.modelPickerList { flex: 1 1 auto; max-height: 260px; padding: 6px; overflow-y: auto; }
+.modelPickerList::-webkit-scrollbar { width: 4px; }
+.modelPickerList::-webkit-scrollbar-thumb { border-radius: 4px; background: #d1d5db; }
+.appShell[data-theme="dark"] .modelPickerList::-webkit-scrollbar-thumb { background: #555; }
+.modelPickerGroup + .modelPickerGroup { margin-top: 4px; padding-top: 4px; border-top: 1px solid #f9fafb; }
+.appShell[data-theme="dark"] .modelPickerGroup + .modelPickerGroup { border-top-color: rgb(255 255 255 / 6%); }
+.modelPickerGroupLabel { padding: 4px 10px; font-weight: 600; }
+.modelPickerOption > svg:last-child { flex: none; color: #9ca3af; }
+.modelPickerOption[aria-selected="true"] > svg:last-child { color: #2563eb; }
+.appShell[data-theme="dark"] .modelPickerOption[aria-selected="true"] > svg:last-child { color: #60a5fa; }
+.modelPickerOptionCopy { display: grid; flex: 1; min-width: 0; gap: 2px; }
+.modelPickerOptionName { overflow: hidden; font-size: 13px; text-overflow: ellipsis; white-space: nowrap; }
+.modelPickerEmpty { padding: 18px 8px; color: #9ca3af; font-size: 12px; text-align: center; }
+.appShell[data-theme="dark"] .modelPickerEmpty { color: #8c8c8c; }
+
+/* 窄屏（自 styles.css 760px media 迁入）：模型触发器脱离相对定位，下拉贴左限宽 */
+@media (max-width: 760px) {
+  .modelPicker { position: static; }
+  .modelPickerDropdown { right: auto; left: 0; width: min(320px, 100%); }
+}
